@@ -135,7 +135,9 @@ export const getServerSideProps = async ({
   let [newSite, site]: [boolean, any] = [query.id === "new", null];
 
   if (!newSite) {
-    site = await SiteModel.findById(query.id).populate({ path: "pages" }).lean();
+    site = await SiteModel.findById(query.id)
+      .populate({ path: "pages" })
+      .lean();
 
     if (!site) return notFound;
   }

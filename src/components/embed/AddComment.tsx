@@ -15,7 +15,7 @@ const AddComment: FC<{
   commentId?: string;
 }> = memo(function AddComment({ add, commentId }) {
   const [text, setText] = useState<string>("");
-  const [touched, setTouched] = useState(false)
+  const [touched, setTouched] = useState(false);
   const [submitting, setSubmitting] = useState<boolean>(false);
 
   const error = !text.length ? "You need to enter a value" : undefined;

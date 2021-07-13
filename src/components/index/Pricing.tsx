@@ -50,7 +50,9 @@ const Pricing = () => (
         justifyContent="center"
         flexDir={{ base: "column", md: "row" }}
       >
-        <Button colorScheme="blue" as={LinkWrap} href="/signup">Get started</Button>
+        <Button colorScheme="blue" as={LinkWrap} href="/signup">
+          Get started
+        </Button>
         <Button>Contact Us</Button>
       </Flex>
     </Card>

@@ -29,7 +29,7 @@ handler
     const { name } = req.body;
     // @ts-ignore is defined (look above)
     req.user.name = name;
-    await req.user?.save()
+    await req.user?.save();
 
     res.json({ user: req.user });
   })

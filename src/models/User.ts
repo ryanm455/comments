@@ -44,10 +44,10 @@ export class User extends defaultClasses.FindOrCreate {
   public sites?: Ref<"Site">[];
 
   @prop({ ref: () => "Comment" })
-  public upvoted?: Ref<"Comment">[]
+  public upvoted?: Ref<"Comment">[];
 
   @prop({ ref: () => "Comment" })
-  public downvoted?: Ref<"Comment">[]
+  public downvoted?: Ref<"Comment">[];
 
   public verifyPasswordSync(this: DocumentType<User>, password: string) {
     return bcrypt.compareSync(password, this.password!);

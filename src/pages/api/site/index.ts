@@ -40,9 +40,12 @@ handler
       providers,
     });
 
-    const [_, user] = await Promise.all([site.save(), UserModel.findById(req!.user!._id).populate("sites")])
+    const [_, user] = await Promise.all([
+      site.save(),
+      UserModel.findById(req!.user!._id).populate("sites"),
+    ]);
 
-    if (!user) throw new Error("the impossible has occurred")
+    if (!user) throw new Error("the impossible has occurred");
 
     user.sites!.push(site._id);
 

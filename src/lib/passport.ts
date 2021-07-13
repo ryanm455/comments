@@ -50,6 +50,8 @@ passport.use(
 // @ts-ignore
 passport.serializeUser((user, done) => done(null, user._id));
 
-passport.deserializeUser(async (id: string, done) => done(null, await UserModel.findById(id)));
+passport.deserializeUser(async (id: string, done) =>
+  done(null, await UserModel.findById(id))
+);
 
 export default passport;
