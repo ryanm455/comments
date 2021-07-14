@@ -22,7 +22,7 @@ const NAV_LINKS = [
   },
 ];
 
-const ThemeToggle: FC = memo(function ThemeToggle() {
+const ThemeToggle: FC = memo(() => {
   const { colorMode, toggleColorMode } = useColorMode();
 
   return (
@@ -36,7 +36,7 @@ const ThemeToggle: FC = memo(function ThemeToggle() {
 
 ThemeToggle.whyDidYouRender = false;
 
-const Navbar: FC = memo(function Navbar() {
+const Navbar: FC = memo(() => {
   const [user] = useUser();
 
   const customUser = user

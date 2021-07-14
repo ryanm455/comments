@@ -1,34 +1,28 @@
 import { useField } from "hooked-form";
 import { findKey } from "lodash-es";
 import dynamic from "next/dynamic";
+import { memo } from "react";
 import { Provider } from "types/db";
 
 import { selectOptions } from "./utils";
 
-// @ts-ignore
 const AutoComplete = dynamic(() =>
   import("chakra-ui-autocomplete").then(e => e.CUIAutoComplete)
 );
 
-export interface IItem {
-  label: string;
-  value: string;
-}
+const OptionSelect = memo(() => {
+  const [{ onChange }, { value }] = useField("providers");
 
-const OptionSelect = () => {
-  const [{ onChange }, { value }] = useField<Provider[]>("providers");
-
-  const selectedItems = value.map((val: Provider) => ({
-    label: findKey(Provider, v => v === val) as string,
+  const selectedItems = value.map(val => ({
+    label: findKey(Provider, v => v === val),
     value: val,
   }));
 
-  const handleSelectedItemsChange = (
-    s?: IItem[] // set as somehow duplicates some if added more than once. wtf?!?
-  ) => s && onChange(Array.from(new Set(s.map(e => e.value as Provider))));
+  const handleSelectedItemsChange = s =>
+    s && onChange(Array.from(new Set(s.map(e => e.value)))); // items duplicate ??
 
   return (
-    <AutoComplete // @ts-ignore why error wtf i was just following the docs i cba to investigate.
+    <AutoComplete
       label="Select providers"
       placeholder="Type a provider"
       inputStyleProps={{ mt: "-0.5rem" }}
@@ -38,11 +32,11 @@ const OptionSelect = () => {
       items={selectOptions}
       selectedItems={selectedItems}
       disableCreateItem
-      onSelectedItemsChange={(changes: { selectedItems: IItem[] }) =>
+      onSelectedItemsChange={changes =>
         handleSelectedItemsChange(changes.selectedItems)
       }
     />
   );
-};
+});
 
 export default OptionSelect;

@@ -1,6 +1,6 @@
 import CommentThread from "components/embed/CommentThread";
 import { fetcher } from "pages/embed/[page]";
-import { FC } from "react";
+import { FC, useCallback } from "react";
 import useSWR from "swr";
 
 import type { ISettings } from "types/embed";
@@ -15,13 +15,9 @@ const CommentsWrap: FC<{
     initialData: comments,
   });
 
-  return (
-    <CommentThread
-      comments={data || []}
-      settings={settings}
-      add={async () => {}}
-    />
-  );
+  const add = useCallback(async () => {}, []);
+
+  return <CommentThread comments={data || []} settings={settings} add={add} />;
 };
 
 export default CommentsWrap;

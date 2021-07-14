@@ -10,6 +10,7 @@ import {
   prop,
   Ref,
 } from "@typegoose/typegoose";
+import { FindOrCreate } from "types/db-plugin";
 
 const saltRounds = 10;
 
@@ -21,7 +22,7 @@ const saltRounds = 10;
   }
 })
 @plugin(require("mongoose-findorcreate"))
-export class User extends defaultClasses.FindOrCreate {
+export class User extends FindOrCreate {
   @prop()
   public username?: string;
 

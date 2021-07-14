@@ -25,7 +25,7 @@ const db = nextConnect<NextApiRequest, NextApiResponse>()
           : undefined,
       cookie: {
         maxAge: 60 * 60 * 8, // 8 hours,
-        secure: false, // process.env.NODE_ENV === "production",
+        secure: process.env.NODE_ENV === "production",
       },
     })
   )

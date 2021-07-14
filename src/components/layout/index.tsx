@@ -9,7 +9,7 @@ import Meta from "./Meta";
 import Navbar from "./Navbar";
 
 const theme = extendTheme(
-  // @ts-ignore
+  // @ts-ignore Type instantiation is excessively deep and possibly infinite.ts(2589)
   withDefaultProps({
     defaultProps: {
       maxW: "4xl",

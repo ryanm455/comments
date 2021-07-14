@@ -1,33 +1,35 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import { Field } from "components/Field";
 import CommentsWrap from "components/page/CommentsWrap";
-/* eslint-disable react-hooks/rules-of-hooks */
 import { HookedForm } from "hooked-form";
+import { useUser } from "lib/hooks";
+import { APP_URL } from "meta";
 import db from "middleware/db";
 import { PageModel, SiteModel } from "models";
 import { isValidObjectId } from "mongoose";
-import { GetServerSidePropsContext } from "next";
 import nc from "next-connect";
-import { FC, useMemo, useState } from "react";
-import { ApiRequest } from "types/custom-req";
+import Router from "next/router";
+import { FC, useEffect, useMemo, useState } from "react";
+import { notFound, parse, redirect } from "utils";
 
 import {
   Button,
   Code,
   Container,
   Heading,
+  Tab,
+  TabList,
+  TabPanel,
+  TabPanels,
+  Tabs,
   Text,
   useColorModeValue,
-  Tabs,
-  TabList,
-  TabPanels,
-  Tab,
-  TabPanel,
 } from "@chakra-ui/react";
 
+import type { GetServerSidePropsContext } from "next";
+import type { ApiRequest } from "types/custom-req";
 import type { IPage } from "types/db";
 import type { ISettings } from "types/embed";
-import { redirect, notFound, parse } from "utils";
-
 // @ts-ignore
 const defaultPage: IPage = {
   name: "",
@@ -39,6 +41,13 @@ const Page: FC<{
   settings: ISettings;
 }> = ({ refSite, page: s, settings }) => {
   const [page, setPage] = useState(!refSite ? s : defaultPage);
+
+  const [user] = useUser();
+
+  useEffect(() => {
+    // redirect to home if user is authenticated
+    if (user) Router.push("/");
+  }, [user]);
 
   const initialValues = useMemo(() => ({ name: page.name }), [page.name]);
 
@@ -128,7 +137,7 @@ export default function Embed() {
               <TabPanel>
                 <Code whiteSpace="pre" mb={2}>
                   {`<iframe
-  src="http://localhost:3000/embed/60e32d227a9ab34cb0ba34ea"
+  src="${APP_URL}/embed/60e32d227a9ab34cb0ba34ea"
   width="100%"
   loading="lazy"
 ></iframe>`}
@@ -176,21 +185,24 @@ export const getServerSideProps = async ({
 
   if (!req.user) return redirect("/login");
 
-  let [page, settings] = [null, {}];
+  if (query.id === "new") {
+    if (!query.ref || !isValidObjectId(query.ref)) return notFound;
 
-  if (query.id !== "new") {
-    // @ts-ignore
-    page = await PageModel.findById(query.id).populate("comments").lean();
+    return {
+      props: {
+        refSite: query.ref,
+      },
+    };
+  }
 
-    if (!page) return notFound;
+  const page = await PageModel.findById(query.id).populate("comments").lean();
 
-    settings = await SiteModel.findOne({
-      // @ts-ignore
-      pages: { _id: page._id },
-    })
-      .select(["-createdAt", "-updatedAt", "-pages", "-_id", "-name"])
-      .lean();
-  } else if (!query.ref || !isValidObjectId(query.ref)) return notFound;
+  if (!page) return notFound;
+
+  // @ts-ignore
+  const settings = await SiteModel.findOne({ pages: { _id: page._id } })
+    .select(["-createdAt", "-updatedAt", "-pages", "-_id", "-name"])
+    .lean();
 
   return {
     props: {

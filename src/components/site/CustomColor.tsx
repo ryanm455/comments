@@ -11,6 +11,7 @@ const CustomColor: React.FC<{
 }> = ({ value, onChange, selected }) => {
   const [isPopoverOpen, setPopoverOpen] = useState<boolean>(false);
   const [color, setColor] = useState(value);
+
   return (
     <Popover
       isOpen={isPopoverOpen}

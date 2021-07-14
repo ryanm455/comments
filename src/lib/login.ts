@@ -1,11 +1,12 @@
 import { Provider } from "types/db";
 import { fetcher } from "./hooks";
 
+declare const window: { loginRef: () => Promise<void> } & Window;
+
 export const socialAuth = (prov: Provider, update: (u: any) => void) => {
   if (prov === Provider.Local)
     throw new Error("TODO! Local is not implemented!");
 
-  // @ts-ignore
   window.loginRef = async () => {
     update(await fetcher("/api/auth/user"));
   };

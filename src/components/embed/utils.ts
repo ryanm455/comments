@@ -1,4 +1,4 @@
-export function shadeColor(rgb: string, percent: number) {
+export const shadeColor = (rgb: string, percent: number) => {
   // number between -100, 100
   let [R, G, B] = rgb
     .substring(4)
@@ -15,4 +15,4 @@ export function shadeColor(rgb: string, percent: number) {
   B = B < 255 ? B : 255;
 
   return `rgb(${R},${G},${B})`;
-}
+};

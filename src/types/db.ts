@@ -12,8 +12,8 @@ export interface IUser {
   provider: Provider;
   providerId?: string;
   sites: ISite[];
-  upvoted: Comment[];
-  downvoted: Comment[];
+  upvoted: IComment[];
+  downvoted: IComment[];
   createdAt: string;
   updatedAt: string;
 }
@@ -27,7 +27,7 @@ export interface ISite {
   timestamps: boolean;
   ratings?: boolean;
   providers: Provider[];
-  pages?: IPage[];
+  pages: IPage[];
   createdAt: string;
   updatedAt: string;
 }
@@ -35,7 +35,7 @@ export interface ISite {
 export interface IPage {
   _id: string;
   name: string;
-  comments?: IComment[];
+  comments: IComment[];
   createdAt: string;
   updatedAt: string;
 }
@@ -45,7 +45,7 @@ export interface IComment {
   text: string;
   author: IUser;
   rating?: number;
-  children?: IComment[];
+  children: IComment[];
   upvotes: number;
   downvotes: number;
   createdAt: string;

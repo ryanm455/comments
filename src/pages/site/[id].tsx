@@ -1,23 +1,32 @@
-import { Field } from "components/Field";
 import Boxes from "components/Box";
+import { Field } from "components/Field";
 import CheckList from "components/site/CheckList";
 import OptionSelect from "components/site/OptionSelect";
 import ThemeSelect from "components/site/ThemeSelect";
 import { checkListItems, defaultSite, siteFilter } from "components/site/utils";
 import { HookedForm } from "hooked-form";
+import { useUser } from "lib/hooks";
 import db from "middleware/db";
 import { SiteModel } from "models";
 import nc from "next-connect";
-import { useMemo, useState, FC } from "react";
+import Router from "next/router";
+import { FC, useEffect, useMemo, useState } from "react";
+import { notFound, parse, redirect } from "utils";
 
 import { Button, Container, Heading } from "@chakra-ui/react";
 
 import type { Provider, ISite } from "types/db";
 import type { ApiRequest } from "types/custom-req";
 import type { GetServerSidePropsContext } from "next";
-import { notFound, redirect, parse } from "utils";
 
 const Site: FC<{ newSite: boolean; site: ISite }> = ({ newSite, site: s }) => {
+  const [user] = useUser();
+
+  useEffect(() => {
+    // redirect to home if user is authenticated
+    if (user) Router.push("/");
+  }, [user]);
+
   const [meta, setMeta] = useState<{
     pages: ISite["pages"];
     _id?: string;

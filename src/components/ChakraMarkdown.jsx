@@ -1,5 +1,5 @@
-/* eslint-disable react/display-name */
 import Markdown from "markdown-to-jsx";
+import { memo } from "react";
 import {
   Link,
   Code,
@@ -13,7 +13,7 @@ import {
   Td,
 } from "@chakra-ui/react";
 
-const ChakraMarkdown = props => (
+const ChakraMarkdown = memo(props => (
   <Markdown
     options={{
       overrides: {
@@ -38,6 +38,6 @@ const ChakraMarkdown = props => (
     }}
     {...props}
   />
-);
+));
 
 export default ChakraMarkdown;

@@ -13,7 +13,7 @@ const CustomColor = dynamic(() => import("./CustomColor"), { ssr: false });
 const ThemeSelect: FC<{
   name: string;
   edit: keyof ISite;
-}> = memo(function ThemeSelect({ name, edit }) {
+}> = memo(({ name, edit }) => {
   const [{ onChange }, { value }] = useField<string>(edit);
 
   return (

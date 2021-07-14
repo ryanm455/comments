@@ -41,37 +41,37 @@ const SocialButton = ({
   </chakra.button>
 );
 
-export default memo(function Footer() {
-  return (
-    <Box
-      bg={useColorModeValue("gray.50", "gray.900")}
-      color={useColorModeValue("gray.700", "gray.200")}
+const Footer = memo(() => (
+  <Box
+    bg={useColorModeValue("gray.50", "gray.900")}
+    color={useColorModeValue("gray.700", "gray.200")}
+  >
+    <Container
+      as={Stack}
+      maxW="4xl"
+      py={4}
+      direction={{ base: "column", md: "row" }}
+      spacing={4}
+      justify={{ base: "center", md: "space-between" }}
+      align={{ base: "center", md: "center" }}
     >
-      <Container
-        as={Stack}
-        maxW="4xl"
-        py={4}
-        direction={{ base: "column", md: "row" }}
-        spacing={4}
-        justify={{ base: "center", md: "space-between" }}
-        align={{ base: "center", md: "center" }}
-      >
-        <Text>{APP_LOGO}</Text>
-        <Text>
-          © {new Date().getFullYear()} {APP_NAME}. All rights reserved
-        </Text>
-        <Stack direction="row" spacing={6}>
-          <SocialButton label="Twitter" href="#">
-            <FaTwitter />
-          </SocialButton>
-          <SocialButton label="YouTube" href="#">
-            <FaYoutube />
-          </SocialButton>
-          <SocialButton label="Instagram" href="#">
-            <FaInstagram />
-          </SocialButton>
-        </Stack>
-      </Container>
-    </Box>
-  );
-});
+      <Text>{APP_LOGO}</Text>
+      <Text>
+        © {new Date().getFullYear()} {APP_NAME}. All rights reserved
+      </Text>
+      <Stack direction="row" spacing={6}>
+        <SocialButton label="Twitter" href="#">
+          <FaTwitter />
+        </SocialButton>
+        <SocialButton label="YouTube" href="#">
+          <FaYoutube />
+        </SocialButton>
+        <SocialButton label="Instagram" href="#">
+          <FaInstagram />
+        </SocialButton>
+      </Stack>
+    </Container>
+  </Box>
+));
+
+export default Footer;

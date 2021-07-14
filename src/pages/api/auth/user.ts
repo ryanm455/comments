@@ -27,8 +27,7 @@ handler
   })
   .put(async (req, res) => {
     const { name } = req.body;
-    // @ts-ignore is defined (look above)
-    req.user.name = name;
+    req.user!.name = name;
     await req.user?.save();
 
     res.json({ user: req.user });

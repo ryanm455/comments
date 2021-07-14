@@ -7,8 +7,9 @@ import { Provider } from "types/db";
 import { Button, SimpleGrid, VisuallyHidden } from "@chakra-ui/react";
 
 import { DividerWithText } from "./DividerWithText";
+import { memo } from "react";
 
-export const OrContinueWith = () => (
+export const OrContinueWith = memo(() => (
   <>
     <DividerWithText mt="6">or continue with</DividerWithText>
     <SimpleGrid mt="6" columns={2} spacing="3">
@@ -30,4 +31,4 @@ export const OrContinueWith = () => (
       </Button>
     </SimpleGrid>
   </>
-);
+));

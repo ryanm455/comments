@@ -6,12 +6,13 @@ import { Box, Button, Flex } from "@chakra-ui/react";
 import Comment from "./Comment";
 
 import type { ISettings, IAddComment } from "types/embed";
+import { memo } from "react";
 
 const CommentThread: FC<{
   comments: IComment[];
   settings: ISettings;
   add: IAddComment;
-}> = ({ comments, settings, add }) => {
+}> = memo(({ comments, settings, add }) => {
   const [showReplies, setShowReplies] = useState<boolean[]>(
     comments.map(() => true)
   );
@@ -29,11 +30,7 @@ const CommentThread: FC<{
         <Box key={`${comment._id}-${idx}`}>
           <Comment settings={settings} add={add} {...comment} />
           {children.length > 0 && (
-            <Button
-              variant="link"
-              onClick={() => toggleShowReplies(idx)}
-              // className="hover:underline focus:ring text-gray-500 dark:text-gray-200 font-semibold rounded mt-1 ml-2"
-            >
+            <Button variant="link" onClick={() => toggleShowReplies(idx)}>
               {showReplies[idx]
                 ? "Hide replies"
                 : `Show ${children.length} ${
@@ -61,7 +58,6 @@ const CommentThread: FC<{
                 </Box>
               )}
               <Flex flexDir="column">
-                {/* ml-4 */}
                 <CommentThread
                   comments={children}
                   settings={settings}
@@ -74,6 +70,6 @@ const CommentThread: FC<{
       ))}
     </>
   );
-};
+});
 
 export default CommentThread;

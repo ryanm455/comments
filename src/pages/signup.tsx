@@ -4,26 +4,27 @@ import { OrContinueWith } from "components/auth/OrContinueWith";
 import { useUser } from "lib/hooks";
 import { APP_LOGO } from "meta";
 import Router from "next/router";
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 
 import { Box, Heading, useColorModeValue } from "@chakra-ui/react";
 
 const Register: React.FC = () => {
   const [user, { mutate }] = useUser();
 
-  const authenticate = async (
-    values: Partial<{ username: string; name: string; password: string }>
-  ): Promise<void> =>
-    new Promise(async (resolve, reject) => {
-      const user = await fetch("/api/auth/local/register", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(values),
-      })
-        .then(r => r?.json())
-        .catch(err => reject(err));
-      mutate(user), resolve(user);
-    });
+  const authenticate = useCallback(
+    async (values): Promise<void> =>
+      new Promise(async (resolve, reject) => {
+        const user = await fetch("/api/auth/local/register", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(values),
+        })
+          .then(r => r?.json())
+          .catch(err => reject(err));
+        mutate(user), resolve(user);
+      }),
+    [mutate]
+  );
 
   useEffect(() => {
     // redirect to home if user is authenticated

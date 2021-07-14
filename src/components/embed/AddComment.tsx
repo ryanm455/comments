@@ -13,7 +13,7 @@ import type { IAddComment } from "types/embed";
 const AddComment: FC<{
   add: IAddComment;
   commentId?: string;
-}> = memo(function AddComment({ add, commentId }) {
+}> = memo(({ add, commentId }) => {
   const [text, setText] = useState<string>("");
   const [touched, setTouched] = useState(false);
   const [submitting, setSubmitting] = useState<boolean>(false);

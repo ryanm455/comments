@@ -11,7 +11,7 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
   const EmbedWrap: React.FC = ({ children }) => (
     <EmbedLayout {...pageProps}>{children}</EmbedLayout>
   );
-  // @ts-ignore
+
   const L = Component.layout === Layout.Embed ? EmbedWrap : DefaultLayout;
 
   return (

@@ -31,8 +31,7 @@ handler
 
     await page.save();
 
-    // @ts-ignore
-    site.pages!.push(page);
+    site.pages!.push(page._id);
 
     await site.save();
 

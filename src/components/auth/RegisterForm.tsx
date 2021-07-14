@@ -5,6 +5,7 @@ import { Alert, AlertIcon, Button, Stack } from "@chakra-ui/react";
 
 import { Field } from "../Field";
 import PasswordInput from "./PasswordInput";
+import { memo } from "react";
 
 const defaultValues = {
   username: "",
@@ -16,7 +17,7 @@ export const RegisterForm: FC<{
   authenticate: (
     values: Partial<{ username: string; name: string; password: string }>
   ) => Promise<void>;
-}> = ({ authenticate }) => {
+}> = memo(({ authenticate }) => {
   const [invalid, setInvalid] = useState<string | null>(null);
 
   return (
@@ -66,4 +67,4 @@ export const RegisterForm: FC<{
       )}
     </HookedForm>
   );
-};
+});

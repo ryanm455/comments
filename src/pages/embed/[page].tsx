@@ -4,18 +4,27 @@ import CommentThread from "components/embed/CommentThread";
 import Login from "components/embed/Login";
 import dbConnect from "lib/dbConnect";
 import { useUser } from "lib/hooks";
+import { APP_URL } from "meta";
 import { PageModel, SiteModel } from "models";
 import mongoose from "mongoose";
-import { GetStaticPaths, GetStaticProps } from "next";
 import { useCallback } from "react";
 import useSWR from "swr";
 import { Layout } from "types/layout";
 import { notFound, parse } from "utils";
 
-import { Box, Flex, Text, useColorModeValue } from "@chakra-ui/react";
+import {
+  Box,
+  Flex,
+  Link,
+  Text,
+  useColorModeValue,
+  Icon,
+} from "@chakra-ui/react";
 
+import type { GetStaticPaths, GetStaticProps } from "next";
 import type { IComment } from "types/db";
 import type { ISettings } from "types/embed";
+import { FaExternalLinkAlt } from "react-icons/fa";
 
 export const fetcher = (url: string) =>
   fetch(url)
@@ -23,7 +32,7 @@ export const fetcher = (url: string) =>
     .then(r => r.comments);
 
 if (typeof window !== "undefined") {
-  window.addEventListener("message", e => {
+  window.addEventListener("message", (e: any) => {
     if (e.data == "height") {
       const [body, html] = [document.body, document.documentElement];
 
@@ -35,12 +44,10 @@ if (typeof window !== "undefined") {
         html.offsetHeight
       );
 
-      // @ts-ignore
-      e.source?.postMessage({ height }, "*");
+      e.source.postMessage({ height }, "*");
 
       new ResizeObserver(entries =>
-        // @ts-ignore
-        e.source?.postMessage({ height: entries[0].target.clientHeight }, "*")
+        e.source.postMessage({ height: entries[0].target.clientHeight }, "*")
       ).observe(document.body);
     }
   });
@@ -72,8 +79,7 @@ const Embed: React.FC<{
         .then(r => r.json())
         .then(r => r.comment);
 
-      // @ts-ignore
-      mutate([...data, comment]);
+      mutate([...data!, comment]);
     },
     [data, mutate, pageId]
   );
@@ -94,11 +100,13 @@ const Embed: React.FC<{
           There are no comments for this page.
         </Text>
       )}
+      <Link href={APP_URL} isExternal my={2}>
+        Add Comments to your site <Icon as={FaExternalLinkAlt} mx="2px" />
+      </Link>
     </Flex>
   );
 };
 
-// @ts-ignore
 Embed.layout = Layout.Embed;
 
 export const getStaticPaths: GetStaticPaths = async () => {
@@ -115,22 +123,22 @@ export const getStaticPaths: GetStaticPaths = async () => {
     fallback: "blocking",
   };
 };
-// @ts-ignore
+
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   if (mongoose.connection.readyState === 0) await dbConnect();
 
   if (!params || !params.page) return notFound;
 
-  const page = await PageModel.findById(params.page)
+  const page: any | null = await PageModel.findById(params.page)
     .populate("comments")
     .lean();
 
   if (!page) return notFound;
 
-  const settings = await SiteModel.findOne({
-    // @ts-ignore
-    pages: { _id: page._id },
-  }).select(["-createdAt", "-updatedAt", "-pages", "-_id", "-name"]);
+  // @ts-ignore
+  const settings = await SiteModel.findOne({ pages: { _id: page._id } }).select(
+    ["-createdAt", "-updatedAt", "-pages", "-_id", "-name"]
+  );
 
   return {
     props: {

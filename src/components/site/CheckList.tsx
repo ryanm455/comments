@@ -24,14 +24,12 @@ const Mapped: FC<ICheckList> = ({ label, c }) => {
 
 const CheckList: FC<{
   list: ICheckList[];
-}> = memo(function CheckList({ list }) {
-  return (
-    <>
-      {list.map(e => (
-        <Mapped key={e.label} {...e} />
-      ))}
-    </>
-  );
-});
+}> = memo(({ list }) => (
+  <>
+    {list.map(e => (
+      <Mapped key={e.label} {...e} />
+    ))}
+  </>
+));
 
 export default CheckList;
