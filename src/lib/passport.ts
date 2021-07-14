@@ -43,7 +43,7 @@ passport.use(
       UserModel.findOrCreate(
         { providerId: profile.id, provider: Provider.Google },
         { name: profile.displayName, image: profile._json.picture },
-        (err, user) => cb(err, user.doc)
+        (err, user) => cb(err, user)
       )
   )
 );

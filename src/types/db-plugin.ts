@@ -1,8 +1,8 @@
 import type { FindOrCreateResult } from "@typegoose/typegoose/lib/defaultClasses";
 import type { AnyParamConstructor } from "@typegoose/typegoose/lib/types";
-import type { NativeError } from 'mongoose';
+import type { NativeError } from "mongoose";
 
-type Cb<T> = (err: NativeError, doc: FindOrCreateResult<T>) => any;
+type Cb<T> = (err: NativeError, doc: FindOrCreateResult<T>["doc"]) => any;
 
 export abstract class FindOrCreate {
   static findOrCreate: <T extends FindOrCreate>(
