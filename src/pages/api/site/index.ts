@@ -1,15 +1,14 @@
-import db from "middleware/db";
+import middleware from "middleware";
 import { SiteModel } from "models";
-import nextConnect from "next-connect";
-
-import type { NextApiResponse } from "next";
-import type { ApiRequest } from "types/custom-req";
 import UserModel from "models/User";
+import nc from "next-connect";
 
-const handler = nextConnect<ApiRequest, NextApiResponse>();
+import type { NextApiRequest, NextApiResponse } from "next";
+
+const handler = nc<NextApiRequest, NextApiResponse>();
 
 handler
-  .use(db)
+  .use(middleware)
   .use((req, res, next) => {
     // handlers after this (PUT, DELETE) all require an authenticated user
     // This middleware to check if user is authenticated before continuing

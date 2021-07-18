@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import nextConnect from "next-connect";
+import nc from "next-connect";
 
-const handler = nextConnect<NextApiRequest, NextApiResponse>();
+const handler = nc<NextApiRequest, NextApiResponse>();
 
 handler.get((req, res) =>
   res.end(`<!DOCTYPE html>

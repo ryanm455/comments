@@ -2,6 +2,7 @@ import { Card } from "components/auth/Card";
 import { LoginForm } from "components/auth/LoginForm";
 import { OrContinueWith } from "components/auth/OrContinueWith";
 import { useUser } from "lib/hooks";
+import { checkIfPopUp } from "lib/login";
 import { APP_LOGO } from "meta";
 import Router from "next/router";
 import { useCallback, useEffect } from "react";
@@ -21,7 +22,7 @@ const Login: React.FC = () => {
         })
           .then(r => r?.json())
           .catch(err => reject(err));
-        mutate(user), resolve(user);
+        checkIfPopUp(), mutate(user), resolve(user);
       }),
     [mutate]
   );

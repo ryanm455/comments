@@ -6,9 +6,8 @@ import ThemeSelect from "components/site/ThemeSelect";
 import { checkListItems, defaultSite, siteFilter } from "components/site/utils";
 import { HookedForm } from "hooked-form";
 import { useUser } from "lib/hooks";
-import db from "middleware/db";
+import middleware from "middleware";
 import { SiteModel } from "models";
-import nc from "next-connect";
 import Router from "next/router";
 import { FC, useEffect, useMemo, useState } from "react";
 import { notFound, parse, redirect } from "utils";
@@ -16,15 +15,14 @@ import { notFound, parse, redirect } from "utils";
 import { Button, Container, Heading } from "@chakra-ui/react";
 
 import type { Provider, ISite } from "types/db";
-import type { ApiRequest } from "types/custom-req";
-import type { GetServerSidePropsContext } from "next";
+import type { GetServerSideProps } from "next";
 
 const Site: FC<{ newSite: boolean; site: ISite }> = ({ newSite, site: s }) => {
   const [user] = useUser();
 
   useEffect(() => {
     // redirect to home if user is authenticated
-    if (user) Router.push("/");
+    if (!user) Router.push("/");
   }, [user]);
 
   const [meta, setMeta] = useState<{
@@ -128,16 +126,12 @@ const Site: FC<{ newSite: boolean; site: ISite }> = ({ newSite, site: s }) => {
   );
 };
 
-export const getServerSideProps = async ({
+export const getServerSideProps: GetServerSideProps = async ({
   req,
   res,
   query,
-}: GetServerSidePropsContext & { req: ApiRequest }) => {
-  const handler = nc().use(db);
-
-  try {
-    await handler.run(req, res);
-  } catch (e) {}
+}) => {
+  await middleware.run(req as any, res as any);
 
   if (!req.user) return redirect("/login");
 

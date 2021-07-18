@@ -1,12 +1,11 @@
-import db from "middleware/db";
-import nextConnect from "next-connect";
+import middleware from "middleware";
+import nc from "next-connect";
 
-import type { NextApiResponse } from "next";
-import type { ApiRequest } from "types/custom-req";
+import type { NextApiRequest, NextApiResponse } from "next";
 
-const handler = nextConnect<ApiRequest, NextApiResponse>();
+const handler = nc<NextApiRequest, NextApiResponse>();
 
-handler.use(db).get((req, res) => {
+handler.use(middleware).get((req, res) => {
   req.logOut();
   res.status(204).end();
 });

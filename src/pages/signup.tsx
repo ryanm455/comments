@@ -1,7 +1,8 @@
 import { Card } from "components/auth/Card";
-import { RegisterForm } from "components/auth/RegisterForm";
 import { OrContinueWith } from "components/auth/OrContinueWith";
+import { RegisterForm } from "components/auth/RegisterForm";
 import { useUser } from "lib/hooks";
+import { checkIfPopUp } from "lib/login";
 import { APP_LOGO } from "meta";
 import Router from "next/router";
 import { useCallback, useEffect } from "react";
@@ -21,7 +22,7 @@ const Register: React.FC = () => {
         })
           .then(r => r?.json())
           .catch(err => reject(err));
-        mutate(user), resolve(user);
+        checkIfPopUp(), mutate(user), resolve(user);
       }),
     [mutate]
   );

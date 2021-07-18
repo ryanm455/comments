@@ -1,12 +1,12 @@
 import passport from "lib/passport";
-import db from "middleware/db";
-import type { NextApiResponse } from "next";
-import nextConnect from "next-connect";
-import type { ApiRequest } from "types/custom-req";
+import middleware from "middleware";
+import nc from "next-connect";
 
-const handler = nextConnect<ApiRequest, NextApiResponse>();
+import type { NextApiRequest, NextApiResponse } from "next";
 
-handler.use(db).post(passport.authenticate("local"), (req, res) => {
+const handler = nc<NextApiRequest, NextApiResponse>();
+
+handler.use(middleware).post(passport.authenticate("local"), (req, res) => {
   res.json({ user: req.user });
 });
 

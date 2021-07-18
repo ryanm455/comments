@@ -11,6 +11,14 @@ import { Provider } from "types/db";
 import type { DocumentType } from "@typegoose/typegoose";
 import type { NativeError } from "mongoose";
 
+passport.serializeUser<any, any>((_req, user, done) => done(null, user._id));
+
+passport.deserializeUser(async (id: string, done) =>
+  UserModel.findById(id, (err: NativeError, user: DocumentType<User>) =>
+    done(err, user)
+  )
+);
+
 passport.use(
   new LocalStrategy(
     (username: string, password: string, done: VerifyCallback) =>
@@ -45,14 +53,6 @@ passport.use(
         { name: profile.displayName, image: profile._json.picture },
         (err, user) => cb(err, user)
       )
-  )
-);
-
-passport.serializeUser<any, any>((_req, user, done) => done(null, user._id));
-
-passport.deserializeUser(async (id: string, done) =>
-  UserModel.findById(id, (err: NativeError, user: DocumentType<User>) =>
-    done(err, user)
   )
 );
 

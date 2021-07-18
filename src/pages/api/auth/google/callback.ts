@@ -1,12 +1,12 @@
 import passport from "lib/passport";
-import db from "middleware/db";
+import middleware from "middleware";
 import type { NextApiRequest, NextApiResponse } from "next";
-import nextConnect from "next-connect";
+import nc from "next-connect";
 
-const handler = nextConnect<NextApiRequest, NextApiResponse>();
+const handler = nc<NextApiRequest, NextApiResponse>();
 
 handler
-  .use(db)
+  .use(middleware)
   .get(
     passport.authenticate("google", { failureRedirect: "/login" }),
     (req, res) => res.redirect("/api/auth/after")

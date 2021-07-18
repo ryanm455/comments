@@ -1,14 +1,12 @@
-import db from "middleware/db";
+import middleware from "middleware";
 import { UserModel } from "models";
-import nextConnect from "next-connect";
+import nc from "next-connect";
 
-import type { NextApiResponse } from "next";
-import type { ApiRequest } from "types/custom-req";
-import { IUser } from "types/db";
+import type { NextApiRequest, NextApiResponse } from "next";
 
-const handler = nextConnect<ApiRequest, NextApiResponse>();
+const handler = nc<NextApiRequest, NextApiResponse>();
 
-handler.use(db).post(async (req, res) => {
+handler.use(middleware).post(async (req, res) => {
   const { username, password, name } = req.body;
 
   if (!username || !password || !name)

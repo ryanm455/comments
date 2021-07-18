@@ -1,14 +1,13 @@
-import db from "middleware/db";
+import middleware from "middleware";
 import { UserModel } from "models";
-import nextConnect from "next-connect";
+import nc from "next-connect";
 
-import type { NextApiResponse } from "next";
-import type { ApiRequest } from "types/custom-req";
+import type { NextApiRequest, NextApiResponse } from "next";
 
-const handler = nextConnect<ApiRequest, NextApiResponse>();
+const handler = nc<NextApiRequest, NextApiResponse>();
 
 handler
-  .use(db)
+  .use(middleware)
   .get((req, res) => {
     // You do not generally want to return the whole user object
     // because it may contain sensitive field such as !!password!! Only return what needed

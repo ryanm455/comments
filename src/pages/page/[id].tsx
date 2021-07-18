@@ -4,10 +4,9 @@ import CommentsWrap from "components/page/CommentsWrap";
 import { HookedForm } from "hooked-form";
 import { useUser } from "lib/hooks";
 import { APP_URL } from "meta";
-import db from "middleware/db";
+import middleware from "middleware";
 import { PageModel, SiteModel } from "models";
 import { isValidObjectId } from "mongoose";
-import nc from "next-connect";
 import Router from "next/router";
 import { FC, useEffect, useMemo, useState } from "react";
 import { notFound, parse, redirect } from "utils";
@@ -26,8 +25,7 @@ import {
   useColorModeValue,
 } from "@chakra-ui/react";
 
-import type { GetServerSidePropsContext } from "next";
-import type { ApiRequest } from "types/custom-req";
+import type { GetServerSideProps } from "next";
 import type { IPage } from "types/db";
 import type { ISettings } from "types/embed";
 // @ts-ignore
@@ -46,7 +44,7 @@ const Page: FC<{
 
   useEffect(() => {
     // redirect to home if user is authenticated
-    if (user) Router.push("/");
+    if (!user) Router.push("/");
   }, [user]);
 
   const initialValues = useMemo(() => ({ name: page.name }), [page.name]);
@@ -172,16 +170,12 @@ window.addEventListener(
   );
 };
 
-export const getServerSideProps = async ({
+export const getServerSideProps: GetServerSideProps = async ({
   req,
   res,
   query,
-}: GetServerSidePropsContext & { req: ApiRequest }) => {
-  const handler = nc().use(db);
-
-  try {
-    await handler.run(req, res);
-  } catch (e) {}
+}) => {
+  await middleware.run(req as any, res as any);
 
   if (!req.user) return redirect("/login");
 
