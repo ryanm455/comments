@@ -12,9 +12,6 @@ import { Windmill } from "@windmill/react-ui";
 
 import type { AppProps } from "next/app";
 
-if (process.env.NODE_ENV === "development")
-  React.useLayoutEffect = React.useEffect;
-
 const MyApp = ({ Component, pageProps }: AppProps) => {
   const EmbedWrap: React.FC = ({ children }) => (
     <EmbedLayout {...pageProps}>{children}</EmbedLayout>
