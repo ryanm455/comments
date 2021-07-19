@@ -1,11 +1,10 @@
 import { HookedForm } from "hooked-form";
-import { FC, useState } from "react";
+import { FC, memo, useState } from "react";
 
-import { Alert, AlertIcon, Button, Stack } from "@chakra-ui/react";
+import { Alert, Button } from "@windmill/react-ui";
 
 import { Field } from "../Field";
 import PasswordInput from "./PasswordInput";
-import { memo } from "react";
 
 const defaultValues = {
   username: "",
@@ -32,12 +31,11 @@ export const LoginForm: FC<{
       {({ isSubmitting, handleSubmit }) => (
         <>
           {invalid && (
-            <Alert status="error" mb={2}>
-              <AlertIcon />
+            <Alert type="danger" className="mb-2">
               {invalid}
             </Alert>
           )}
-          <Stack spacing="6">
+          <div className="flex flex-col gap-6">
             <Field
               field="username"
               validate={(v: string) => (!v ? "Username is required" : false)}
@@ -49,15 +47,15 @@ export const LoginForm: FC<{
             />
             <Button
               type="submit"
-              colorScheme="blue"
-              size="lg"
-              fontSize="md"
-              isLoading={isSubmitting || false}
+              className="font-md"
+              disabled={isSubmitting || false}
               onClick={handleSubmit}
+              size="large"
+              layout="blue"
             >
               Sign in
             </Button>
-          </Stack>
+          </div>
         </>
       )}
     </HookedForm>

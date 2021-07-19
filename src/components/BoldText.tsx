@@ -1,15 +1,10 @@
 import { memo } from "react";
 
-import { Box, ChakraComponent } from "@chakra-ui/react";
-
-const BoldText: ChakraComponent<"div", {}> = props => (
-  <Box
-    as="span"
-    color="transparent"
-    bgClip="text"
-    bgImage="linear-gradient(to right, #10b981, #6366f1, rgb(59,130,246));"
+const BoldText: React.FC = memo(props => (
+  <span
+    className="text-transparent bg-clip-text bg-gradient-to-r dark:bg-gradient-to-r from-green-500 via-purple-500 to-blue-500"
     {...props}
   />
-);
+));
 
-export default memo(BoldText);
+export default BoldText;

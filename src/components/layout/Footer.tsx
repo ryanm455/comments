@@ -1,12 +1,3 @@
-import {
-  Box,
-  chakra,
-  Container,
-  Stack,
-  Text,
-  useColorModeValue,
-  VisuallyHidden,
-} from "@chakra-ui/react";
 import { FaInstagram, FaTwitter, FaYoutube } from "react-icons/fa";
 import { memo, ReactNode } from "react";
 import { APP_LOGO, APP_NAME } from "meta";
@@ -20,46 +11,23 @@ const SocialButton = ({
   label: string;
   href: string;
 }) => (
-  <chakra.button
-    bg={useColorModeValue("blackAlpha.100", "whiteAlpha.100")}
-    rounded="full"
-    w={8}
-    h={8}
-    cursor="pointer"
-    as="a"
+  <a
+    className="rounded-full w-8 h-8 cursor-pointer inline-flex items-center justify-center bg-blackAlpha-100 dark:bg-whiteAlpha-100 hover:bg-blackAlpha-200 dark:hover:bg-whiteAlpha-200 transition-colors ease-in-out duration-300"
     href={href}
-    display="inline-flex"
-    alignItems="center"
-    justifyContent="center"
-    transition="background 0.3s ease"
-    _hover={{
-      bg: useColorModeValue("blackAlpha.200", "whiteAlpha.200"),
-    }}
+    aria-label={label}
   >
-    <VisuallyHidden>{label}</VisuallyHidden>
     {children}
-  </chakra.button>
+  </a>
 );
 
 const Footer = memo(() => (
-  <Box
-    bg={useColorModeValue("gray.50", "gray.900")}
-    color={useColorModeValue("gray.700", "gray.200")}
-  >
-    <Container
-      as={Stack}
-      maxW="4xl"
-      py={4}
-      direction={{ base: "column", md: "row" }}
-      spacing={4}
-      justify={{ base: "center", md: "space-between" }}
-      align={{ base: "center", md: "center" }}
-    >
-      <Text>{APP_LOGO}</Text>
-      <Text>
+  <div className="bg-gray-50 dark:bg-gray-900 text-gray-700 dark:text-gray-200">
+    <div className="container mx-auto flex max-w-4xl py-4 flex-col md:flex-row gap-4 justify-center md:justify-between items-center">
+      <p>{APP_LOGO}</p>
+      <p>
         © {new Date().getFullYear()} {APP_NAME}. All rights reserved
-      </Text>
-      <Stack direction="row" spacing={6}>
+      </p>
+      <div className="flex gap-6">
         <SocialButton label="Twitter" href="#">
           <FaTwitter />
         </SocialButton>
@@ -69,9 +37,9 @@ const Footer = memo(() => (
         <SocialButton label="Instagram" href="#">
           <FaInstagram />
         </SocialButton>
-      </Stack>
-    </Container>
-  </Box>
+      </div>
+    </div>
+  </div>
 ));
 
 export default Footer;

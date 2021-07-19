@@ -1,18 +1,10 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import {
-  Box,
-  Button,
-  Flex,
-  Heading,
-  Icon,
-  IconButton,
-  useColorModeValue,
-  useColorMode,
-} from "@chakra-ui/react";
+import { Button, WindmillContext } from "@windmill/react-ui";
+import Icon from "components/Icon";
 import LinkWrap from "components/LinkWrap";
 import { useUser } from "lib/hooks";
 import { APP_LOGO } from "meta";
-import { memo, FC } from "react";
+import { memo, FC, useContext } from "react";
 import { FaMoon, FaSun, FaUser } from "react-icons/fa";
 
 const NAV_LINKS = [
@@ -23,90 +15,67 @@ const NAV_LINKS = [
 ];
 
 const ThemeToggle: FC = memo(() => {
-  const { colorMode, toggleColorMode } = useColorMode();
+  const { mode, toggleMode } = useContext(WindmillContext);
 
   return (
-    <IconButton
-      icon={<Icon as={colorMode === "light" ? FaMoon : FaSun} />}
-      onClick={toggleColorMode}
+    <Button
+      icon={() =>
+        mode === "light" ? <Icon as={FaMoon} /> : <Icon as={FaSun} />
+      }
+      onClick={toggleMode}
       aria-label="Toggle theme"
     />
   );
 });
-
-ThemeToggle.whyDidYouRender = false;
 
 const Navbar: FC = memo(() => {
   const [user] = useUser();
 
   const customUser = user
     ? [
-        <IconButton
+        <Button
           key="dash-btn"
-          as={LinkWrap}
+          tag={LinkWrap}
           aria-label="View profile"
           href="/dashboard"
-          icon={<Icon as={FaUser} />}
+          icon={() => <Icon as={FaUser} />}
         />,
       ]
     : [
-        <Button key="signup-btn" as={LinkWrap} href="/signup">
+        <Button key="signup-btn" tag={LinkWrap} href="/signup">
           Sign Up
         </Button>,
-        <Button as={LinkWrap} href="/login" key="login-btn" colorScheme="green">
+        <Button tag={LinkWrap} href="/login" key="login-btn" layout="green">
           Login
         </Button>,
       ];
 
   return (
-    <Box
-      pos="sticky"
-      top={0}
-      zIndex={50}
-      bg={useColorModeValue(
-        "rgba(255, 255, 255, 0.6)",
-        "rgba(26, 32, 44, 0.6)"
-      )}
-      px={8}
-      py={6}
-      backdropFilter="saturate(180%) blur(20px)"
-    >
-      <Flex as="nav" maxW="4xl" justify="space-between" mx="auto">
-        <Flex alignItems="center">
-          <Heading as="h1" size="md" mr={{ base: 4, sm: 10 }}>
-            {APP_LOGO}
-          </Heading>
-          <Flex as="ul" alignItems="center" listStyleType="none">
+    <div className="sticky top-0 z-50 px-8 py-6 backdrop-filter backdrop-saturate-[180%] backdrop-blur-[20px] bg-opacity-60 bg-white dark:bg-gray-800 dark:bg-opacity-60">
+      <nav className="flex max-w-4xl justify-between mx-auto">
+        <div className="flex items-center">
+          <h1 className="text-md text-xl mr-4 sm:mr-10">{APP_LOGO}</h1>
+          <ul className="flex items-center">
             {NAV_LINKS.map(e => (
-              <Box
+              <li
                 key={e.text}
-                as="li"
-                p={{ base: 1, sm: 4 }}
-                color={useColorModeValue("gray.900", "gray.100")}
-                fontWeight="semibold"
+                className="p-1 sm:p-4 text-gray-900 dark:text-gray-100 font-semibold"
               >
                 <LinkWrap href={e.href}>{e.text}</LinkWrap>
-              </Box>
+              </li>
             ))}
-          </Flex>
-        </Flex>
-        <Flex as="ul" alignItems="center" listStyleType="none">
+          </ul>
+        </div>
+        <ul className="flex items-center">
           {[<ThemeToggle key="theme-btn" />, ...customUser].map((e, idx) => (
-            <Box
-              key={idx}
-              as="li"
-              py={{ base: 1, sm: 4 }}
-              px={{ base: 1, sm: 2 }}
-            >
+            <li key={idx} className="py-1 px-1 sm:py-4 sm:px-2">
               {e}
-            </Box>
+            </li>
           ))}
-        </Flex>
-      </Flex>
-    </Box>
+        </ul>
+      </nav>
+    </div>
   );
 });
-
-Navbar.whyDidYouRender = false;
 
 export default Navbar;

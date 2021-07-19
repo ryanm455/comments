@@ -1,28 +1,25 @@
-import { createRef } from "react";
+import { createRef, memo } from "react";
 
-import { Container } from "@chakra-ui/react";
-
-export default function Embed() {
+export default memo(function Embed() {
   const iframe = createRef<HTMLIFrameElement>();
 
   if (typeof window !== "undefined") {
     window.addEventListener(
       "message",
-      event =>
+      e =>
         iframe.current &&
-        iframe.current.setAttribute("height", event.data.height)
+        e.data.height &&
+        iframe.current.setAttribute("height", e.data.height)
     );
   }
 
   return (
-    <Container>
-      <iframe
-        ref={iframe}
-        src="/embed/60e32d227a9ab34cb0ba34ea"
-        width="100%"
-        loading="lazy"
-        onLoad={(i: any) => i.target.contentWindow.postMessage("height", "*")}
-      />
-    </Container>
+    <iframe
+      ref={iframe}
+      src="/embed/60e32d227a9ab34cb0ba34ea"
+      width="100%"
+      loading="lazy"
+      onLoad={(i: any) => i.target.contentWindow.postMessage("height", "*")}
+    />
   );
-}
+});

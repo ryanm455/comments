@@ -1,24 +1,17 @@
-import Icon from "components/ProviderIcon";
+import classNames from "classnames";
+import Icon from "components/Icon";
+import ProviderIcon from "components/ProviderIcon";
 import { useUser } from "lib/hooks";
-import { useMemo, useState } from "react";
+import { memo, useMemo, useState } from "react";
 import { FaArrowDown, FaArrowUp, FaCommentAlt, FaStar } from "react-icons/fa";
 import { IComment } from "types/db";
 
-import {
-  Box,
-  Button,
-  Flex,
-  Icon as CIcon,
-  IconButton,
-  Text,
-  useColorModeValue,
-} from "@chakra-ui/react";
+import { Button } from "@windmill/react-ui";
 
 import ChakraMarkdown from "../ChakraMarkdown";
 import AddComment from "./AddComment";
 
 import type { ISettings, IAddComment } from "types/embed";
-import { memo } from "react";
 
 const Comment = memo(
   ({
@@ -56,29 +49,22 @@ const Comment = memo(
     }, [user, _id]);
 
     return (
-      <Box width="100%" p={2}>
-        <Flex alignItems="center">
-          <Text
-            fontSize="md"
-            fontWeight="medium"
-            color={useColorModeValue("gray.900", "gray.200")}
-          >
+      <div className="w-full p-2">
+        <div className="flex items-center">
+          <p className="text-md font-medium text-gray-900 dark:text-gray-200">
             {author.name}
-          </Text>
+          </p>
           <Icon
+            as={ProviderIcon}
             i={author.provider}
-            ml="1.5"
-            w={4}
-            h={4}
-            display="inline-block"
-            flexShrink={0}
-            size="13px"
+            className="ml-1.5"
+            // size="13px"
           />
-        </Flex>
+        </div>
         {settings?.timestamps && (
-          <Text fontSize="xs" mb={4} color="gray.500">
+          <p className="text-xs mb-4 text-gray-500">
             {new Date(createdAt).toUTCString()}
-          </Text>
+          </p>
         )}
         {settings?.ratings && rating && (
           <p className="mb-2 text-xs">
@@ -102,50 +88,41 @@ const Comment = memo(
               ))}
           </p>
         )}
-        <Box color={useColorModeValue("gray.800", "gray.300")}>
+        <div className="text-gray-800 dark:text-gray-300">
           <ChakraMarkdown>{text}</ChakraMarkdown>
-        </Box>
-        <Flex alignItems="center" gridGap={1} mt={3}>
-          <Text as="span" fontWeight="bold" mr={2}>
-            {ratio}
-          </Text>
-          <IconButton
-            variant="ghost"
+        </div>
+        <div className="flex items-center gap-1 mt-3">
+          <span className="font-bold mr-2">{ratio}</span>
+          <Button
+            layout="link"
             aria-label="Up Vote"
-            className="upvote-btn"
-            icon={
-              <CIcon
-                as={FaArrowUp}
-                color={voted === "up" ? "red.600" : undefined}
-                sx={{ ".upvote-btn:hover &": { color: "red.600" } }}
-              />
-            }
+            className={classNames("hover:!text-red-600", {
+              "!text-red-600": voted === "up",
+            })}
+            icon={() => <Icon as={FaArrowUp} />}
             onClick={() => user && vote("up")}
           />
-          <IconButton
-            variant="ghost"
+
+          <Button
+            layout="link"
             aria-label="Down Vote"
-            className="downvote-btn"
-            icon={
-              <CIcon
-                as={FaArrowDown}
-                color={voted === "down" ? "blue.600" : undefined}
-                sx={{ ".downvote-btn:hover &": { color: "blue.600" } }}
-              />
-            }
+            className={classNames("hover:!text-blue-600", {
+              "!text-blue-600": voted === "down",
+            })}
+            icon={() => <Icon as={FaArrowDown} />}
             onClick={() => user && vote("down")}
           />
           <Button
-            leftIcon={<CIcon as={FaCommentAlt} />}
-            variant="ghost"
-            className="flex items-center text-gray-400 font-bold cursor-pointer p-2 rounded-sm hover:bg-gray-100"
+            iconLeft={() => <Icon as={FaCommentAlt} />}
+            layout="link"
             onClick={() => user && setReply(r => !r)}
+            className="gap-2"
           >
             Reply
           </Button>
-        </Flex>
+        </div>
         {reply && <AddComment add={add} commentId={_id} />}
-      </Box>
+      </div>
     );
   }
 );

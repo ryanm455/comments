@@ -1,7 +1,7 @@
 import { useField } from "hooked-form";
 import { FC, memo } from "react";
 
-import { Checkbox } from "@chakra-ui/react";
+import { Input, Label } from "@windmill/react-ui";
 
 import type { ISite } from "types/db";
 
@@ -15,9 +15,14 @@ const Mapped: FC<ICheckList> = ({ label, c }) => {
 
   return (
     <div>
-      <Checkbox isChecked={value} onChange={e => onChange(e.target.checked)}>
-        {label}
-      </Checkbox>
+      <Label check>
+        <Input
+          type="checkbox"
+          checked={value}
+          onChange={e => onChange(e.target.checked)}
+        />
+        <span className="ml-2">{label}</span>
+      </Label>
     </div>
   );
 };

@@ -5,8 +5,6 @@ import Router from "next/router";
 import { FC, useEffect } from "react";
 import { parse, redirect } from "utils";
 
-import { Container } from "@chakra-ui/react";
-
 import type { GetServerSideProps } from "next";
 import type { ISite } from "types/db";
 
@@ -19,9 +17,9 @@ const Dashboard: FC<{ sites: ISite[] }> = ({ sites }) => {
   }, [user]);
 
   return (
-    <Container mb={7} maxW="5xl">
+    <div className="container px-4 mx-auto mb-7 max-w-5xl">
       <Boxes data={sites} name="site" header="Sites" headCenter />
-    </Container>
+    </div>
   );
 };
 

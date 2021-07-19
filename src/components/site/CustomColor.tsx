@@ -2,7 +2,7 @@ import { FaPaintBrush } from "react-icons/fa";
 import { HexColorPicker } from "react-colorful";
 import { Popover } from "react-tiny-popover";
 import { useState } from "react";
-import { Box, Flex, Icon } from "@chakra-ui/react";
+import Icon from "components/Icon";
 
 const CustomColor: React.FC<{
   value: string;
@@ -20,32 +20,15 @@ const CustomColor: React.FC<{
       content={<HexColorPicker color={color} onChange={setColor} />}
       onClickOutside={() => (setPopoverOpen(false), onChange(color))}
     >
-      <Box
-        w={6}
-        h={6}
-        rounded="md"
-        pos="relative"
-        boxShadow={
-          selected
-            ? "0 0 0 0px #fff, 0 0 0 calc(3px + 0px) rgba(96, 165, 250, 0.5), 0 0 transparent"
-            : undefined
-        }
+      <div
+        className="w-6 h-6 rounded-md relative ring"
         style={{ backgroundColor: color }}
         onClick={() => setPopoverOpen(i => !i)}
       >
-        <Flex
-          pos="absolute"
-          top={0}
-          left={0}
-          justifyContent="center"
-          alignItems="center"
-          w="full"
-          h="full"
-          pointerEvents="none"
-        >
-          <Icon as={FaPaintBrush} style={{ color }} filter="invert(100%)" />
-        </Flex>
-      </Box>
+        <div className="flex absolute top-0 left-0 justify-center items-center w-full h-full pointer-events-none">
+          <Icon as={FaPaintBrush} style={{ color }} className="invert" />
+        </div>
+      </div>
     </Popover>
   );
 };

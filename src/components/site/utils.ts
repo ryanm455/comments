@@ -1,4 +1,4 @@
-import { Provider, ISite } from "types/db";
+import { ISite } from "types/db";
 import type { ICheckList } from "./CheckList";
 
 export const colors = [
@@ -56,11 +56,6 @@ export const defaultSite: ISite = {
   timestamps: false,
   ratings: false,
 };
-
-export const selectOptions = Object.entries(Provider).map(([label, value]) => ({
-  label,
-  value,
-}));
 
 export const checkListItems: ICheckList[] = [
   {

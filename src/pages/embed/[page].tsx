@@ -2,29 +2,21 @@
 import AddComment from "components/embed/AddComment";
 import CommentThread from "components/embed/CommentThread";
 import Login from "components/embed/Login";
+import Icon from "components/Icon";
 import dbConnect from "lib/dbConnect";
 import { useUser } from "lib/hooks";
 import { APP_URL } from "meta";
 import { PageModel, SiteModel } from "models";
 import mongoose from "mongoose";
 import { useCallback } from "react";
+import { FaExternalLinkAlt } from "react-icons/fa";
 import useSWR from "swr";
 import { Layout } from "types/layout";
 import { notFound, parse } from "utils";
 
-import {
-  Box,
-  Flex,
-  Link,
-  Text,
-  useColorModeValue,
-  Icon,
-} from "@chakra-ui/react";
-
 import type { GetStaticPaths, GetStaticProps } from "next";
 import type { IComment } from "types/db";
 import type { ISettings } from "types/embed";
-import { FaExternalLinkAlt } from "react-icons/fa";
 
 export const fetcher = (url: string) =>
   fetch(url)
@@ -85,25 +77,31 @@ const Embed: React.FC<{
   );
 
   return (
-    <Flex flexDir="column" w="100%" p={1}>
-      <Box mb={6}>
+    <div className="w-full p-1">
+      <div className="mb-6">
         {user ? (
           <AddComment add={addComment} />
         ) : (
           <Login authMethod={settings.providers || []} mutate={updateUser} />
         )}
-      </Box>
+      </div>
       {data && data.length ? (
         <CommentThread comments={data} settings={settings} add={addComment} />
       ) : (
-        <Text color={useColorModeValue("gray.900", "gray.200")}>
+        <p className="text-gray-900 dark:text-gray-200 mb-4">
           There are no comments for this page.
-        </Text>
+        </p>
       )}
-      <Link href={APP_URL} isExternal my={2}>
-        Add Comments to your site <Icon as={FaExternalLinkAlt} mx="2px" />
-      </Link>
-    </Flex>
+      <a
+        href={APP_URL}
+        className="my-2 hover:underline"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        Add Comments to your site{" "}
+        <Icon as={FaExternalLinkAlt} className="mx-[2px]" />
+      </a>
+    </div>
   );
 };
 

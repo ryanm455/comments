@@ -1,29 +1,22 @@
-import { memo } from "react";
+import classNames from "classnames";
 
-import {
-  Box,
-  Divider,
-  Flex,
-  FlexProps,
-  Text,
-  useColorModeValue,
-} from "@chakra-ui/react";
-
-export const DividerWithText = ({ children, ...flexProps }: FlexProps) => (
-  <Flex align="center" color="gray.300" {...flexProps}>
-    <Box flex="1">
-      <Divider borderColor="currentcolor" />
-    </Box>
-    <Text
-      as="span"
-      px="3"
-      color={useColorModeValue("gray.600", "gray.400")}
-      fontWeight="medium"
-    >
+export const DividerWithText: React.FC<React.HTMLProps<HTMLDivElement>> = ({
+  children,
+  className,
+  ...props
+}) => (
+  <div
+    className={classNames("flex items-center text-gray-300", className)}
+    {...props}
+  >
+    <div className="flex-1">
+      <hr className="opacity-60 border-0 border-b border-solid w-full border-[currentColor]" />
+    </div>
+    <span className="px-3 text-gray-600 dark:text-gray-400 font-medium">
       {children}
-    </Text>
-    <Box flex="1">
-      <Divider borderColor="currentcolor" />
-    </Box>
-  </Flex>
+    </span>
+    <div className="flex-1">
+      <hr className="opacity-60 border-0 border-b border-solid w-full border-[currentColor]" />
+    </div>
+  </div>
 );

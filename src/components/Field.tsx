@@ -1,20 +1,18 @@
+import classNames from "classnames";
 import { useField } from "hooked-form";
 import { capitalize } from "lodash-es";
-import { useMemo, FC, useCallback } from "react";
+import { FC, useCallback, useMemo } from "react";
 
-import {
-  As,
-  FormControl,
-  FormErrorMessage,
-  FormLabel,
-  Input,
-} from "@chakra-ui/react";
+import { HelperText, Input } from "@windmill/react-ui";
 
-export const Field: FC<{ field: string; validate: any; as?: As }> = ({
-  field,
-  validate,
-  as: As = Input,
-}) => {
+import type { As } from "types/as";
+
+export const Field: FC<{
+  field: string;
+  validate: any;
+  as?: As;
+  className?: string;
+}> = ({ field, validate, as: As = Input, className }) => {
   const [{ onChange, onBlur }, { touched, error, value }] = useField(
     field,
     validate
@@ -25,8 +23,8 @@ export const Field: FC<{ field: string; validate: any; as?: As }> = ({
   const capitalized = useMemo(() => capitalize(field), [field]);
 
   return (
-    <FormControl isInvalid={touched && !!error}>
-      <FormLabel htmlFor={field}>{capitalized}</FormLabel>
+    <label className={classNames("block", className)}>
+      <p className="text-base leading-4 mb-3 font-medium">{capitalized}</p>
       <As
         placeholder={`Enter ${field}`}
         autoComplete={field}
@@ -35,8 +33,9 @@ export const Field: FC<{ field: string; validate: any; as?: As }> = ({
         value={value}
         onChange={onInput}
         onBlur={onBlur}
+        valid={touched ? (error ? false : undefined) : undefined}
       />
-      <FormErrorMessage>{touched && error ? error : null}</FormErrorMessage>
-    </FormControl>
+      <HelperText valid={false}>{touched && error ? error : null}</HelperText>
+    </label>
   );
 };

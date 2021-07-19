@@ -12,7 +12,7 @@ import Router from "next/router";
 import { FC, useEffect, useMemo, useState } from "react";
 import { notFound, parse, redirect } from "utils";
 
-import { Button, Container, Heading } from "@chakra-ui/react";
+import { Button } from "@windmill/react-ui";
 
 import type { Provider, ISite } from "types/db";
 import type { GetServerSideProps } from "next";
@@ -77,7 +77,7 @@ const Site: FC<{ newSite: boolean; site: ISite }> = ({ newSite, site: s }) => {
   };
 
   return (
-    <Container maxW="5xl">
+    <div className="container mx-auto px-4 max-w-5xl">
       {meta._id && (
         <Boxes
           data={meta.pages || []}
@@ -94,18 +94,19 @@ const Site: FC<{ newSite: boolean; site: ISite }> = ({ newSite, site: s }) => {
       >
         {({ isSubmitting, handleSubmit }) => (
           <>
-            <Heading my={4}>Settings</Heading>
+            <h1 className="font-semibold text-3xl my-4">Settings</h1>
 
             <CheckList list={checkListItems} />
 
             <Field
               field="name"
               validate={(v: string) => (!v ? "Name is required" : false)}
+              className="mt-3"
             />
 
             <OptionSelect />
 
-            <Heading mt={4}>Theme</Heading>
+            <h1 className="font-semibold text-3xl mt-4">Theme</h1>
             {[
               ["Primary Color", "primaryColor"],
               ["Error Color", "errorColor"],
@@ -113,8 +114,8 @@ const Site: FC<{ newSite: boolean; site: ISite }> = ({ newSite, site: s }) => {
               <ThemeSelect key={edit} name={name} edit={edit} />
             ))}
             <Button
-              isLoading={isSubmitting || false}
-              my={7}
+              disabled={isSubmitting || false}
+              className="my-7"
               onClick={handleSubmit}
             >
               Save
@@ -122,7 +123,7 @@ const Site: FC<{ newSite: boolean; site: ISite }> = ({ newSite, site: s }) => {
           </>
         )}
       </HookedForm>
-    </Container>
+    </div>
   );
 };
 

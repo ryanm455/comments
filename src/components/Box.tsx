@@ -1,7 +1,7 @@
-import { memo, FC } from "react";
+import classNames from "classnames";
+import Icon from "components/Icon";
+import { FC, memo } from "react";
 import { FaPlus } from "react-icons/fa";
-
-import { Box, Flex, Heading, Icon } from "@chakra-ui/react";
 
 import LinkWrap from "./LinkWrap";
 
@@ -20,46 +20,37 @@ const Boxes: FC<{
   boxColor?: string;
 }> = memo(({ data, name, header, refId, headCenter, boxColor }) => (
   <>
-    <Heading mb={4} textAlign={headCenter ? "center" : undefined}>
+    <h1
+      className={classNames("text-3xl mb-4 font-semibold", {
+        "text-center": headCenter,
+      })}
+    >
       {header}
-    </Heading>
-    <Flex gridGap={3} flexWrap="wrap" justifyContent="space-around">
+    </h1>
+    <div className="flex gap-3 flex-wrap justify-around">
       {data.map(e => (
-        <Box
-          as={LinkWrap}
+        <LinkWrap
           key={e._id}
           href={`/${name}/${e._id}`}
-          d="inline-flex"
-          alignItems="center"
-          justifyContent="center"
-          w={64}
-          h={32}
-          rounded="md"
-          textColor="white"
-          fontWeight="semibold"
-          bg={boxColor || e.primaryColor || "blue.500"}
+          className="inline-flex items-center justify-center w-64 h-32 rounded font-semibold text-white"
+          style={{
+            backgroundColor:
+              boxColor || e.primaryColor || "var(--chakra-colors-blue-500)",
+          }}
         >
           {e.name}
-        </Box>
+        </LinkWrap>
       ))}
-      <Box
-        as={LinkWrap}
-        d="inline-flex"
-        alignItems="center"
-        justifyContent="center"
-        w={64}
-        h={32}
-        rounded="md"
-        textColor="white"
-        bg="gray.600"
+      <LinkWrap
+        className="inline-flex items-center justify-center w-64 h-32 rounded text-white bg-gray-600"
         href={{
           pathname: `/${name}/new`,
           query: refId ? { ref: refId } : undefined,
         }}
       >
-        <Icon as={FaPlus} w={7} h={7} />
-      </Box>
-    </Flex>
+        <Icon as={FaPlus} className="w-7 h-7" />
+      </LinkWrap>
+    </div>
   </>
 ));
 

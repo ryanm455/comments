@@ -1,7 +1,5 @@
 import { useMemo } from "react";
 
-import { ChakraProvider, extendTheme } from "@chakra-ui/react";
-
 import { shadeColor } from "./utils";
 
 import type { ISettings } from "types/embed";
@@ -10,31 +8,33 @@ const EmbedLayout: React.FC<{ settings: ISettings }> = ({
   children,
   settings: { primaryColor, errorColor },
 }) => {
-  const primaryDarker = useMemo(
+  const primary600 = useMemo(
     () => shadeColor(primaryColor, -20),
     [primaryColor]
   );
 
-  const theme = extendTheme({
-    colors: {
-      blue: {
-        500: primaryColor,
-        600: primaryDarker,
-      },
-      red: {
-        500: errorColor,
-      },
-    },
-    styles: {
-      global: () => ({
-        "body::-webkit-scrollbar": {
-          display: "none",
-        },
-      }),
-    },
-  });
+  const primary700 = useMemo(
+    () => shadeColor(primaryColor, -40),
+    [primaryColor]
+  );
 
-  return <ChakraProvider theme={theme}>{children}</ChakraProvider>;
+  return (
+    <>
+      {children}
+      <style jsx global>{`
+        :root {
+          --primary-500: ${primaryColor};
+          --primary-600: ${primary600};
+          --primary-700: ${primary700};
+          --error-color: ${errorColor};
+        }
+
+        body::-webkit-scrollbar {
+          display: none;
+        }
+      `}</style>
+    </>
+  );
 };
 
 export default EmbedLayout;

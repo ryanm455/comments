@@ -1,22 +1,22 @@
+import Icon from "components/Icon";
 import { FaEnvelope, FaGithub, FaGoogle } from "react-icons/fa";
 import { Provider } from "types/db";
 
-import { ComponentWithAs, Icon as CIcon, IconProps } from "@chakra-ui/react";
+import type { FC, HTMLProps } from "react";
 
-const Icon: ComponentWithAs<"svg", IconProps & { i: Provider }> = ({
-  i,
-  ...props
-}) => {
+type Props = Omit<HTMLProps<HTMLImageElement>, "as"> & { i: Provider };
+
+const ProviderIcon: FC<Props> = ({ i, ...props }) => {
   switch (i) {
     case Provider.GitHub:
-      return <CIcon as={FaGithub} {...props} />;
+      return <Icon as={FaGithub} {...props} />;
     case Provider.Google:
-      return <CIcon as={FaGoogle} {...props} />;
+      return <Icon as={FaGoogle} {...props} />;
     case Provider.Local:
-      return <CIcon as={FaEnvelope} {...props} />;
+      return <Icon as={FaEnvelope} {...props} />;
     default:
-      return <></>;
+      throw new Error(`Icon ${i} does not exist yet.`);
   }
 };
 
-export default Icon;
+export default ProviderIcon;

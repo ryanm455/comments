@@ -11,19 +11,7 @@ import Router from "next/router";
 import { FC, useEffect, useMemo, useState } from "react";
 import { notFound, parse, redirect } from "utils";
 
-import {
-  Button,
-  Code,
-  Container,
-  Heading,
-  Tab,
-  TabList,
-  TabPanel,
-  TabPanels,
-  Tabs,
-  Text,
-  useColorModeValue,
-} from "@chakra-ui/react";
+import { Button } from "@windmill/react-ui";
 
 import type { GetServerSideProps } from "next";
 import type { IPage } from "types/db";
@@ -75,7 +63,7 @@ const Page: FC<{
   };
 
   return (
-    <Container maxW="5xl">
+    <div className="container mx-auto px-4 max-w-5xl">
       <HookedForm
         onSubmit={onSubmit}
         initialValues={initialValues}
@@ -83,14 +71,14 @@ const Page: FC<{
       >
         {({ isSubmitting, handleSubmit }) => (
           <>
-            <Heading mb={4}>Customize</Heading>
+            <h1 className="font-semibold text-3xl mb-4">Customize</h1>
             <Field
               field="name"
               validate={(v: string) => (!v ? "Name is required" : false)}
             />
             <Button
-              isLoading={isSubmitting || false}
-              mt={4}
+              disabled={isSubmitting || false}
+              className="mt-4"
               onClick={handleSubmit}
             >
               Save
@@ -100,25 +88,19 @@ const Page: FC<{
       </HookedForm>
       {page._id && (
         <>
-          <Heading my={4}>How To Add To Site</Heading>
-          <Tabs>
-            <TabList>
-              <Tab>React</Tab>
-              <Tab>Javascript</Tab>
-            </TabList>
-
-            <TabPanels>
-              <TabPanel>
-                <Code whiteSpace="pre">{`import { createRef } from "react";
+          <h1 className="font-semibold text-3xl my-4">How To Add To Site</h1>
+          <h2 className="font-semibold text-2xl my-4">React</h2>
+          <code className="whitespace-pre">{`import { createRef } from "react";
 
 export default function Embed() {
   const iframe = createRef();
 
   window.addEventListener(
     "message",
-    event =>
+    e =>
       iframe.current &&
-      iframe.current.setAttribute("height", event.data.height)
+      e.data.height &&
+      iframe.current.setAttribute("height", e.data.height)
   );
 
   return (
@@ -130,31 +112,26 @@ export default function Embed() {
       onLoad={i => i.target.contentWindow.postMessage("height", "*")}
     />
   );
-}`}</Code>
-              </TabPanel>
-              <TabPanel>
-                <Code whiteSpace="pre" mb={2}>
-                  {`<iframe
+}`}</code>
+          <h2 className="font-semibold text-2xl my-4">Javascript / HTML</h2>
+          <code className="whitespace-pre">
+            {`<iframe
   src="${APP_URL}/embed/60e32d227a9ab34cb0ba34ea"
   width="100%"
   loading="lazy"
-></iframe>`}
-                </Code>
-                <Code whiteSpace="pre">
-                  {`const iframe = document.querySelector("iframe");
+></iframe>
+
+const iframe = document.querySelector("iframe");
 iframe.onload = i => i.target.contentWindow.postMessage("height", "*");
 
 window.addEventListener(
   "message",
-  event => iframe.setAttribute("height", event.data.height)
+  e => iframe.setAttribute("height", e.data.height)
 );`}
-                </Code>
-              </TabPanel>
-            </TabPanels>
-          </Tabs>
+          </code>
         </>
       )}
-      <Heading my={4}>Comments</Heading>
+      <h1 className="font-semibold text-3xl my-4">Comments</h1>
       {page.comments && page.comments.length ? (
         <CommentsWrap
           settings={settings}
@@ -162,11 +139,11 @@ window.addEventListener(
           comments={page.comments}
         />
       ) : (
-        <Text color={useColorModeValue("gray.900", "gray.200")}>
+        <p className="text-gray-900 dark:text-gray-200 mb-4">
           There are no comments for this page.
-        </Text>
+        </p>
       )}
-    </Container>
+    </div>
   );
 };
 

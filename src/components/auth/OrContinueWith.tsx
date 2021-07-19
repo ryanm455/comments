@@ -1,34 +1,34 @@
 import { socialAuth } from "lib/login";
-import React from "react";
+import React, { memo } from "react";
 import { FaGithub, FaGoogle } from "react-icons/fa";
 import { mutate } from "swr";
 import { Provider } from "types/db";
 
-import { Button, SimpleGrid, VisuallyHidden } from "@chakra-ui/react";
+import { Button } from "@windmill/react-ui";
 
 import { DividerWithText } from "./DividerWithText";
-import { memo } from "react";
+import Icon from "components/Icon";
 
 export const OrContinueWith = memo(() => (
   <>
-    <DividerWithText mt="6">or continue with</DividerWithText>
-    <SimpleGrid mt="6" columns={2} spacing="3">
+    <DividerWithText className="mt-6">or continue with</DividerWithText>
+    <div className="flex gap-3 mt-6">
       <Button
+        block
         color="currentColor"
-        variant="outline"
+        aria-label="Login with Google"
+        layout="outline"
+        icon={() => <Icon as={FaGoogle} />}
         onClick={() => socialAuth(Provider.Google, mutate)}
-      >
-        <VisuallyHidden>Login with Google</VisuallyHidden>
-        <FaGoogle />
-      </Button>
+      />
       <Button
+        block
         color="currentColor"
-        variant="outline"
+        layout="outline"
+        aria-label="Login with Github"
+        icon={() => <Icon as={FaGithub} />}
         onClick={() => socialAuth(Provider.GitHub, mutate)}
-      >
-        <VisuallyHidden>Login with Github</VisuallyHidden>
-        <FaGithub />
-      </Button>
-    </SimpleGrid>
+      />
+    </div>
   </>
 ));

@@ -1,62 +1,30 @@
-import {
-  Box,
-  chakra,
-  Flex,
-  useColorModeValue,
-  Text,
-  Button,
-} from "@chakra-ui/react";
-import { Card } from "components/auth/Card";
+import { Button, Card, CardBody } from "@windmill/react-ui";
 import B from "components/BoldText";
 import LinkWrap from "components/LinkWrap";
 
 const Pricing = () => (
-  <Flex w="full" p={50} alignItems="center" justifyContent="center">
-    <Card
-      as={Box}
-      maxW="7xl"
-      px={4}
-      py={20}
-      mx="auto"
-      w={["full", "60%"]}
-      textAlign={{ base: "left", md: "center" }}
-    >
-      <Text
-        mb={2}
-        fontSize="5xl"
-        fontWeight={["bold", "extrabold"]}
-        lineHeight="tight"
-      >
-        $9
-        <chakra.span
-          fontSize="2xl"
-          fontWeight="medium"
-          color={useColorModeValue("gray.600", "gray.400")}
-        >
-          {" "}
-          per <B>month</B> for businesses
-        </chakra.span>
-      </Text>
-      <chakra.p
-        mb={6}
-        fontSize={{ base: "sm", sm: "lg", md: "xl" }}
-        color={useColorModeValue("gray.600", "gray.400")}
-      >
-        Otherwise completely <B>free</B> for hobbyists and students.
-      </chakra.p>
-      <Flex
-        alignItems="center"
-        gridGap={2}
-        justifyContent="center"
-        flexDir={{ base: "column", md: "row" }}
-      >
-        <Button colorScheme="blue" as={LinkWrap} href="/signup">
-          Get started
-        </Button>
-        <Button>Contact Us</Button>
-      </Flex>
+  <div className="flex w-full py-4 items-center justify-center">
+    <Card className="max-w-7xl px-4 py-20 mx-auto w-full md:w-[60%] text-left md:text-center">
+      <CardBody>
+        <p className="mb-2 text-5xl font-bold md:font-extrabold leading-tight">
+          $9
+          <span className="text-2xl font-medium text-gray-600 dark:text-gray-400">
+            {" "}
+            per <B>month</B> for businesses
+          </span>
+        </p>
+        <p className="mb-6 text-sm sm:text-lg md:text-xl text-gray-600 dark:text-gray-400">
+          Otherwise completely <B>free</B> for hobbyists and students.
+        </p>
+        <div className="flex items-center gap-2 justify-center flex-col md:flex-row">
+          <Button layout="blue" tag={LinkWrap} href="/signup">
+            Get started
+          </Button>
+          <Button>Contact Us</Button>
+        </div>
+      </CardBody>
     </Card>
-  </Flex>
+  </div>
 );
 
 export default Pricing;

@@ -1,13 +1,7 @@
 import { useState, memo } from "react";
 import { FC } from "react";
 import { unstable_batchedUpdates } from "react-dom";
-import {
-  Button,
-  FormControl,
-  FormErrorMessage,
-  FormLabel,
-  Textarea,
-} from "@chakra-ui/react";
+import { Button, Label, HelperText, Textarea } from "@windmill/react-ui";
 import type { IAddComment } from "types/embed";
 
 const AddComment: FC<{
@@ -38,19 +32,20 @@ const AddComment: FC<{
         });
       }}
     >
-      <FormControl isInvalid={!touched ? false : !!error}>
-        <FormLabel htmlFor="reply">Join the conversation</FormLabel>
+      <label className="block">
+        <p className="text-base leading-4 mb-3 font-medium">
+          Join the conversation
+        </p>
         <Textarea
-          id="reply"
-          type="text"
           placeholder="What have you got to say?"
           value={text}
           onChange={e => setText(e.target.value)}
           onBlur={() => !touched && setTouched(true)}
+          valid={touched ? (error ? false : undefined) : undefined}
         />
-        <FormErrorMessage>{!touched ? false : error}</FormErrorMessage>
-      </FormControl>
-      <Button type="submit" colorScheme="blue" isLoading={submitting} mt={4}>
+        <HelperText valid={false}>{touched && error ? error : null}</HelperText>
+      </label>
+      <Button type="submit" disabled={submitting} className="mt-4">
         Submit
       </Button>
     </form>

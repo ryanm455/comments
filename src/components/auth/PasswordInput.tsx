@@ -1,26 +1,12 @@
-import { useState } from "react";
-import {
-  InputGroup,
-  Input,
-  InputRightElement,
-  Button,
-  ComponentWithAs,
-  InputProps,
-} from "@chakra-ui/react";
+import { useState, FC, ComponentProps } from "react";
+import { Input } from "@windmill/react-ui";
 
-const PasswordInput: ComponentWithAs<"input", InputProps> = props => {
+const PasswordInput: FC<ComponentProps<typeof Input>> = props => {
   const [show, setShow] = useState(false);
   const handleClick = () => setShow(!show);
 
   return (
-    <InputGroup size="md">
-      <Input pr="4.5rem" type={show ? "text" : "password"} {...props} />
-      <InputRightElement width="4.5rem">
-        <Button h="1.75rem" size="sm" onClick={handleClick}>
-          {show ? "Hide" : "Show"}
-        </Button>
-      </InputRightElement>
-    </InputGroup>
+    <Input className="pr-16" type={show ? "text" : "password"} {...props} />
   );
 };
 
