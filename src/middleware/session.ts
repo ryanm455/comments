@@ -1,25 +1,9 @@
-import connectMongo from "connect-mongo";
-import s from "express-session";
-import { connection } from "mongoose";
+import s from "cookie-session";
 
-import type { NextApiRequest, NextApiResponse } from "next";
-
-const MongoStore = connectMongo(s);
-
-export const session = (
-  req: NextApiRequest,
-  res: NextApiResponse,
-  next: any
-) => {
-  const store = new MongoStore({
-    mongooseConnection: connection,
-    stringify: false,
-  });
-
-  return s({
-    secret: process.env.TOKEN_SECRET!,
-    resave: false,
-    saveUninitialized: false,
-    store,
-  })(req as any, res as any, next);
-};
+export const session = s({
+  name: "session",
+  secret: process.env.TOKEN_SECRET!,
+  secure: process.env.NODE_ENV === "production",
+  httpOnly: true,
+  expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7), // 1 week
+});
