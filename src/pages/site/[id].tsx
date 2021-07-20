@@ -14,11 +14,15 @@ import { notFound, parse, redirect } from "utils";
 
 import { Button } from "@windmill/react-ui";
 
-import type { Provider, ISite } from "types/db";
+import type { Provider, ISite, IUser } from "types/db";
 import type { GetServerSideProps } from "next";
 
-const Site: FC<{ newSite: boolean; site: ISite }> = ({ newSite, site: s }) => {
-  const [user] = useUser();
+const Site: FC<{ newSite: boolean; site: ISite; user: IUser }> = ({
+  newSite,
+  site: s,
+  user: u,
+}) => {
+  const [user] = useUser(u);
 
   useEffect(() => {
     // redirect to home if user is authenticated
@@ -150,6 +154,7 @@ export const getServerSideProps: GetServerSideProps = async ({
     props: {
       site: parse(site),
       newSite,
+      user: parse(req.user),
     },
   };
 };

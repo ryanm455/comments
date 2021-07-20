@@ -14,7 +14,7 @@ import { notFound, parse, redirect } from "utils";
 import { Button } from "@windmill/react-ui";
 
 import type { GetServerSideProps } from "next";
-import type { IPage } from "types/db";
+import type { IPage, IUser } from "types/db";
 import type { ISettings } from "types/embed";
 // @ts-ignore
 const defaultPage: IPage = {
@@ -25,10 +25,11 @@ const Page: FC<{
   refSite?: string;
   page: IPage;
   settings: ISettings;
-}> = ({ refSite, page: s, settings }) => {
+  user: IUser;
+}> = ({ refSite, page: s, settings, user: u }) => {
   const [page, setPage] = useState(!refSite ? s : defaultPage);
 
-  const [user] = useUser();
+  const [user] = useUser(u);
 
   useEffect(() => {
     // redirect to home if user is authenticated
@@ -162,6 +163,7 @@ export const getServerSideProps: GetServerSideProps = async ({
     return {
       props: {
         refSite: query.ref,
+        user: parse(req.user),
       },
     };
   }
@@ -180,6 +182,7 @@ export const getServerSideProps: GetServerSideProps = async ({
       page: parse(page),
       settings: parse(settings),
       refSite: query.ref || null,
+      user: parse(req.user),
     },
   };
 };

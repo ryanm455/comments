@@ -6,15 +6,15 @@ import { FC, useEffect } from "react";
 import { parse, redirect } from "utils";
 
 import type { GetServerSideProps } from "next";
-import type { ISite } from "types/db";
+import type { ISite, IUser } from "types/db";
 
-const Dashboard: FC<{ sites: ISite[] }> = ({ sites }) => {
-  const [user] = useUser();
+const Dashboard: FC<{ sites: ISite[]; user: IUser }> = ({ sites, user: u }) => {
+  const [user] = useUser(u);
 
   useEffect(() => {
     // redirect to home if user is authenticated
     if (!user) Router.push("/");
-  }, [user]);
+  }, [user, u]);
 
   return (
     <div className="container px-4 mx-auto mb-7 max-w-5xl">
@@ -33,6 +33,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   return {
     props: {
       sites: parse(sites),
+      user: parse(req.user),
     },
   };
 };
