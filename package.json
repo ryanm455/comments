@@ -6,6 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
+    "vercel-build": "prisma generate && next build",
     "prettify": "format-imports src && prettier --write src/**/* --plugin=prettier-plugin-prisma",
     "postinstall": "patch-package"
   },
