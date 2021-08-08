@@ -16,10 +16,11 @@ export default memo(function Embed() {
   return (
     <iframe
       ref={iframe}
-      src="/embed/60e32d227a9ab34cb0ba34ea"
+      src="/embed/60fc8db70032935100e7b868"
       width="100%"
       loading="lazy"
       onLoad={(i: any) => i.target.contentWindow.postMessage("height", "*")}
+      className="my-20 md:my-36"
     />
   );
 });

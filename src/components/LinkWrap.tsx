@@ -1,6 +1,6 @@
-import NextLink from "next/link";
-import { forwardRef, ComponentPropsWithoutRef, LegacyRef } from "react";
+import { ComponentPropsWithoutRef, forwardRef, LegacyRef } from "react";
 
+import NextLink from "next/link";
 import type { UrlObject } from "url";
 import type { Overwrite } from "utility-types";
 

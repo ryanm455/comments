@@ -1,9 +1,11 @@
+import { FC, memo } from "react";
+
 import ProviderIcon from "components/ProviderIcon";
 import { socialAuth } from "lib/login";
 import { findKey } from "lodash-es";
-import { FC, memo } from "react";
-import { Provider } from "types/db";
+import { providerReadable } from "utils";
 
+import { Provider } from "@prisma/client";
 import { Button } from "@windmill/react-ui";
 
 const Login: FC<{
@@ -21,7 +23,8 @@ const Login: FC<{
           onClick={() => socialAuth(e, mutate)}
           className="gap-2"
         >
-          Login with {findKey(Provider, v => v === e)}
+          Login with{" "}
+          {providerReadable(findKey(Provider, v => v === e) as Provider)}
         </Button>
       );
     })}

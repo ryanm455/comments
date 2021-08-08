@@ -1,11 +1,11 @@
+import { FC, useCallback, useMemo } from "react";
+
 import classNames from "classnames";
 import { useField } from "hooked-form";
 import { capitalize } from "lodash-es";
-import { FC, useCallback, useMemo } from "react";
+import type { As } from "types/as";
 
 import { HelperText, Input } from "@windmill/react-ui";
-
-import type { As } from "types/as";
 
 export const Field: FC<{
   field: string;

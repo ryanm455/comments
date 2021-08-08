@@ -1,38 +1,39 @@
-import { User, UserModel } from "models";
+import bcrypt from "bcrypt";
+// import { Strategy as LocalStrategy } from "passport-local";
+import { GraphQLLocalStrategy as LocalStrategy } from "graphql-passport";
 import passport from "passport";
 import {
-  Strategy as GoogleStrategy,
   Profile,
+  Strategy as GoogleStrategy,
   VerifyCallback,
 } from "passport-google-oauth20";
-import { Strategy as LocalStrategy } from "passport-local";
-import { Provider } from "types/db";
 
-import type { DocumentType } from "@typegoose/typegoose";
-import type { NativeError } from "mongoose";
+import { Provider } from "@prisma/client";
 
-passport.serializeUser<any, any>((_req, user, done) => done(null, user._id));
+import prisma from "./prisma";
 
-passport.deserializeUser(async (id: string, done) =>
-  UserModel.findById(id, (err: NativeError, user: DocumentType<User>) =>
-    done(err, user)
-  )
-);
+passport.serializeUser<any, any>((_req, user, done) => done(null, user.id));
+
+passport.deserializeUser(async (id: string, done) => {
+  const user = await prisma.user.findUnique({
+    where: { id },
+  });
+
+  done(null, user);
+});
 
 passport.use(
-  new LocalStrategy(
-    (username: string, password: string, done: VerifyCallback) =>
-      UserModel.findOne(
-        { username, provider: Provider.Local },
-        async (err: Error, user: DocumentType<User>) => {
-          if (err) return done(err);
+  new LocalStrategy(async (username: any, password: any, done: any) => {
+    const user = await prisma.user.findUnique({
+      where: { username },
+    });
 
-          !user || !(await user.verifyPassword(password))
-            ? done(null, undefined)
-            : done(null, user);
-        }
-      )
-  )
+    if (!user || !user.password) return done(null, undefined);
+
+    if (!(await bcrypt.compare(password, user.password))) done(null, undefined);
+
+    done(null, user);
+  })
 );
 
 passport.use(
@@ -42,17 +43,25 @@ passport.use(
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
       callbackURL: "/api/auth/google/callback",
     },
-    (
+    async (
       _accessToken: string,
       _refreshToken: string,
       profile: Profile,
       cb: VerifyCallback
-    ) =>
-      UserModel.findOrCreate(
-        { providerId: profile.id, provider: Provider.Google },
-        { name: profile.displayName, image: profile._json.picture },
-        (err, user) => cb(err, user)
-      )
+    ) => {
+      const user = await prisma.user.upsert({
+        update: {},
+        where: { providerId: profile.id },
+        create: {
+          providerId: profile.id,
+          provider: Provider.GOOGLE,
+          name: profile.displayName,
+          image: profile._json.picture,
+        },
+      });
+
+      cb(null, user);
+    }
   )
 );
 

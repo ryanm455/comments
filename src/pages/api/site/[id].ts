@@ -1,9 +1,8 @@
+import prisma from "lib/prisma";
 import { identity, pickBy } from "lodash-es";
 import middleware from "middleware";
-import { SiteModel } from "models";
-import nc from "next-connect";
-
 import type { NextApiRequest, NextApiResponse } from "next";
+import nc from "next-connect";
 
 const handler = nc<NextApiRequest, NextApiResponse>();
 
@@ -18,35 +17,16 @@ handler
       next();
     }
   })
-  .get(async (req, res) => {
-    res.json({ site: await SiteModel.findById(req.query.id).lean() });
+  .get(async ({ query: { id } }, res) => {
+    res.json({
+      site: await prisma.site.findUnique({ where: { id: id.toString() } }),
+    });
   })
-  .put(async (req, res) => {
-    const {
-      name,
-      errorColor,
-      primaryColor,
-      authIcons,
-      timestamps,
-      ratings,
-      providers,
-    } = req.body;
-
-    const site = await SiteModel.findByIdAndUpdate(
-      req.query.id,
-      pickBy(
-        {
-          name,
-          errorColor,
-          primaryColor,
-          authIcons,
-          timestamps,
-          ratings,
-          providers,
-        },
-        identity
-      )
-    ).lean();
+  .put(async ({ query: { id }, body }, res) => {
+    const site = await prisma.site.update({
+      where: { id: id.toString() },
+      data: pickBy(body, identity),
+    });
 
     res.json({ site });
   });

@@ -1,6 +1,7 @@
-import { FaInstagram, FaTwitter, FaYoutube } from "react-icons/fa";
 import { memo, ReactNode } from "react";
+
 import { APP_LOGO, APP_NAME } from "meta";
+import { FaInstagram, FaTwitter, FaYoutube } from "react-icons/fa";
 
 const SocialButton = ({
   children,
@@ -22,7 +23,7 @@ const SocialButton = ({
 
 const Footer = memo(() => (
   <div className="bg-gray-50 dark:bg-gray-900 text-gray-700 dark:text-gray-200">
-    <div className="container mx-auto flex max-w-4xl py-4 flex-col md:flex-row gap-4 justify-center md:justify-between items-center">
+    <div className="container mx-auto flex max-w-4xl py-4 px-8 flex-col md:flex-row gap-4 justify-center md:justify-between items-center">
       <p>{APP_LOGO}</p>
       <p>
         © {new Date().getFullYear()} {APP_NAME}. All rights reserved

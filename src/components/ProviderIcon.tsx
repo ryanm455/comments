@@ -1,18 +1,19 @@
+import type { FC, HTMLProps } from "react";
+
 import Icon from "components/Icon";
 import { FaEnvelope, FaGithub, FaGoogle } from "react-icons/fa";
-import { Provider } from "types/db";
 
-import type { FC, HTMLProps } from "react";
+import { Provider } from "@prisma/client";
 
 type Props = Omit<HTMLProps<HTMLImageElement>, "as"> & { i: Provider };
 
 const ProviderIcon: FC<Props> = ({ i, ...props }) => {
   switch (i) {
-    case Provider.GitHub:
+    case Provider.GITHUB:
       return <Icon as={FaGithub} {...props} />;
-    case Provider.Google:
+    case Provider.GOOGLE:
       return <Icon as={FaGoogle} {...props} />;
-    case Provider.Local:
+    case Provider.LOCAL:
       return <Icon as={FaEnvelope} {...props} />;
     default:
       throw new Error(`Icon ${i} does not exist yet.`);

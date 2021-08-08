@@ -1,13 +1,14 @@
-import { socialAuth } from "lib/login";
 import React, { memo } from "react";
+
+import Icon from "components/Icon";
+import { socialAuth } from "lib/login";
 import { FaGithub, FaGoogle } from "react-icons/fa";
 import { mutate } from "swr";
-import { Provider } from "types/db";
 
+import { Provider } from "@prisma/client";
 import { Button } from "@windmill/react-ui";
 
 import { DividerWithText } from "./DividerWithText";
-import Icon from "components/Icon";
 
 export const OrContinueWith = memo(() => (
   <>
@@ -19,7 +20,7 @@ export const OrContinueWith = memo(() => (
         aria-label="Login with Google"
         layout="outline"
         icon={() => <Icon as={FaGoogle} />}
-        onClick={() => socialAuth(Provider.Google, mutate)}
+        onClick={() => socialAuth(Provider.GOOGLE, mutate)}
       />
       <Button
         block
@@ -27,7 +28,7 @@ export const OrContinueWith = memo(() => (
         layout="outline"
         aria-label="Login with Github"
         icon={() => <Icon as={FaGithub} />}
-        onClick={() => socialAuth(Provider.GitHub, mutate)}
+        onClick={() => socialAuth(Provider.GITHUB, mutate)}
       />
     </div>
   </>

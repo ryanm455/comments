@@ -2,11 +2,15 @@ import { useMemo } from "react";
 
 import { shadeColor } from "./utils";
 
-import type { ISettings } from "types/embed";
+type Props = {
+  primaryColor: string;
+  errorColor: string;
+};
 
-const EmbedLayout: React.FC<{ settings: ISettings }> = ({
+const EmbedLayout: React.FC<Props> = ({
   children,
-  settings: { primaryColor, errorColor },
+  primaryColor,
+  errorColor,
 }) => {
   const primary600 = useMemo(
     () => shadeColor(primaryColor, -20),

@@ -1,0 +1,90 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["mongoDb"]
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("MONGO_DB")
+}
+
+model User {
+  id         String   @id @default(dbgenerated()) @map("_id") @db.ObjectId
+  username   String?  @unique
+  password   String?
+  name       String
+  image      String?
+  provider   Provider @default(LOCAL)
+  providerId String?  @unique
+  sites      Site[]   @relation
+
+  upvotedIds String[]  @db.Array(ObjectId)
+  upvoted    Comment[] @relation("upvotedComments", fields: [upvotedIds])
+
+  downvotedIds String[]  @db.Array(ObjectId)
+  downvoted    Comment[] @relation("downvotedComments", fields: [downvotedIds])
+
+  comments Comment[] @relation
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Site {
+  id           String     @id @default(dbgenerated()) @map("_id") @db.ObjectId
+  name         String
+  errorColor   String     @default("rgb(220,38,38)")
+  primaryColor String     @default("rgb(37,99,235)")
+  authIcons    Boolean    @default(true)
+  timestamps   Boolean    @default(true)
+  ratings      Boolean    @default(false)
+  providers    Provider[]
+
+  pages Page[] @relation
+
+  author   User   @relation(fields: [authorId], references: [id])
+  authorId String @db.ObjectId
+}
+
+model Page {
+  id   String @id @default(dbgenerated()) @map("_id") @db.ObjectId
+  name String
+
+  comments Comment[] @relation
+
+  site   Site   @relation(fields: [siteId], references: [id])
+  siteId String @db.ObjectId
+}
+
+model Comment {
+  id   String @id @default(dbgenerated()) @map("_id") @db.ObjectId
+  text String
+
+  author   User   @relation(fields: [authorId], references: [id])
+  authorId String @db.ObjectId
+
+  rating Int?
+
+  parentCommentId String?  @db.ObjectId
+  parentComment   Comment? @relation("commentParent", fields: [parentCommentId], references: [id])
+
+  children Comment[] @relation("commentParent")
+
+  upvotedByIds String[] @db.Array(ObjectId)
+  upvotedBy    User[]   @relation(name: "upvotedComments", fields: [upvotedByIds])
+
+  downvotedByIds String[] @db.Array(ObjectId)
+  downvotedBy    User[]   @relation(name: "downvotedComments", fields: [downvotedByIds])
+
+  pageId String? @db.ObjectId
+  page   Page?   @relation(fields: [pageId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum Provider {
+  LOCAL
+  GOOGLE
+  GITHUB
+}

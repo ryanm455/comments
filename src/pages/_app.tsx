@@ -1,36 +1,42 @@
-import "../wdyr";
 import "global.scss";
+import "../wdyr";
 
 import React from "react";
-import EmbedLayout from "components/embed/EmbedLayout";
-import DefaultLayout from "components/layout";
+
+import Layout from "components/layout";
 import theme from "lib/theme";
+import type { AppProps } from "next/app";
 import Head from "next/head";
-import { Layout } from "types/layout";
+import { SWRConfig } from "swr";
+import { gqlQuery } from "utils";
 
 import { Windmill } from "@windmill/react-ui";
 
-import type { AppProps } from "next/app";
-
 const MyApp = ({ Component, pageProps }: AppProps) => {
-  const EmbedWrap: React.FC = ({ children }) => (
-    <EmbedLayout {...pageProps}>{children}</EmbedLayout>
+  const getLayout =
+    Component.getLayout || ((page: React.ReactNode) => <Layout>{page}</Layout>);
+
+  const componentWithLayout = getLayout(
+    <Component {...pageProps} />,
+    pageProps
   );
 
-  const L = Component.layout === Layout.Embed ? EmbedWrap : DefaultLayout;
-
   return (
-    <Windmill theme={theme} usePreferences>
-      <Head>
-        <meta
-          name="viewport"
-          content="minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no, viewport-fit=cover"
-        />
-      </Head>
-      <L>
-        <Component {...pageProps} />
-      </L>
-    </Windmill>
+    <SWRConfig
+      value={{
+        fetcher: (res: string, vari: object) => gqlQuery(res, vari),
+      }}
+    >
+      <Windmill theme={theme} usePreferences>
+        <Head>
+          <meta
+            name="viewport"
+            content="minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no, viewport-fit=cover"
+          />
+        </Head>
+        {componentWithLayout}
+      </Windmill>
+    </SWRConfig>
   );
 };
 

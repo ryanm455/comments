@@ -159,7 +159,7 @@ const theme = {
   },
   // Button
   button: {
-    base: "h-10 min-w-[2.5rem] text-base font-semibold align-middle inline-flex items-center justify-center cursor-pointer leading-5 transition-colors duration-150 focus:outline-none",
+    base: "h-10 min-w-[2.5rem] text-base font-semibold align-middle inline-flex items-center justify-center cursor-pointer leading-5 transition-colors duration-200 focus:outline-none",
     block: "w-full",
     size: {
       larger: "px-10 py-4 rounded-lg",
@@ -208,9 +208,15 @@ const theme = {
       disabled: "opacity-50 cursor-not-allowed bg-gray-300",
     },
     link: {
+      base: "text-gray-600 dark:text-gray-400 rounded h-auto !p-0",
+      active:
+        "hover:underline focus:ring focus:ring-gray-300 active:text-gray-800 dark:active:text-gray-500",
+      disabled: "opacity-50 cursor-not-allowed",
+    },
+    ghost: {
       base: "text-gray-600 dark:text-gray-400 focus:outline-none border border-transparent",
       active:
-        "active:bg-transparent hover:bg-gray-100 focus:ring focus:ring-gray-300 dark:hover:bg-gray-500 dark:hover:text-gray-300 dark:hover:bg-opacity-10",
+        "hover:bg-gray-100 focus:ring focus:ring-gray-300 dark:hover:bg-whiteAlpha-100 active:bg-gray-200 dark:active:bg-whiteAlpha-200",
       disabled: "opacity-50 cursor-not-allowed",
     },
     // this is the button that lives inside the DropdownItem

@@ -1,8 +1,7 @@
+import prisma from "lib/prisma";
 import middleware from "middleware";
-import { CommentModel, PageModel } from "models";
-import nc from "next-connect";
-
 import type { NextApiRequest, NextApiResponse } from "next";
+import nc from "next-connect";
 
 const handler = nc<NextApiRequest, NextApiResponse>();
 
@@ -20,27 +19,19 @@ handler
   .post(async (req, res) => {
     const { text, rating, pageId, commentId } = req.body;
 
-    const comment = new CommentModel({
-      text,
-      rating,
-      author: req.user?._id,
+    const comment = await prisma.comment.create({
+      data: {
+        text,
+        rating,
+        authorId: req.user!.id,
+        pageId,
+        parentCommentId: commentId,
+      },
+      include: {
+        author: { select: { name: true, provider: true } },
+        children: true,
+      },
     });
-
-    await comment.save();
-
-    if (pageId) {
-      const page = await PageModel.findById(pageId);
-
-      page?.comments?.push(comment._id);
-
-      await page?.save();
-    } else if (commentId) {
-      const rootComment = await CommentModel.findById(commentId);
-
-      rootComment?.children?.push(comment._id);
-
-      await rootComment?.save();
-    }
 
     res.json({ comment });
   });

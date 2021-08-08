@@ -1,8 +1,7 @@
+import prisma from "lib/prisma";
 import middleware from "middleware";
-import { UserModel } from "models";
-import nc from "next-connect";
-
 import type { NextApiRequest, NextApiResponse } from "next";
+import nc from "next-connect";
 
 const handler = nc<NextApiRequest, NextApiResponse>();
 
@@ -26,13 +25,20 @@ handler
   })
   .put(async (req, res) => {
     const { name } = req.body;
-    req.user!.name = name;
-    await req.user?.save();
 
-    res.json({ user: req.user });
+    const user = await prisma.user.update({
+      data: { name },
+      where: { id: req.user?.id },
+      include: {
+        downvoted: true,
+        upvoted: true,
+      },
+    });
+
+    res.json({ user });
   })
   .delete(async (req, res) => {
-    await UserModel.deleteOne({ _id: req.user!._id });
+    await prisma.user.delete({ where: { id: req.user!.id } });
     req.logOut();
     res.status(204).end();
   });

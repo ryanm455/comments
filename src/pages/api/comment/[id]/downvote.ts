@@ -1,8 +1,7 @@
+import prisma from "lib/prisma";
 import middleware from "middleware";
-import { CommentModel } from "models";
-import nc from "next-connect";
-
 import type { NextApiRequest, NextApiResponse } from "next";
+import nc from "next-connect";
 
 const handler = nc<NextApiRequest, NextApiResponse>();
 
@@ -18,35 +17,51 @@ handler
     }
   })
   .get(async (req, res) => {
-    const comment = await CommentModel.findById(req.query.id);
+    const id = req.query.id.toString();
 
-    if (!comment) return res.status(404).end("not found");
+    const user = await prisma.user.findUnique({
+      where: { id: req.user?.id },
+    });
 
-    if (req.user!.downvoted!.includes(comment._id)) {
+    if (!user) return res.status(404).end("not found");
+
+    let data = {};
+
+    if (user.downvotedIds.includes(id)) {
       // already downvoted
-      req.user!.downvoted = req.user!.downvoted?.filter(e => e === comment._id);
-      comment.downvotes -= 1;
-      await Promise.all([req.user!.save(), comment.save()]);
-      return res.json({
-        success: true,
-        msg: "removed vote",
-        user: req.user,
-        comment,
-      });
-    } else if (req.user!.upvoted!.includes(comment._id)) {
+      data = {
+        downvoted: {
+          disconnect: { id },
+        },
+      };
+    } else if (user.upvotedIds.includes(id)) {
       // upvoted so remove
-      req.user!.upvoted = req.user!.upvoted!.filter(e => e === comment._id);
-      comment.upvotes -= 1;
+      data = {
+        upvoted: {
+          disconnect: { id },
+        },
+        downvoted: {
+          connect: { id },
+        },
+      };
+    } else {
+      data = {
+        downvoted: {
+          connect: { id },
+        },
+      };
     }
 
-    req.user!.downvoted?.push(comment._id);
-
-    comment.downvotes += 1;
-
-    await Promise.all([req.user!.save(), comment.save()]);
+    const newUser = await prisma.user.update({
+      where: {
+        id: user.id,
+      },
+      data,
+    });
+    const comment = await prisma.comment.findUnique({ where: { id } });
 
     res.json({
-      user: req.user,
+      user: newUser,
       comment,
       success: true,
     });

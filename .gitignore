@@ -5,6 +5,10 @@
 /.pnp
 .pnp.js
 package-lock.json
+pnpm-lock.yaml
+
+# next.js build output
+.next
 
 # testing
 /coverage
@@ -37,3 +41,6 @@ yarn-error.log*
 **/public/workbox-*.js
 **/public/sw.js
 **/public/service-worker.js
+
+# others
+snake.html

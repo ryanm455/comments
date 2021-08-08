@@ -1,9 +1,7 @@
+import prisma from "lib/prisma";
 import middleware from "middleware";
-import { SiteModel } from "models";
-import UserModel from "models/User";
-import nc from "next-connect";
-
 import type { NextApiRequest, NextApiResponse } from "next";
+import nc from "next-connect";
 
 const handler = nc<NextApiRequest, NextApiResponse>();
 
@@ -18,7 +16,7 @@ handler
       next();
     }
   })
-  .post(async (req, res) => {
+  .post(async ({ body, user }, res) => {
     const {
       name,
       errorColor,
@@ -27,28 +25,20 @@ handler
       timestamps,
       ratings,
       providers,
-    } = req.body;
+    } = body;
 
-    const site = new SiteModel({
-      name,
-      errorColor,
-      primaryColor,
-      authIcons,
-      timestamps,
-      ratings,
-      providers,
+    const site = await prisma.site.create({
+      data: {
+        name,
+        errorColor,
+        primaryColor,
+        authIcons,
+        timestamps,
+        ratings,
+        providers,
+        authorId: user!.id,
+      },
     });
-
-    const [_, user] = await Promise.all([
-      site.save(),
-      UserModel.findById(req!.user!._id).populate("sites"),
-    ]);
-
-    if (!user) throw new Error("the impossible has occurred");
-
-    user.sites!.push(site._id);
-
-    await user.save();
 
     res.json({ site });
   });

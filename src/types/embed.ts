@@ -1,11 +1,11 @@
-import type { ISite } from "./db";
+import type { Site } from "@prisma/client";
 
 export type ISettings = Omit<
-  ISite,
-  "createdAt" | "updatedAt" | "pages" | "_id" | "name"
+  Site,
+  "createdAt" | "updatedAt" | "pages" | "id" | "name"
 >;
 
 export type IAddComment = (
   text: string,
   commentId?: string | undefined
-) => Promise<void>;
+) => Promise<any>;

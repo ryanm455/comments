@@ -1,24 +1,32 @@
-import { Card, CardBody } from "@windmill/react-ui";
+import { useCallback, useEffect } from "react";
+
 import { LoginForm } from "components/auth/LoginForm";
 import { OrContinueWith } from "components/auth/OrContinueWith";
 import { useUser } from "lib/hooks";
 import { checkIfPopUp } from "lib/login";
 import { APP_LOGO } from "meta";
 import Router from "next/router";
-import { useCallback, useEffect } from "react";
+import { gqlQuery } from "utils";
+
+import type { User } from "@prisma/client";
+import { Card, CardBody } from "@windmill/react-ui";
 
 const Login: React.FC = () => {
   const [user, { mutate }] = useUser();
 
   const authenticate = useCallback(
-    async (values): Promise<void> =>
+    async ({ username, password }): Promise<User> =>
       new Promise(async (resolve, reject) => {
-        const user = await fetch("/api/auth/local", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(values),
-        })
-          .then(r => r?.json())
+        const user: User = await gqlQuery(`mutation {
+          login(username:"${username}",password:"${password}") {
+            username
+            name
+            provider
+            upvotedIds
+            downvotedIds
+          }
+        }`)
+          .then((r: any) => r.login)
           .catch(err => reject(err));
         checkIfPopUp(), mutate(user), resolve(user);
       }),

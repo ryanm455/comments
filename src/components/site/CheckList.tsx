@@ -1,13 +1,13 @@
-import { useField } from "hooked-form";
 import { FC, memo } from "react";
 
-import { Input, Label } from "@windmill/react-ui";
+import { useField } from "hooked-form";
 
-import type { ISite } from "types/db";
+import type { Site } from "@prisma/client";
+import { Input, Label } from "@windmill/react-ui";
 
 export type ICheckList = {
   label: string;
-  c: keyof ISite;
+  c: keyof Site;
 };
 
 const Mapped: FC<ICheckList> = ({ label, c }) => {

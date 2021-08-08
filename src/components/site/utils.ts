@@ -1,4 +1,7 @@
-import { ISite } from "types/db";
+import { ISettings } from "types/embed";
+
+import type { Site } from "@prisma/client";
+
 import type { ICheckList } from "./CheckList";
 
 export const colors = [
@@ -36,7 +39,7 @@ export const siteFilter = ({
   authIcons,
   timestamps,
   ratings,
-}: ISite) => ({
+}: Site): Omit<ISettings, "id" | "authorId"> & { name: string } => ({
   errorColor,
   primaryColor,
   providers,
@@ -45,17 +48,6 @@ export const siteFilter = ({
   timestamps,
   ratings,
 });
-
-// @ts-ignore
-export const defaultSite: ISite = {
-  errorColor: "rgb(220,38,38)",
-  primaryColor: "rgb(37,99,235)",
-  providers: [],
-  name: "",
-  authIcons: false,
-  timestamps: false,
-  ratings: false,
-};
 
 export const checkListItems: ICheckList[] = [
   {

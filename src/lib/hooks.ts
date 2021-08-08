@@ -1,16 +1,21 @@
 import useSWR, { SWRResponse } from "swr";
-import type { IUser } from "types/db";
 
-type Res = SWRResponse<{ user: IUser }, Error>;
-type Return = [IUser | undefined, { mutate: Res["mutate"]; loading: boolean }];
+import type { User } from "@prisma/client";
 
-export const fetcher = (url: string) => fetch(url).then(r => r.json());
+import { USER_QUERY } from "./gqlRequests";
 
-export const useUser = (initialUser?: IUser): Return => {
-  const { data, mutate }: Res = useSWR("/api/auth/user", fetcher, {
-    initialData: initialUser ? { user: initialUser } : undefined,
+type U = User & {
+  downvotedIds: string[];
+  upvotedIds: string[];
+};
+
+type Res = SWRResponse<U, Error>;
+type Return = [U | undefined, { mutate: Res["mutate"]; loading: boolean }];
+
+export const useUser = (initialUser?: U): Return => {
+  const { data, mutate }: Res = useSWR(USER_QUERY, {
+    initialData: initialUser || undefined,
   });
-  // if data is not defined, the query has not completed
-  const user = data?.user;
-  return [user, { mutate, loading: !data }];
+
+  return [data, { mutate, loading: !data }];
 };

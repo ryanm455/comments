@@ -1,7 +1,6 @@
 import classNames from "classnames";
-
-import type { Overwrite } from "utility-types";
 import type { As } from "types/as";
+import type { Overwrite } from "utility-types";
 
 type Props = Overwrite<React.HTMLProps<HTMLImageElement>, { as: As }> & any;
 

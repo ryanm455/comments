@@ -1,11 +1,12 @@
-/* eslint-disable react-hooks/rules-of-hooks */
-import { Button, WindmillContext } from "@windmill/react-ui";
+import { FC, memo, useContext } from "react";
+
 import Icon from "components/Icon";
 import LinkWrap from "components/LinkWrap";
 import { useUser } from "lib/hooks";
 import { APP_LOGO } from "meta";
-import { memo, FC, useContext } from "react";
 import { FaMoon, FaSun, FaUser } from "react-icons/fa";
+
+import { Button, WindmillContext } from "@windmill/react-ui";
 
 const NAV_LINKS = [
   {
@@ -51,7 +52,7 @@ const Navbar: FC = memo(() => {
       ];
 
   return (
-    <div className="sticky top-0 z-50 px-8 py-6 backdrop-filter backdrop-saturate-[180%] backdrop-blur-[20px] bg-opacity-60 bg-white dark:bg-gray-800 dark:bg-opacity-60">
+    <div className="sticky top-0 z-30 px-8 py-6 backdrop-filter backdrop-saturate-[180%] backdrop-blur-[20px] bg-opacity-60 bg-white dark:bg-gray-800 dark:bg-opacity-60">
       <nav className="flex max-w-4xl justify-between mx-auto">
         <div className="flex items-center">
           <h1 className="text-md text-xl mr-4 sm:mr-10">{APP_LOGO}</h1>

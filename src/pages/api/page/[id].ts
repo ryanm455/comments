@@ -1,9 +1,7 @@
-import { identity, pickBy } from "lodash-es";
+import prisma from "lib/prisma";
 import middleware from "middleware";
-import { PageModel } from "models";
-import nc from "next-connect";
-
 import type { NextApiRequest, NextApiResponse } from "next";
+import nc from "next-connect";
 
 const handler = nc<NextApiRequest, NextApiResponse>();
 
@@ -18,21 +16,16 @@ handler
       next();
     }
   })
-  .get(async (req, res) => {
-    res.json({ page: await PageModel.findById(req.query.id).lean() });
+  .get(async ({ query: { id } }, res) => {
+    res.json({
+      page: await prisma.page.findUnique({ where: { id: id.toString() } }),
+    });
   })
-  .put(async (req, res) => {
-    const { name } = req.body;
-
-    const page = await PageModel.findByIdAndUpdate(
-      req.query.id,
-      pickBy(
-        {
-          name,
-        },
-        identity
-      )
-    ).lean();
+  .put(async ({ query: { id }, body: { name } }, res) => {
+    const page = await prisma.page.update({
+      where: { id: id.toString() },
+      data: { name },
+    });
 
     res.json({ page });
   });

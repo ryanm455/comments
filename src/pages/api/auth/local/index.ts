@@ -1,13 +1,11 @@
-import passport from "lib/passport";
 import middleware from "middleware";
-import nc from "next-connect";
-
 import type { NextApiRequest, NextApiResponse } from "next";
+import nc from "next-connect";
 
 const handler = nc<NextApiRequest, NextApiResponse>();
 
-handler.use(middleware).post(passport.authenticate("local"), (req, res) => {
-  res.json({ user: req.user });
+handler.use(middleware).post((req, res) => {
+  throw new Error("Deprecated");
 });
 
 export default handler;

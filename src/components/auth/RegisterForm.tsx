@@ -1,11 +1,11 @@
+import { FC, memo, useState } from "react";
+
 import { HookedForm } from "hooked-form";
-import { FC, useState } from "react";
 
 import { Alert, Button } from "@windmill/react-ui";
 
 import { Field } from "../Field";
 import PasswordInput from "./PasswordInput";
-import { memo } from "react";
 
 const defaultValues = {
   username: "",
@@ -16,7 +16,7 @@ const defaultValues = {
 export const RegisterForm: FC<{
   authenticate: (
     values: Partial<{ username: string; name: string; password: string }>
-  ) => Promise<void>;
+  ) => Promise<any>;
 }> = memo(({ authenticate }) => {
   const [invalid, setInvalid] = useState<string | null>(null);
 

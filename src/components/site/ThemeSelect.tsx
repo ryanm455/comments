@@ -1,17 +1,18 @@
+import { FC, Fragment, memo } from "react";
+
+import classNames from "classnames";
 import { useField } from "hooked-form";
 import dynamic from "next/dynamic";
-import { memo, Fragment, FC } from "react";
-import classNames from "classnames";
+
+import type { Site } from "@prisma/client";
 
 import { colors } from "./utils";
-
-import type { ISite } from "types/db";
 
 const CustomColor = dynamic(() => import("./CustomColor"), { ssr: false });
 
 const ThemeSelect: FC<{
   name: string;
-  edit: keyof ISite;
+  edit: keyof Site;
 }> = memo(({ name, edit }) => {
   const [{ onChange }, { value }] = useField<string>(edit);
 

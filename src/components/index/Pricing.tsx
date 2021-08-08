@@ -1,6 +1,7 @@
-import { Button, Card, CardBody } from "@windmill/react-ui";
 import B from "components/BoldText";
 import LinkWrap from "components/LinkWrap";
+
+import { Button, Card, CardBody } from "@windmill/react-ui";
 
 const Pricing = () => (
   <div className="flex w-full py-4 items-center justify-center">

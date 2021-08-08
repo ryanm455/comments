@@ -1,18 +1,30 @@
-import { FC, useState } from "react";
-import { IComment } from "types/db";
+import { FC, memo, useState } from "react";
 
+import Link from "next/link";
+import type { IAddComment, ISettings } from "types/embed";
+
+import { Comment as IComment, Provider } from "@prisma/client";
 import { Button } from "@windmill/react-ui";
 
 import Comment from "./Comment";
 
-import type { ISettings, IAddComment } from "types/embed";
-import { memo } from "react";
+type Comments = (IComment & {
+  author: {
+    name: string;
+    provider: Provider;
+  };
+  children: Comments;
+  votes: number;
+  moreComments: boolean;
+})[];
 
 const CommentThread: FC<{
-  comments: IComment[];
+  comments: Comments;
   settings: ISettings;
-  add: IAddComment;
-}> = memo(({ comments, settings, add }) => {
+  add?: IAddComment;
+  pageId: string;
+  vote: (type: string, commentId: string) => any;
+}> = memo(({ comments, settings, add, vote, pageId }) => {
   const [showReplies, setShowReplies] = useState<boolean[]>(
     comments.map(() => true)
   );
@@ -26,41 +38,51 @@ const CommentThread: FC<{
 
   return (
     <>
-      {comments.map(({ children = [], ...comment }: IComment, idx: number) => (
-        <div key={`${comment._id}-${idx}`}>
-          <Comment settings={settings} add={add} {...comment} />
-          {children.length > 0 && (
-            <Button layout="link" onClick={() => toggleShowReplies(idx)}>
-              {showReplies[idx]
-                ? "Hide replies"
-                : `Show ${children.length} ${
-                    children.length > 1 ? "replies" : "reply"
-                  }`}
-            </Button>
-          )}
+      {comments.map(
+        ({ children = [], moreComments, ...comment }, idx: number) => (
+          <div key={`${comment.id}-${idx}`}>
+            <Comment settings={settings} add={add} vote={vote} {...comment} />
+            {children.length > 0 ? (
+              <Button layout="link" onClick={() => toggleShowReplies(idx)}>
+                {showReplies[idx]
+                  ? "Hide replies"
+                  : `Show ${children.length} ${
+                      children.length > 1 ? "replies" : "reply"
+                    }`}
+              </Button>
+            ) : moreComments ? (
+              <Link href={`/embed/${pageId}/${comment.id}`} passHref>
+                <Button layout="link" tag="a">
+                  Load more
+                </Button>
+              </Link>
+            ) : null}
 
-          {children && showReplies[idx] && (
-            <div className="flex flex-row">
-              {children.length > 0 && (
-                <div
-                  className="self-stretch p-2 cursor-pointer"
-                  role="group"
-                  onClick={() => toggleShowReplies(idx)}
-                >
-                  <div className="w-1 h-full bg-gray-500 hover:bg-blue-500" />
+            {children && showReplies[idx] && (
+              <div className="flex flex-row">
+                {children.length > 0 && (
+                  <div
+                    className="self-stretch p-2 cursor-pointer"
+                    role="group"
+                    onClick={() => toggleShowReplies(idx)}
+                  >
+                    <div className="w-1 h-full bg-gray-500 hover:bg-blue-500" />
+                  </div>
+                )}
+                <div className="flex flex-col">
+                  <CommentThread
+                    comments={children}
+                    settings={settings}
+                    add={add}
+                    vote={vote}
+                    pageId={pageId}
+                  />
                 </div>
-              )}
-              <div className="flex flex-col">
-                <CommentThread
-                  comments={children}
-                  settings={settings}
-                  add={add}
-                />
               </div>
-            </div>
-          )}
-        </div>
-      ))}
+            )}
+          </div>
+        )
+      )}
     </>
   );
 });

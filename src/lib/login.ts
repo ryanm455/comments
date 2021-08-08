@@ -1,5 +1,8 @@
-import { Provider } from "types/db";
-import { fetcher } from "./hooks";
+import { gqlQuery } from "utils";
+
+import { Provider } from "@prisma/client";
+
+import { USER_QUERY } from "./gqlRequests";
 
 type LoginRef = () => Promise<void>;
 
@@ -9,10 +12,11 @@ declare const window: {
 } & Window;
 
 export const socialAuth = (prov: Provider, update: (u: any) => void) => {
-  const url = prov === Provider.Local ? "/login" : `/api/auth/${prov}`;
+  const url =
+    prov === Provider.LOCAL ? "/login" : `/api/auth/${prov.toLowerCase()}`;
 
   window.loginRef = async () => {
-    update(await fetcher("/api/auth/user"));
+    update(await gqlQuery(USER_QUERY));
   };
 
   window.open(

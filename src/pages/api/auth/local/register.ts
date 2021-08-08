@@ -1,28 +1,11 @@
 import middleware from "middleware";
-import { UserModel } from "models";
-import nc from "next-connect";
-
 import type { NextApiRequest, NextApiResponse } from "next";
+import nc from "next-connect";
 
 const handler = nc<NextApiRequest, NextApiResponse>();
 
-handler.use(middleware).post(async (req, res) => {
-  const { username, password, name } = req.body;
-
-  if (!username || !password || !name)
-    return res.status(400).send("Missing fields");
-
-  const user = new UserModel({ username, name, password, provider: "local" });
-
-  await user.save();
-
-  req.logIn(user, (err: any) => {
-    if (err) throw err;
-
-    res.status(201).json({
-      user,
-    });
-  });
+handler.use(middleware).post((req, res) => {
+  throw new Error("Deprecated");
 });
 
 export default handler;

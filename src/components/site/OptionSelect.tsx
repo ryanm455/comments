@@ -1,6 +1,9 @@
-import { useField } from "hooked-form";
 import { memo } from "react";
-import { Provider } from "types/db";
+
+import { useField } from "hooked-form";
+import { providerReadable } from "utils";
+
+import { Provider } from "@prisma/client";
 import { Select } from "@windmill/react-ui";
 
 const OptionSelect = memo(() => {
@@ -23,7 +26,7 @@ const OptionSelect = memo(() => {
       >
         {Object.entries(Provider).map(([label, v]) => (
           <option value={v} key={v} selected={value.includes(v)}>
-            {label}
+            {providerReadable(label as Provider)}
           </option>
         ))}
       </Select>

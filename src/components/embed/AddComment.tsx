@@ -1,13 +1,15 @@
-import { useState, memo } from "react";
-import { FC } from "react";
+import { FC, memo, useState } from "react";
 import { unstable_batchedUpdates } from "react-dom";
-import { Button, Label, HelperText, Textarea } from "@windmill/react-ui";
+
 import type { IAddComment } from "types/embed";
+
+import { Button, HelperText, Textarea } from "@windmill/react-ui";
 
 const AddComment: FC<{
   add: IAddComment;
   commentId?: string;
-}> = memo(({ add, commentId }) => {
+  className?: string;
+}> = memo(({ add, commentId, className }) => {
   const [text, setText] = useState<string>("");
   const [touched, setTouched] = useState(false);
   const [submitting, setSubmitting] = useState<boolean>(false);
@@ -29,8 +31,10 @@ const AddComment: FC<{
           } catch (e) {}
           setSubmitting(false);
           setText("");
+          setTouched(false);
         });
       }}
+      className={className}
     >
       <label className="block">
         <p className="text-base leading-4 mb-3 font-medium">

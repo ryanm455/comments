@@ -19,6 +19,16 @@
   color: #fefefe;
 }
 
+.side-nav {
+  @screen md {
+    min-height: calc(100vh - 120px);
+  }
+}
+
+.screen-nav {
+  min-height: calc(100vh - 120px);
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
