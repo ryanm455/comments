@@ -1,7 +1,6 @@
 import B from "components/BoldText";
+import { Button } from "components/ui/Button";
 import { APP_LOGO } from "meta";
-
-import { Button } from "@windmill/react-ui";
 
 const Arrow = () => (
   <svg

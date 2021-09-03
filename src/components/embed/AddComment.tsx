@@ -1,9 +1,10 @@
 import { FC, memo, useState } from "react";
 import { unstable_batchedUpdates } from "react-dom";
 
+import { Button } from "components/ui/Button";
+import { HelperText } from "components/ui/HelperText";
+import { Textarea } from "components/ui/Textarea";
 import type { IAddComment } from "types/embed";
-
-import { Button, HelperText, Textarea } from "@windmill/react-ui";
 
 const AddComment: FC<{
   add: IAddComment;
@@ -47,7 +48,9 @@ const AddComment: FC<{
           onBlur={() => !touched && setTouched(true)}
           valid={touched ? (error ? false : undefined) : undefined}
         />
-        <HelperText valid={false}>{touched && error ? error : null}</HelperText>
+        <HelperText invalid={touched && error ? true : false}>
+          {error}
+        </HelperText>
       </label>
       <Button type="submit" disabled={submitting} className="mt-4">
         Submit

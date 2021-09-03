@@ -1,10 +1,10 @@
 import { FC, memo, useState } from "react";
 
+import { Button } from "components/ui/Button";
 import Link from "next/link";
 import type { IAddComment, ISettings } from "types/embed";
 
 import { Comment as IComment, Provider } from "@prisma/client";
-import { Button } from "@windmill/react-ui";
 
 import Comment from "./Comment";
 

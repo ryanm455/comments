@@ -1,8 +1,8 @@
 import { FC, memo, useState } from "react";
 
+import { Alert } from "components/ui/Alert";
+import { Button } from "components/ui/Button";
 import { HookedForm } from "hooked-form";
-
-import { Alert, Button } from "@windmill/react-ui";
 
 import { Field } from "../Field";
 import PasswordInput from "./PasswordInput";

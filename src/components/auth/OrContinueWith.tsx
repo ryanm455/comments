@@ -1,12 +1,12 @@
-import React, { memo } from "react";
+import { memo } from "react";
 
 import Icon from "components/Icon";
+import { Button } from "components/ui/Button";
 import { socialAuth } from "lib/login";
 import { FaGithub, FaGoogle } from "react-icons/fa";
 import { mutate } from "swr";
 
 import { Provider } from "@prisma/client";
-import { Button } from "@windmill/react-ui";
 
 import { DividerWithText } from "./DividerWithText";
 

@@ -1,9 +1,10 @@
 import { FC, memo } from "react";
 
+import { Input } from "components/ui/Input";
+import { Label } from "components/ui/Label";
 import { useField } from "hooked-form";
 
 import type { Site } from "@prisma/client";
-import { Input, Label } from "@windmill/react-ui";
 
 export type ICheckList = {
   label: string;

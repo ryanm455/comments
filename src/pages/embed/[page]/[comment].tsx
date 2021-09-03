@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo } from "react";
 
 import CommentThread from "components/embed/CommentThread";
 import EmbedLayout from "components/embed/EmbedLayout";
+import { Button } from "components/ui/Button";
 import {
   CREATE_COMMENT_QUERY,
   SINGLE_COMMENT_QUERY,
@@ -16,7 +17,6 @@ import useSWR from "swr";
 import { embedListener, gqlQuery } from "utils";
 
 import type { Provider } from "@prisma/client";
-import { Button } from "@windmill/react-ui";
 
 type Comment = {
   id: string;
@@ -46,7 +46,7 @@ type Props = {
 const Embed: React.FC<Props> = ({ comment: initialData, pageId, site }) => {
   const [_, { mutate: updateUser }] = useUser();
   const variables = useMemo(() => ({ id: initialData.id }), [initialData.id]); // without causes infinite loop lol
-  const { data: comment, mutate } = useSWR<Comment>(
+  const { data: comment, mutate } = useSWR<Comment>( // @ts-ignore
     [SINGLE_COMMENT_QUERY, variables],
     {
       initialData,

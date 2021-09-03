@@ -1,12 +1,12 @@
-import { FC, memo, useContext } from "react";
+import { FC, memo } from "react";
 
 import Icon from "components/Icon";
 import LinkWrap from "components/LinkWrap";
+import { Button } from "components/ui/Button";
 import { useUser } from "lib/hooks";
 import { APP_LOGO } from "meta";
+import { useTheme } from "next-themes";
 import { FaMoon, FaSun, FaUser } from "react-icons/fa";
-
-import { Button, WindmillContext } from "@windmill/react-ui";
 
 const NAV_LINKS = [
   {
@@ -16,14 +16,14 @@ const NAV_LINKS = [
 ];
 
 const ThemeToggle: FC = memo(() => {
-  const { mode, toggleMode } = useContext(WindmillContext);
+  const { theme, setTheme } = useTheme();
 
   return (
     <Button
       icon={() =>
-        mode === "light" ? <Icon as={FaMoon} /> : <Icon as={FaSun} />
+        theme === "light" ? <Icon as={FaMoon} /> : <Icon as={FaSun} />
       }
-      onClick={toggleMode}
+      onClick={() => setTheme(theme === "light" ? "dark" : "light")}
       aria-label="Toggle theme"
     />
   );

@@ -157,6 +157,8 @@ export const Mutation = mutationType({
           password,
         } as any);
 
+        if (!user) throw new Error();
+
         // only required if express-session is used
         ctx.login(user as any);
 

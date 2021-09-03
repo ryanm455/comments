@@ -1,8 +1,9 @@
-import { FC, useMemo } from "react";
+import { FC, useCallback, useMemo } from "react";
 
 import { DashLayout } from "components/dashboard/DashLayout";
 import CommentThread from "components/embed/CommentThread";
 import { Field } from "components/Field";
+import { Button } from "components/ui/Button";
 import { HookedForm } from "hooked-form";
 import { PAGE_QUERY, VOTE_COMMENT_QUERY } from "lib/gqlRequests";
 import { useUser } from "lib/hooks";
@@ -14,7 +15,6 @@ import useSWR from "swr";
 import { gqlQuery } from "utils";
 
 import type { Comment, Page as IPage, Site, User } from "@prisma/client";
-import { Button } from "@windmill/react-ui";
 
 type P = IPage & {
   comments: Comment[];
@@ -31,23 +31,25 @@ type Props = {
       id: string;
     }[];
   };
+  pageId: string;
 };
 
-const Page: FC<Props> = ({ page: initialData }) => {
-  const variables = useMemo(() => ({ id: initialData.id }), [initialData.id]);
-  const { data: page, mutate: mutatePage } = useSWR<P>(
-    [PAGE_QUERY, variables],
-    {
-      initialData,
-    }
-  );
+const Page: FC<Props> = ({ page: initialData, pageId }) => {
+  const variables = useMemo(() => ({ id: pageId }), [pageId]);
+  // @ts-ignore
+  const { data: p, mutate: mutatePage } = useSWR<P>([PAGE_QUERY, variables], {
+    initialData,
+  });
+
+  const page: P = p || initialData;
+
   const [_, { mutate: mutateUser }] = useUser();
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  const initialValues = useMemo(() => ({ name: page!.name }), [page!.name]);
+  const initialValues = useMemo(() => ({ name: page.name }), [page.name]);
 
   const savePage = (v: object) =>
-    fetch(`/api/page/${page!.id}`, {
+    fetch(`/api/page/${pageId}`, {
       method: "PUT",
       headers: {
         Accept: "application/json",
@@ -56,17 +58,23 @@ const Page: FC<Props> = ({ page: initialData }) => {
       body: JSON.stringify(v),
     });
 
-  const vote = async (type: string, id: string) => {
-    const { votes, author } = (await gqlQuery(VOTE_COMMENT_QUERY, {
-      type,
-      commentId: id,
-    })) as any;
-    mutateUser(author);
-    mutatePage(p => ({
-      ...p!,
-      comments: p!.comments.map(e => (e.id === id ? { ...e, votes } : e)),
-    }));
-  };
+  const vote = useCallback(
+    async (type: string, id: string) => {
+      const { votes, author } = (await gqlQuery(VOTE_COMMENT_QUERY, {
+        type,
+        commentId: id,
+      })) as any;
+      mutateUser(author);
+      // @ts-ignore
+      mutatePage((p: P) => ({
+        ...p!,
+        comments: p!.comments.map((e: Comment) =>
+          e.id === id ? { ...e, votes } : e
+        ),
+      }));
+    },
+    [mutateUser, mutatePage]
+  );
 
   return (
     <>
@@ -110,7 +118,7 @@ export default function Embed() {
   return (
     <iframe
       ref={iframe}
-      src="/embed/${page!.id}"
+      src="${APP_URL}/embed/${pageId}"
       width="100%"
       loading="lazy"
       onLoad={i => i.target.contentWindow.postMessage("height", "*")}
@@ -120,7 +128,7 @@ export default function Embed() {
       <h2 className="font-semibold text-2xl my-4">Javascript / HTML</h2>
       <code className="whitespace-pre">
         {`<iframe
-  src="${APP_URL}/embed/60e32d227a9ab34cb0ba34ea"
+  src="${APP_URL}/embed/${pageId}"
   width="100%"
   loading="lazy"
 ></iframe>
@@ -134,12 +142,12 @@ window.addEventListener(
 );`}
       </code>
       <h1 className="font-semibold text-3xl my-4">Comments</h1>
-      {page!.comments && page!.comments.length ? (
+      {page.comments && page.comments.length ? (
         <CommentThread
-          comments={(page!.comments || []) as any}
-          settings={page!.site}
+          comments={(page.comments || []) as any}
+          settings={page.site}
           vote={vote}
-          pageId={page!.id}
+          pageId={pageId}
         />
       ) : (
         <p className="text-gray-900 dark:text-gray-200 mb-4">
@@ -169,8 +177,8 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
 
   return {
     props: {
-      pageId: query.id?.toString(),
-      page: parse(page),
+      pageId: query.id!.toString(),
+      page: parse(page.data!.page),
       user: parse(req.user),
     },
   };

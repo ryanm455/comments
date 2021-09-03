@@ -3,20 +3,22 @@ import { FC, useCallback, useMemo, useState } from "react";
 import Boxes from "components/Box";
 import { DashLayout } from "components/dashboard/DashLayout";
 import { Field } from "components/Field";
-import InitModelWithName from "components/InitModelWithName";
 import CheckList from "components/site/CheckList";
 import OptionSelect from "components/site/OptionSelect";
 import ThemeSelect from "components/site/ThemeSelect";
 import { checkListItems, siteFilter } from "components/site/utils";
+import { Button } from "components/ui/Button";
 import { HookedForm } from "hooked-form";
 import prisma from "lib/prisma";
 import middleware from "middleware";
 import type { GetServerSideProps } from "next";
+import dynamic from "next/dynamic";
 import Router from "next/router";
 import { notFound, parse, redirect } from "server-utils";
 
 import type { Page, Site as ISite, User } from "@prisma/client";
-import { Button } from "@windmill/react-ui";
+
+const InitModelWithName = dynamic(() => import("components/InitModelWithName"));
 
 type Props = {
   site: ISite & {

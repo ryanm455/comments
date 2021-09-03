@@ -3,13 +3,8 @@ import { Dispatch, FC, memo, SetStateAction } from "react";
 import { Field } from "components/Field";
 import { HookedForm } from "hooked-form";
 
-import {
-  Button,
-  Modal,
-  ModalBody,
-  ModalFooter,
-  ModalHeader,
-} from "@windmill/react-ui";
+import { Button } from "./ui/Button";
+import { Modal, ModalBody, ModalFooter, ModalHeader } from "./ui/Modal";
 
 const InitModelWithName: FC<{
   header: string;
@@ -17,7 +12,11 @@ const InitModelWithName: FC<{
   setIsModalOpen: Dispatch<SetStateAction<boolean>>;
   onSubmit: (v: object) => Promise<any>;
 }> = memo(({ header, isModalOpen, setIsModalOpen, onSubmit }) => (
-  <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+  <Modal
+    isOpen={isModalOpen}
+    contentLabel="Add dialog"
+    setClose={() => setIsModalOpen(false)}
+  >
     <ModalHeader>{header}</ModalHeader>
     <HookedForm onSubmit={onSubmit} validateOnBlur>
       {({ isSubmitting, handleSubmit }) => (

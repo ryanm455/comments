@@ -16,6 +16,7 @@ export default memo(function Embed() {
   return (
     <iframe
       ref={iframe}
+      title="Example Comments"
       src="/embed/60fc8db70032935100e7b868"
       width="100%"
       loading="lazy"

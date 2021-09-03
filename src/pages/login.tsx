@@ -2,6 +2,7 @@ import { useCallback, useEffect } from "react";
 
 import { LoginForm } from "components/auth/LoginForm";
 import { OrContinueWith } from "components/auth/OrContinueWith";
+import { Card } from "components/ui/Card";
 import { useUser } from "lib/hooks";
 import { checkIfPopUp } from "lib/login";
 import { APP_LOGO } from "meta";
@@ -9,7 +10,6 @@ import Router from "next/router";
 import { gqlQuery } from "utils";
 
 import type { User } from "@prisma/client";
-import { Card, CardBody } from "@windmill/react-ui";
 
 const Login: React.FC = () => {
   const [user, { mutate }] = useUser();
@@ -46,10 +46,8 @@ const Login: React.FC = () => {
           Sign in to your account
         </h2>
         <Card>
-          <CardBody>
-            <LoginForm authenticate={authenticate} />
-            <OrContinueWith />
-          </CardBody>
+          <LoginForm authenticate={authenticate} />
+          <OrContinueWith />
         </Card>
       </div>
     </div>

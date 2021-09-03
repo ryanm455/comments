@@ -46,6 +46,7 @@ type Props = {
 const Embed: React.FC<Props> = ({ page: initialData, pageId }) => {
   const [user, { mutate: updateUser }] = useUser();
   const variables = useMemo(() => ({ id: pageId }), [pageId]); // without causes infinite loop lol
+  // @ts-ignore
   const { data: page, mutate } = useSWR<Query>([COMMENT_QUERY, variables], {
     initialData,
   });

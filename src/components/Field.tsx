@@ -1,11 +1,11 @@
 import { FC, useCallback, useMemo } from "react";
 
 import classNames from "classnames";
+import { HelperText } from "components/ui/HelperText";
+import { Input } from "components/ui/Input";
 import { useField } from "hooked-form";
-import { capitalize } from "lodash-es";
 import type { As } from "types/as";
-
-import { HelperText, Input } from "@windmill/react-ui";
+import { capitalize } from "utils";
 
 export const Field: FC<{
   field: string;
@@ -33,9 +33,9 @@ export const Field: FC<{
         value={value}
         onChange={onInput}
         onBlur={onBlur}
-        valid={touched ? (error ? false : undefined) : undefined}
+        valid={touched && !error && true}
       />
-      <HelperText valid={false}>{touched && error ? error : null}</HelperText>
+      <HelperText invalid={touched && error ? true : false}>{error}</HelperText>
     </label>
   );
 };

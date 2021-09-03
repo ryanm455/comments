@@ -2,14 +2,16 @@ import { FC, useCallback, useState } from "react";
 
 import Boxes from "components/Box";
 import { DashLayout } from "components/dashboard/DashLayout";
-import InitModelWithName from "components/InitModelWithName";
 import prisma from "lib/prisma";
 import middleware from "middleware";
 import type { GetServerSideProps } from "next";
+import dynamic from "next/dynamic";
 import Router from "next/router";
 import { parse, redirect } from "server-utils";
 
 import type { Site, User } from "@prisma/client";
+
+const InitModelWithName = dynamic(() => import("components/InitModelWithName"));
 
 type Props = {
   sites: Site[];

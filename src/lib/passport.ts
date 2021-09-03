@@ -1,5 +1,4 @@
 import bcrypt from "bcrypt";
-// import { Strategy as LocalStrategy } from "passport-local";
 import { GraphQLLocalStrategy as LocalStrategy } from "graphql-passport";
 import passport from "passport";
 import {

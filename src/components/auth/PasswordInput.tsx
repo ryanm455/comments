@@ -1,6 +1,6 @@
 import { ComponentProps, FC, useState } from "react";
 
-import { Input } from "@windmill/react-ui";
+import { Input } from "components/ui/Input";
 
 const PasswordInput: FC<ComponentProps<typeof Input>> = props => {
   const [show, setShow] = useState(false);

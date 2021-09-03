@@ -1,14 +1,14 @@
-const windmill = require("@windmill/react-ui/config");
-const plugin = require('tailwindcss/plugin');
+const plugin = require("tailwindcss/plugin");
+const forms = require("@tailwindcss/forms");
 
-module.exports = windmill({
+module.exports = {
   mode: "jit",
   purge: [
     "./src/pages/**/*.{js,ts,jsx,tsx}",
     "./src/components/**/*.{js,ts,jsx,tsx}",
     "./src/lib/theme.ts",
   ],
-  darkMode: false, // or 'media' or 'class'
+  darkMode: "class", // or 'media' or 'class'
   theme: {
     colors: {
       inherit: "inherit",
@@ -175,11 +175,28 @@ module.exports = windmill({
     },
   },
   variants: {
+    backgroundOpacity: ["responsive", "hover", "focus", "dark"],
+    backgroundColor: ["responsive", "hover", "focus", "active", "odd", "dark"],
+    display: ["responsive", "dark"],
+    textColor: [
+      "responsive",
+      "focus",
+      "focus-within",
+      "hover",
+      "active",
+      "dark",
+    ],
+    placeholderColor: ["responsive", "focus", "dark"],
+    borderColor: ["responsive", "hover", "focus", "dark"],
+    divideColor: ["responsive", "dark"],
+    boxShadow: ["responsive", "hover", "focus", "dark"],
+    margin: ["responsive", "last"],
     extend: {
       textColor: ["important"],
     },
   },
   plugins: [
+    forms,
     plugin(function ({ addVariant }) {
       addVariant("important", ({ container }) => {
         container.walkRules(rule => {
@@ -191,4 +208,4 @@ module.exports = windmill({
       });
     }),
   ],
-});
+};

@@ -1,8 +1,7 @@
 import { FC, memo } from "react";
 
+import { Button } from "components/ui/Button";
 import { FaPlus } from "react-icons/fa";
-
-import { Button } from "@windmill/react-ui";
 
 import LinkWrap from "./LinkWrap";
 
@@ -24,7 +23,7 @@ const Boxes: FC<{
         <Button
           key={e.id}
           block
-          tag={LinkWrap}
+          tag={LinkWrap} // @ts-ignore
           href={`/dashboard/${name}/${e.id}`}
           className="h-32"
           layout="outline"
@@ -40,6 +39,7 @@ const Boxes: FC<{
         layout="outline"
         icon={FaPlus}
         size="larger"
+        aria-label="Add"
       />
     </div>
   </>

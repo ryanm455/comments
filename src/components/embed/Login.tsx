@@ -1,12 +1,12 @@
 import { FC, memo } from "react";
 
 import ProviderIcon from "components/ProviderIcon";
+import { Button } from "components/ui/Button";
 import { socialAuth } from "lib/login";
 import { findKey } from "lodash-es";
 import { providerReadable } from "utils";
 
 import { Provider } from "@prisma/client";
-import { Button } from "@windmill/react-ui";
 
 const Login: FC<{
   authMethod: Provider[];

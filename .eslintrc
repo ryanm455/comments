@@ -2,6 +2,7 @@
   "extends": "next",
   "rules": {
     "react/display-name": "off",
-    "react-hooks/rules-of-hooks": "off"
+    "react-hooks/rules-of-hooks": "off",
+    "@next/next/no-document-import-in-page": "off" // broken rule with src/pages
   }
 }

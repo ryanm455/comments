@@ -1,10 +1,10 @@
 import { memo } from "react";
 
+import { Select } from "components/ui/Select";
 import { useField } from "hooked-form";
 import { providerReadable } from "utils";
 
 import { Provider } from "@prisma/client";
-import { Select } from "@windmill/react-ui";
 
 const OptionSelect = memo(() => {
   const [{ onChange }, { value }] = useField<Provider[]>("providers");

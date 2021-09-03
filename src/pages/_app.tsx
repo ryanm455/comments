@@ -1,16 +1,13 @@
 import "global.scss";
 import "../wdyr";
 
-import React from "react";
-
 import Layout from "components/layout";
-import theme from "lib/theme";
+import { APP_NAME } from "meta";
+import { ThemeProvider } from "next-themes";
 import type { AppProps } from "next/app";
 import Head from "next/head";
 import { SWRConfig } from "swr";
 import { gqlQuery } from "utils";
-
-import { Windmill } from "@windmill/react-ui";
 
 const MyApp = ({ Component, pageProps }: AppProps) => {
   const getLayout =
@@ -27,15 +24,14 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
         fetcher: (res: string, vari: object) => gqlQuery(res, vari),
       }}
     >
-      <Windmill theme={theme} usePreferences>
-        <Head>
-          <meta
-            name="viewport"
-            content="minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no, viewport-fit=cover"
-          />
-        </Head>
-        {componentWithLayout}
-      </Windmill>
+      <Head>
+        <title>{APP_NAME}</title>
+        <meta
+          name="viewport"
+          content="minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no, viewport-fit=cover"
+        />
+      </Head>
+      <ThemeProvider attribute="class">{componentWithLayout}</ThemeProvider>
     </SWRConfig>
   );
 };
