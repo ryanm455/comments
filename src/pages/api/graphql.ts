@@ -5,7 +5,10 @@ import * as types from "lib/gqlTypes";
 import prisma from "lib/prisma";
 import { permissions } from "lib/shield";
 import middleware from "middleware";
-import type { NextApiRequest, NextApiResponse } from "next";
+import type {
+  NextApiRequest,
+  NextApiResponse,
+} from "next";
 import nc from "next-connect";
 import { makeSchema } from "nexus";
 import { nexusPrisma } from "nexus-plugin-prisma";

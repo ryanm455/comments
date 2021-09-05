@@ -1,12 +1,16 @@
-import { FC, memo } from "react";
+import {
+  FC,
+  memo,
+} from "react";
 
 import ProviderIcon from "components/ProviderIcon";
 import { Button } from "components/ui/Button";
 import { socialAuth } from "lib/login";
-import { findKey } from "lodash-es";
 import { providerReadable } from "utils";
 
 import { Provider } from "@prisma/client";
+
+const findKey = (o: { [k: string]: string }, v: string) => Object.keys(o).find(k => o[k] === v);
 
 const Login: FC<{
   authMethod: Provider[];
@@ -24,7 +28,7 @@ const Login: FC<{
           className="gap-2"
         >
           Login with{" "}
-          {providerReadable(findKey(Provider, v => v === e) as Provider)}
+          {providerReadable(findKey(Provider, e) as Provider)}
         </Button>
       );
     })}

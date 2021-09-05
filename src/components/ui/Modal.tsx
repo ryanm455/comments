@@ -1,5 +1,6 @@
-import { FaTimes } from "react-icons/fa";
 import ReactModal from "react-modal";
+
+import { FaTimes } from "@react-icons/all-files/fa/FaTimes";
 
 type ModalProps = {
   isOpen: boolean;

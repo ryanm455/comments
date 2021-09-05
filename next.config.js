@@ -5,12 +5,12 @@ const withBundleAnalyzer = require("@next/bundle-analyzer")({
 
 module.exports = withBundleAnalyzer(
   withPWA({
-    // experimental: { esmExternals: true }, // if on breaks prisma. idk fix imports and that. import * as types from "lib/gqlTypes"; might be the problem.
+    // experimental: { esmExternals: true }, // if on breaks prisma. graphql-middleware is problem maybe version mismatch but idk what.
     future: {
       poweredByHeader: false,
     },
     pwa: {
-      disable: true,// process.env.NODE_ENV === "development", // adds ~2kb to every page and 1kb to shared by all. idk why. worth it to be enabled.
+      disable: true, // process.env.NODE_ENV === "development", // adds ~2kb to every page and 1kb to shared by all. idk why. worth it to be enabled.
       // delete two lines above to enable PWA in production deployment
       // add your own icons to public/manifest.json
       // to re-generate manifest.json, you can visit https://tomitm.github.io/appmanifest/

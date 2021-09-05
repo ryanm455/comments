@@ -3,6 +3,7 @@ lockfileVersion: 5.3
 specifiers:
   '@next/bundle-analyzer': ^11.1.2
   '@prisma/client': ^2.30.2
+  '@react-icons/all-files': ^4.1.0
   '@tailwindcss/forms': ^0.3.3
   '@types/bcrypt': ^5.0.0
   '@types/cookie-session': ^2.0.43
@@ -15,7 +16,7 @@ specifiers:
   '@types/react-dom': ^17.0.9
   '@types/react-modal': ^3.12.1
   '@welldone-software/why-did-you-render': ^6.2.1
-  apollo-server-micro: 2.19.0
+  apollo-server-micro: 2.25.2
   autoprefixer: ^10.3.3
   bcrypt: ^5.0.1
   classnames: ^2.3.1
@@ -24,7 +25,7 @@ specifiers:
   eslint-config-next: ^11.1.2
   format-imports: ^2.4.1
   graphql: ^15.5.2
-  graphql-middleware: ^6.1.5
+  graphql-middleware: 6.1.6
   graphql-passport: ^0.6.3
   graphql-shield: ^7.5.0
   hooked-form: ^5.0.1
@@ -45,9 +46,8 @@ specifiers:
   prettier-plugin-prisma: ^2.30.0
   prisma: 2.30.2
   react: ^17.0.2
-  react-colorful: ^5.3.0
+  react-colorful: 5.4.0
   react-dom: ^17.0.2
-  react-icons: ^4.2.0
   react-modal: ^3.14.3
   react-tiny-popover: ^7.0.0
   sass: ^1.39.0
@@ -58,16 +58,17 @@ specifiers:
 
 dependencies:
   '@prisma/client': 2.30.2_prisma@2.30.2
+  '@react-icons/all-files': 4.1.0_react@17.0.2
   '@tailwindcss/forms': 0.3.3_tailwindcss@2.2.9
   '@welldone-software/why-did-you-render': 6.2.1_react@17.0.2
-  apollo-server-micro: 2.19.0_graphql@15.5.2
+  apollo-server-micro: 2.25.2_graphql@15.5.2
   bcrypt: 5.0.1
   classnames: 2.3.1
   cookie-session: 1.4.0
   graphql: 15.5.2
-  graphql-middleware: 6.1.5_graphql@15.5.2
+  graphql-middleware: 6.1.6_graphql@15.5.2
   graphql-passport: 0.6.3_passport@0.4.1
-  graphql-shield: 7.5.0_e1bcaae9aadaaa3e0e284f749bface63
+  graphql-shield: 7.5.0_d38a0778b87b2f72daff7c6f05b34d16
   hooked-form: 5.0.1_react@17.0.2
   lodash-es: 4.17.21
   markdown-to-jsx: 7.1.3_react@17.0.2
@@ -82,9 +83,8 @@ dependencies:
   passport-google-oauth20: 2.0.0
   prisma: 2.30.2
   react: 17.0.2
-  react-colorful: 5.3.0_react-dom@17.0.2+react@17.0.2
+  react-colorful: 5.4.0_react-dom@17.0.2+react@17.0.2
   react-dom: 17.0.2_react@17.0.2
-  react-icons: 4.2.0_react@17.0.2
   react-modal: 3.14.3_react-dom@17.0.2+react@17.0.2
   react-tiny-popover: 7.0.0_react-dom@17.0.2+react@17.0.2
   sass: 1.39.0
@@ -151,12 +151,6 @@ packages:
   /@apollographql/apollo-tools/0.5.1:
     resolution: {integrity: sha512-ZII+/xUFfb9ezDU2gad114+zScxVFMVlZ91f8fGApMzlS1kkqoyLnC4AJaQ1Ya/X+b63I20B4Gd+eCL8QuB4sA==}
     engines: {node: '>=8', npm: '>=6'}
-    dev: false
-
-  /@apollographql/graphql-playground-html/1.6.26:
-    resolution: {integrity: sha512-XAwXOIab51QyhBxnxySdK3nuMEUohhDsHQ5Rbco/V1vjlP75zZ0ZLHD9dTpXTN8uxKxopb2lUvJTq+M4g2Q0HQ==}
-    dependencies:
-      xss: 1.0.9
     dev: false
 
   /@apollographql/graphql-playground-html/1.6.27:
@@ -1334,8 +1328,8 @@ packages:
       value-or-promise: 1.0.10
     dev: false
 
-  /@graphql-tools/delegate/8.2.0_graphql@15.5.2:
-    resolution: {integrity: sha512-Qf/xDXiUAozVsxdn94wNGB/0pQKKXElUJBSz/9UAtdlrfaP+BCV35PtEvuryNhMDPuj+QO1gFEixlc6YroL5jw==}
+  /@graphql-tools/delegate/8.2.1_graphql@15.5.2:
+    resolution: {integrity: sha512-fvQjSrCJCfchSQlLNHPcj1TwojyV1CPtXmwtSEVKvyp9axokuP37WGyliOWUYCepfwpklklLFUeTEiWlCoxv2Q==}
     peerDependencies:
       graphql: ^14.0.0 || ^15.0.0 || ^16.0.0
     dependencies:
@@ -1620,6 +1614,14 @@ packages:
 
   /@protobufjs/utf8/1.1.0:
     resolution: {integrity: sha1-p3c2C1s5oaLlEG+OhY8v0tBgxXA=}
+    dev: false
+
+  /@react-icons/all-files/4.1.0_react@17.0.2:
+    resolution: {integrity: sha512-hxBI2UOuVaI3O/BhQfhtb4kcGn9ft12RWAFVMUeNjqqhLsHvFtzIkFaptBJpFDANTKoDfdVoHTKZDlwKCACbMQ==}
+    peerDependencies:
+      react: '*'
+    dependencies:
+      react: 17.0.2
     dev: false
 
   /@rollup/plugin-babel/5.3.0_@babel+core@7.15.0+rollup@2.56.3:
@@ -2239,23 +2241,10 @@ packages:
       zen-observable-ts: 0.8.21
     dev: false
 
-  /apollo-reporting-protobuf/0.6.2:
-    resolution: {integrity: sha512-WJTJxLM+MRHNUxt1RTl4zD0HrLdH44F2mDzMweBj1yHL0kSt8I1WwoiF/wiGVSpnG48LZrBegCaOJeuVbJTbtw==}
-    dependencies:
-      '@apollo/protobufjs': 1.2.2
-    dev: false
-
   /apollo-reporting-protobuf/0.8.0:
     resolution: {integrity: sha512-B3XmnkH6Y458iV6OsA7AhfwvTgeZnFq9nPVjbxmLKnvfkEl8hYADtz724uPa0WeBiD7DSFcnLtqg9yGmCkBohg==}
     dependencies:
       '@apollo/protobufjs': 1.2.2
-    dev: false
-
-  /apollo-server-caching/0.5.3:
-    resolution: {integrity: sha512-iMi3087iphDAI0U2iSBE9qtx9kQoMMEWr6w+LwXruBD95ek9DWyj7OeC2U/ngLjRsXM43DoBDXlu7R+uMjahrQ==}
-    engines: {node: '>=6'}
-    dependencies:
-      lru-cache: 6.0.0
     dev: false
 
   /apollo-server-caching/0.7.0:
@@ -2319,13 +2308,13 @@ packages:
       graphql: 15.5.2
     dev: false
 
-  /apollo-server-micro/2.19.0_graphql@15.5.2:
-    resolution: {integrity: sha512-EvGzcdb9DM71NmR4plF8Y2l18uE30uaElb1LPCV57/7ZN0+IvX8xNPxXP9geoyngniPiZVP1kqiRKdq1OPAu4g==}
+  /apollo-server-micro/2.25.2_graphql@15.5.2:
+    resolution: {integrity: sha512-TaYHe82Nki4dOxpIEbWi1cNkTvm2JBQX7biluXOTjSyKXrT8/URec4rJrbwOyF56KQ7Td96gkUDJZHBYZ49Vzg==}
     dependencies:
-      '@apollographql/graphql-playground-html': 1.6.26
+      '@apollographql/graphql-playground-html': 1.6.27
       accept: 3.1.3
       apollo-server-core: 2.25.2_graphql@15.5.2
-      apollo-server-types: 0.6.3_graphql@15.5.2
+      apollo-server-types: 0.9.0_graphql@15.5.2
       micro: 9.3.4
     transitivePeerDependencies:
       - bufferutil
@@ -2340,18 +2329,6 @@ packages:
       graphql: ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0
     dependencies:
       apollo-server-types: 0.9.0_graphql@15.5.2
-      graphql: 15.5.2
-    dev: false
-
-  /apollo-server-types/0.6.3_graphql@15.5.2:
-    resolution: {integrity: sha512-aVR7SlSGGY41E1f11YYz5bvwA89uGmkVUtzMiklDhZ7IgRJhysT5Dflt5IuwDxp+NdQkIhVCErUXakopocFLAg==}
-    engines: {node: '>=6'}
-    peerDependencies:
-      graphql: ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0
-    dependencies:
-      apollo-reporting-protobuf: 0.6.2
-      apollo-server-caching: 0.5.3
-      apollo-server-env: 3.1.0
       graphql: 15.5.2
     dev: false
 
@@ -4148,12 +4125,12 @@ packages:
       graphql: 15.5.2
     dev: false
 
-  /graphql-middleware/6.1.5_graphql@15.5.2:
-    resolution: {integrity: sha512-+6BZ0ao84fEeP3XaXbMGXR+PfoZSH9oycPozeKRWjjRUwWCLnOABrtA1BvYB6KeECjqm5zcdss5nS6kKuiitAw==}
+  /graphql-middleware/6.1.6_graphql@15.5.2:
+    resolution: {integrity: sha512-7JDFxYIaLu3r+ivgLj0t04NVF7r7TwRVxHJgCVKQjEC2mIw2yd0yXcqHdyLeM6+6WYMxLD9fkrxrGjWH56gmUA==}
     peerDependencies:
       graphql: ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0
     dependencies:
-      '@graphql-tools/delegate': 8.2.0_graphql@15.5.2
+      '@graphql-tools/delegate': 8.2.1_graphql@15.5.2
       '@graphql-tools/schema': 8.2.0_graphql@15.5.2
       graphql: 15.5.2
     dev: false
@@ -4179,7 +4156,7 @@ packages:
       - utf-8-validate
     dev: false
 
-  /graphql-shield/7.5.0_e1bcaae9aadaaa3e0e284f749bface63:
+  /graphql-shield/7.5.0_d38a0778b87b2f72daff7c6f05b34d16:
     resolution: {integrity: sha512-T1A6OreOe/dHDk/1Qg3AHCrKLmTkDJ3fPFGYpSOmUbYXyDnjubK4J5ab5FjHdKHK5fWQRZNTvA0SrBObYsyfaw==}
     peerDependencies:
       graphql: ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0
@@ -4187,7 +4164,7 @@ packages:
     dependencies:
       '@types/yup': 0.29.11
       graphql: 15.5.2
-      graphql-middleware: 6.1.5_graphql@15.5.2
+      graphql-middleware: 6.1.6_graphql@15.5.2
       object-hash: 2.2.0
       yup: 0.31.1
     dev: false
@@ -6008,8 +5985,8 @@ packages:
       unpipe: 1.0.0
     dev: false
 
-  /react-colorful/5.3.0_react-dom@17.0.2+react@17.0.2:
-    resolution: {integrity: sha512-zWE5E88zmjPXFhv6mGnRZqKin9s5vip1O3IIGynY9EhZxN8MATUxZkT3e/9OwTEm4DjQBXc6PFWP6AetY+Px+A==}
+  /react-colorful/5.4.0_react-dom@17.0.2+react@17.0.2:
+    resolution: {integrity: sha512-k7QJXuQGWevr/V8hoMJ1wBW9i2CVhBdDXpBf3jy/AAtzVyYtsFqEAT+y+NOGiSG1cmnGTreqm5EFLXlVaKbPLQ==}
     peerDependencies:
       react: '>=16.8.0'
       react-dom: '>=16.8.0'
@@ -6027,14 +6004,6 @@ packages:
       object-assign: 4.1.1
       react: 17.0.2
       scheduler: 0.20.2
-    dev: false
-
-  /react-icons/4.2.0_react@17.0.2:
-    resolution: {integrity: sha512-rmzEDFt+AVXRzD7zDE21gcxyBizD/3NqjbX6cmViAgdqfJ2UiLer8927/QhhrXQV7dEj/1EGuOTPp7JnLYVJKQ==}
-    peerDependencies:
-      react: '*'
-    dependencies:
-      react: 17.0.2
     dev: false
 
   /react-is/16.13.1:

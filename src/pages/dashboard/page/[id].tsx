@@ -34,19 +34,20 @@ type Props = {
   pageId: string;
 };
 
-const Page: FC<Props> = ({ page: initialData, pageId }) => {
+const Page: FC<Props> = ({ page: fallbackData, pageId }) => {
   const variables = useMemo(() => ({ id: pageId }), [pageId]);
   // @ts-ignore
-  const { data: p, mutate: mutatePage } = useSWR<P>([PAGE_QUERY, variables], {
-    initialData,
-  });
-
-  const page: P = p || initialData;
+  const { data: page, mutate: mutatePage } = useSWR<P>(
+    [PAGE_QUERY, variables],
+    {
+      fallbackData,
+    }
+  );
 
   const [_, { mutate: mutateUser }] = useUser();
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  const initialValues = useMemo(() => ({ name: page.name }), [page.name]);
+  const initialValues = useMemo(() => ({ name: page!.name }), [page!.name]);
 
   const savePage = (v: object) =>
     fetch(`/api/page/${pageId}`, {
@@ -142,10 +143,10 @@ window.addEventListener(
 );`}
       </code>
       <h1 className="font-semibold text-3xl my-4">Comments</h1>
-      {page.comments && page.comments.length ? (
+      {page!.comments && page!.comments.length ? (
         <CommentThread
-          comments={(page.comments || []) as any}
-          settings={page.site}
+          comments={(page!.comments || []) as any}
+          settings={page!.site}
           vote={vote}
           pageId={pageId}
         />

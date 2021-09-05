@@ -1,4 +1,7 @@
-import { rule, shield } from "graphql-shield";
+import {
+  rule,
+  shield,
+} from "graphql-shield";
 import type { PrismaContext } from "types/prisma-context";
 
 const isAuthenticated = rule({ cache: "contextual" })(
@@ -13,5 +16,5 @@ export const permissions = shield({
     login: isUnauthenticated,
     register: isUnauthenticated,
     "*": isAuthenticated,
-  },
+  }
 });

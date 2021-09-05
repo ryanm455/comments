@@ -2,8 +2,9 @@ import { useState } from "react";
 
 import Icon from "components/Icon";
 import { HexColorPicker } from "react-colorful";
-import { FaPaintBrush } from "react-icons/fa";
 import { Popover } from "react-tiny-popover";
+
+import { FaPaintBrush } from "@react-icons/all-files/fa/FaPaintBrush";
 
 const CustomColor: React.FC<{
   value: string;

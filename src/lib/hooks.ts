@@ -12,16 +12,11 @@ type U = User & {
 type Res = SWRResponse<U, Error>;
 type Return = [U | undefined, { mutate: Res["mutate"]; loading: boolean }];
 
-let firstRun = true; // for some reason swr is not set on first render kicking out of first load auth requiring pages.
 export const useUser = (initialUser?: U): Return => {
   // @ts-ignore
   const { data, mutate }: Res = useSWR(USER_QUERY, {
-    initialData: initialUser || undefined,
+    fallbackData: initialUser || undefined,
   });
 
-  const d = !data && firstRun ? initialUser : data;
-
-  firstRun = false;
-
-  return [d, { mutate, loading: !data }];
+  return [data, { mutate, loading: !data }];
 };

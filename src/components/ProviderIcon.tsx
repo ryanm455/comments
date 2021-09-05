@@ -1,9 +1,14 @@
-import type { FC, HTMLProps } from "react";
+import type {
+  FC,
+  HTMLProps,
+} from "react";
 
 import Icon from "components/Icon";
-import { FaEnvelope, FaGithub, FaGoogle } from "react-icons/fa";
 
 import { Provider } from "@prisma/client";
+import { FaEnvelope } from "@react-icons/all-files/fa/FaEnvelope";
+import { FaGithub } from "@react-icons/all-files/fa/FaGithub";
+import { FaGoogle } from "@react-icons/all-files/fa/FaGoogle";
 
 type Props = Omit<HTMLProps<HTMLImageElement>, "as"> & { i: Provider };
 

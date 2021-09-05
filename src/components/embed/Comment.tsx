@@ -1,14 +1,24 @@
-import { memo, useMemo, useState } from "react";
+import {
+  memo,
+  useMemo,
+  useState,
+} from "react";
 
 import classNames from "classnames";
 import Icon from "components/Icon";
 import ProviderIcon from "components/ProviderIcon";
 import { Button } from "components/ui/Button";
 import { useUser } from "lib/hooks";
-import { FaArrowDown, FaArrowUp, FaCommentAlt, FaStar } from "react-icons/fa";
 import type { IAddComment } from "types/embed";
 
-import { Comment as IComment, Provider } from "@prisma/client";
+import {
+  Comment as IComment,
+  Provider,
+} from "@prisma/client";
+import { FaArrowDown } from "@react-icons/all-files/fa/FaArrowDown";
+import { FaArrowUp } from "@react-icons/all-files/fa/FaArrowUp";
+import { FaCommentAlt } from "@react-icons/all-files/fa/FaCommentAlt";
+import { FaStar } from "@react-icons/all-files/fa/FaStar";
 
 import ChakraMarkdown from "../ChakraMarkdown";
 import AddComment from "./AddComment";

@@ -1,4 +1,8 @@
-import { useCallback, useEffect, useMemo } from "react";
+import {
+  useCallback,
+  useEffect,
+  useMemo,
+} from "react";
 
 import AddComment from "components/embed/AddComment";
 import CommentThread from "components/embed/CommentThread";
@@ -13,13 +17,26 @@ import {
 import { useUser } from "lib/hooks";
 import prisma from "lib/prisma";
 import { APP_URL } from "meta";
-import type { GetStaticPaths, GetStaticProps } from "next";
-import { FaExternalLinkAlt } from "react-icons/fa";
-import { gqlServer, notFound, parse } from "server-utils";
+import type {
+  GetStaticPaths,
+  GetStaticProps,
+} from "next";
+import {
+  gqlServer,
+  notFound,
+  parse,
+} from "server-utils";
 import useSWR from "swr";
-import { embedListener, gqlQuery } from "utils";
+import {
+  embedListener,
+  gqlQuery,
+} from "utils";
 
-import type { Provider, Site } from "@prisma/client";
+import type {
+  Provider,
+  Site,
+} from "@prisma/client";
+import { FaExternalLinkAlt } from "@react-icons/all-files/fa/FaExternalLinkAlt";
 
 type Comment = {
   id: string;
@@ -43,12 +60,12 @@ type Props = {
   pageId: string;
 };
 
-const Embed: React.FC<Props> = ({ page: initialData, pageId }) => {
+const Embed: React.FC<Props> = ({ page: fallbackData, pageId }) => {
   const [user, { mutate: updateUser }] = useUser();
   const variables = useMemo(() => ({ id: pageId }), [pageId]); // without causes infinite loop lol
   // @ts-ignore
   const { data: page, mutate } = useSWR<Query>([COMMENT_QUERY, variables], {
-    initialData,
+    fallbackData,
   });
 
   const addComment = useCallback(

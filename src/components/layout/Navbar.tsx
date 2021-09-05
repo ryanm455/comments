@@ -1,4 +1,7 @@
-import { FC, memo } from "react";
+import {
+  FC,
+  memo,
+} from "react";
 
 import Icon from "components/Icon";
 import LinkWrap from "components/LinkWrap";
@@ -6,7 +9,10 @@ import { Button } from "components/ui/Button";
 import { useUser } from "lib/hooks";
 import { APP_LOGO } from "meta";
 import { useTheme } from "next-themes";
-import { FaMoon, FaSun, FaUser } from "react-icons/fa";
+
+import { FaMoon } from "@react-icons/all-files/fa/FaMoon";
+import { FaSun } from "@react-icons/all-files/fa/FaSun";
+import { FaUser } from "@react-icons/all-files/fa/FaUser";
 
 const NAV_LINKS = [
   {

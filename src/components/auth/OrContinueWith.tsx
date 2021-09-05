@@ -3,10 +3,11 @@ import { memo } from "react";
 import Icon from "components/Icon";
 import { Button } from "components/ui/Button";
 import { socialAuth } from "lib/login";
-import { FaGithub, FaGoogle } from "react-icons/fa";
 import { mutate } from "swr";
 
 import { Provider } from "@prisma/client";
+import { FaGithub } from "@react-icons/all-files/fa/FaGithub";
+import { FaGoogle } from "@react-icons/all-files/fa/FaGoogle";
 
 import { DividerWithText } from "./DividerWithText";
 

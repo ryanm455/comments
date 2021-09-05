@@ -43,13 +43,13 @@ type Props = {
   pageId: string;
 };
 
-const Embed: React.FC<Props> = ({ comment: initialData, pageId, site }) => {
+const Embed: React.FC<Props> = ({ comment: fallbackData, pageId, site }) => {
   const [_, { mutate: updateUser }] = useUser();
-  const variables = useMemo(() => ({ id: initialData.id }), [initialData.id]); // without causes infinite loop lol
+  const variables = useMemo(() => ({ id: fallbackData.id }), [fallbackData.id]); // without causes infinite loop lol
   const { data: comment, mutate } = useSWR<Comment>( // @ts-ignore
     [SINGLE_COMMENT_QUERY, variables],
     {
-      initialData,
+      fallbackData,
     }
   );
 

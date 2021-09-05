@@ -1,7 +1,16 @@
-import { memo, ReactNode } from "react";
+import {
+  memo,
+  ReactNode,
+} from "react";
 
-import { APP_LOGO, APP_NAME } from "meta";
-import { FaInstagram, FaTwitter, FaYoutube } from "react-icons/fa";
+import {
+  APP_LOGO,
+  APP_NAME,
+} from "meta";
+
+import { FaInstagram } from "@react-icons/all-files/fa/FaInstagram";
+import { FaTwitter } from "@react-icons/all-files/fa/FaTwitter";
+import { FaYoutube } from "@react-icons/all-files/fa/FaYoutube";
 
 const SocialButton = ({
   children,

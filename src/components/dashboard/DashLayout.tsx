@@ -3,9 +3,12 @@ import { useEffect } from "react";
 import Layout from "components/layout";
 import { useUser } from "lib/hooks";
 import Router from "next/router";
-import { FaArrowDown, FaArrowUp, FaComment, FaStore } from "react-icons/fa";
 
 import { User } from "@prisma/client";
+import { FaArrowDown } from "@react-icons/all-files/fa/FaArrowDown";
+import { FaArrowUp } from "@react-icons/all-files/fa/FaArrowUp";
+import { FaComment } from "@react-icons/all-files/fa/FaComment";
+import { FaStore } from "@react-icons/all-files/fa/FaStore";
 
 import { SideNav } from "./SideNav";
 

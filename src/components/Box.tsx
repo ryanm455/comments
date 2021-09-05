@@ -1,7 +1,11 @@
-import { FC, memo } from "react";
+import {
+  FC,
+  memo,
+} from "react";
 
 import { Button } from "components/ui/Button";
-import { FaPlus } from "react-icons/fa";
+
+import { FaPlus } from "@react-icons/all-files/fa/FaPlus";
 
 import LinkWrap from "./LinkWrap";
 

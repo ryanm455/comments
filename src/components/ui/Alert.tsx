@@ -1,12 +1,13 @@
 import classNames from "classnames";
+
+import { FaCheckCircle } from "@react-icons/all-files/fa/FaCheckCircle";
+import { FaCircle } from "@react-icons/all-files/fa/FaCircle";
 import {
-  FaCheckCircle,
-  FaCircle,
   FaExclamationCircle,
-  FaInfoCircle,
-  FaTimes,
-  FaTimesCircle,
-} from "react-icons/fa";
+} from "@react-icons/all-files/fa/FaExclamationCircle";
+import { FaInfoCircle } from "@react-icons/all-files/fa/FaInfoCircle";
+import { FaTimes } from "@react-icons/all-files/fa/FaTimes";
+import { FaTimesCircle } from "@react-icons/all-files/fa/FaTimesCircle";
 
 const theme = {
   base: "p-4 pl-12 relative leading-5",
