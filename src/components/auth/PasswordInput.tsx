@@ -1,10 +1,12 @@
-import { ComponentProps, FC, useState } from "react";
+import {
+  ComponentProps,
+  useReducer,
+} from "react";
 
 import { Input } from "components/ui/Input";
 
-const PasswordInput: FC<ComponentProps<typeof Input>> = props => {
-  const [show, setShow] = useState(false);
-  const handleClick = () => setShow(!show);
+const PasswordInput = (props: ComponentProps<typeof Input>) => {
+  const [show, toggleShow] = useReducer(s => !s, false);
 
   return (
     <Input className="pr-16" type={show ? "text" : "password"} {...props} />

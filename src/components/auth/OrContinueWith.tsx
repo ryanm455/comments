@@ -1,36 +1,52 @@
-import { memo } from "react";
+"use client"
+import { useState } from "react";
 
-import Icon from "components/Icon";
 import { Button } from "components/ui/Button";
-import { socialAuth } from "lib/login";
-import { mutate } from "swr";
+import Icon from "components/ui/Icon";
+import { useRouter } from "next/navigation";
+import NewWindow from "react-new-window";
 
-import { Provider } from "@prisma/client";
+import type { ProviderId } from "@auth/core/providers";
 import { FaGithub } from "@react-icons/all-files/fa/FaGithub";
 import { FaGoogle } from "@react-icons/all-files/fa/FaGoogle";
 
 import { DividerWithText } from "./DividerWithText";
 
-export const OrContinueWith = memo(() => (
-  <>
-    <DividerWithText className="mt-6">or continue with</DividerWithText>
-    <div className="flex gap-3 mt-6">
-      <Button
-        block
-        color="currentColor"
-        aria-label="Login with Google"
-        layout="outline"
-        icon={() => <Icon as={FaGoogle} />}
-        onClick={() => socialAuth(Provider.GOOGLE, mutate)}
-      />
-      <Button
-        block
-        color="currentColor"
-        layout="outline"
-        aria-label="Login with Github"
-        icon={() => <Icon as={FaGithub} />}
-        onClick={() => socialAuth(Provider.GITHUB, mutate)}
-      />
-    </div>
-  </>
-));
+type Props = {
+  callbackUrl?: string
+}
+
+export const OrContinueWith = ({ callbackUrl = "/" }: Props) => {
+  const [popupMethod, setPopUpMethod] = useState<ProviderId | null>();
+  const router = useRouter();
+
+  return (
+    <>
+      <DividerWithText className="mt-6">or continue with</DividerWithText>
+      <div className="flex gap-3 mt-6">
+        <Button
+          block
+          color="currentColor"
+          aria-label="Login with Google"
+          layout="outline"
+          icon={() => <Icon as={FaGoogle} />}
+          onClick={() => setPopUpMethod("google")}
+        />
+        <Button
+          block
+          color="currentColor"
+          layout="outline"
+          aria-label="Login with Github"
+          icon={() => <Icon as={FaGithub} />}
+          onClick={() => setPopUpMethod("github")}
+        />
+      </div>
+      {popupMethod && (
+        <NewWindow url={`/auth/popup/${popupMethod}`} onUnload={() => {
+          setPopUpMethod(null);
+          router.push(callbackUrl);
+        }} />
+      )}
+    </>
+  );
+}

@@ -1,3 +1,4 @@
+"use client"
 import {
   ComponentClass,
   createElement,
@@ -131,12 +132,12 @@ export const Button = forwardRef<any, ButtonProps>(
 
     const IconLeft = iconLeft || icon;
 
-    const sizeStyle = theme.size[size];
-    const iconSize = theme.size.icon[size];
-    const iconStyle = theme.icon[size];
-    const layoutStyles = theme[layout].base;
-    const activeStyles = theme[layout].active;
-    const disabledStyles = theme[layout].disabled;
+    const sizeStyle = (theme as any).size[size];
+    const iconSize = (theme as any).size.icon[size];
+    const iconStyle = (theme as any).icon[size];
+    const layoutStyles = (theme as any)[layout].base;
+    const activeStyles = (theme as any)[layout].active;
+    const disabledStyles = (theme as any)[layout].disabled;
 
     const buttonStyles = classNames(
       theme.base,

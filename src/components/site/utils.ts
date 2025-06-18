@@ -1,5 +1,3 @@
-import { ISettings } from "types/embed";
-
 import type { Site } from "@prisma/client";
 
 import type { ICheckList } from "./CheckList";
@@ -39,7 +37,7 @@ export const siteFilter = ({
   authIcons,
   timestamps,
   ratings,
-}: Site): Omit<ISettings, "id" | "authorId"> & { name: string } => ({
+}: Partial<Site> & { name: string }): Partial<Site> & { name: string } => ({
   errorColor,
   primaryColor,
   providers,

@@ -1,10 +1,10 @@
 import classNames from "classnames";
 
-export const DividerWithText: React.FC<React.HTMLProps<HTMLDivElement>> = ({
+export const DividerWithText = ({
   children,
   className,
   ...props
-}) => (
+}: React.PropsWithChildren<React.HTMLProps<HTMLDivElement>>) => (
   <div
     className={classNames("flex items-center text-gray-300", className)}
     {...props}

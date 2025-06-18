@@ -13,14 +13,14 @@ type Props = React.ComponentProps<"label"> & {
   disabled?: boolean;
 };
 
-export const Label: React.FC<Props> = ({
+export const Label = ({
   children,
   check,
   radio,
   disabled,
   className,
   ...other
-}) => {
+}: Props) => {
   const baseStyle = theme.base;
   const checkStyle = theme.check;
   const disabledStyle = theme.disabled;

@@ -1,6 +1,5 @@
 generator client {
-  provider        = "prisma-client-js"
-  previewFeatures = ["mongoDb"]
+  provider = "prisma-client-js"
 }
 
 datasource db {
@@ -8,79 +7,139 @@ datasource db {
   url      = env("MONGO_DB")
 }
 
+model Account {
+  id                 String     @id @default(auto()) @map("_id") @db.ObjectId
+  userId             String
+  providerType       String
+  providerId         String
+  providerAccountId  String
+  refreshToken       String?
+  accessToken        String?
+  accessTokenExpires DateTime?
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
+  user               User      @relation(fields: [userId], references: [id])
+
+  @@unique([providerId, providerAccountId])
+}
+
+model Session {
+  id           String     @id @default(auto()) @map("_id") @db.ObjectId
+  userId       String
+  expires      DateTime
+  sessionToken String   @unique
+  accessToken  String   @unique
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  user         User     @relation(fields: [userId], references: [id])
+}
+
 model User {
-  id         String   @id @default(dbgenerated()) @map("_id") @db.ObjectId
-  username   String?  @unique
-  password   String?
-  name       String
-  image      String?
-  provider   Provider @default(LOCAL)
-  providerId String?  @unique
-  sites      Site[]   @relation
+  id           String    @id @default(auto()) @map("_id") @db.ObjectId
+  name     String?
+  email         String?   @unique
+  emailVerified DateTime?
+  image        String?
+  password       String?
 
-  upvotedIds String[]  @db.Array(ObjectId)
-  upvoted    Comment[] @relation("upvotedComments", fields: [upvotedIds])
+  sites        Site[]    @relation
 
-  downvotedIds String[]  @db.Array(ObjectId)
-  downvoted    Comment[] @relation("downvotedComments", fields: [downvotedIds])
+  comments     Comment[] @relation("authorComments")
 
-  comments Comment[] @relation
+  upvotes      Upvote[]
+  downvotes    Downvote[]
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  accounts      Account[]
+  sessions      Session[]
+}
+
+model VerificationRequest {
+  id         String    @id @default(auto()) @map("_id") @db.ObjectId
+  identifier String
+  token      String   @unique
+  expires    DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@unique([identifier, token])
 }
 
 model Site {
-  id           String     @id @default(dbgenerated()) @map("_id") @db.ObjectId
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
   name         String
-  errorColor   String     @default("rgb(220,38,38)")
-  primaryColor String     @default("rgb(37,99,235)")
-  authIcons    Boolean    @default(true)
-  timestamps   Boolean    @default(true)
-  ratings      Boolean    @default(false)
+  errorColor   String   @default("rgb(220,38,38)")
+  primaryColor String   @default("rgb(37,99,235)")
+  authIcons    Boolean  @default(true)
+  timestamps   Boolean  @default(true)
+  ratings      Boolean  @default(false)
   providers    Provider[]
 
-  pages Page[] @relation
+  pages        Page[]
 
-  author   User   @relation(fields: [authorId], references: [id])
-  authorId String @db.ObjectId
+  author       User     @relation(fields: [authorId], references: [id])
+  authorId     String   @db.ObjectId
 }
 
 model Page {
-  id   String @id @default(dbgenerated()) @map("_id") @db.ObjectId
-  name String
+  id        String    @id @default(auto()) @map("_id") @db.ObjectId
+  name      String
 
-  comments Comment[] @relation
+  site      Site      @relation(fields: [siteId], references: [id])
+  siteId    String    @db.ObjectId
 
-  site   Site   @relation(fields: [siteId], references: [id])
-  siteId String @db.ObjectId
+  comments  Comment[] @relation("pageComments")
 }
 
 model Comment {
-  id   String @id @default(dbgenerated()) @map("_id") @db.ObjectId
-  text String
+  id              String     @id @default(auto()) @map("_id") @db.ObjectId
+  text            String
 
-  author   User   @relation(fields: [authorId], references: [id])
-  authorId String @db.ObjectId
+  author          User       @relation("authorComments", fields: [authorId], references: [id])
+  authorId        String     @db.ObjectId
 
-  rating Int?
+  rating          Int?
 
-  parentCommentId String?  @db.ObjectId
-  parentComment   Comment? @relation("commentParent", fields: [parentCommentId], references: [id])
+  parentComment   Comment?   @relation("commentParent", fields: [parentCommentId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  parentCommentId String?    @db.ObjectId
+  children        Comment[]  @relation("commentParent")
 
-  children Comment[] @relation("commentParent")
+  page            Page?      @relation("pageComments", fields: [pageId], references: [id])
+  pageId          String?    @db.ObjectId
 
-  upvotedByIds String[] @db.Array(ObjectId)
-  upvotedBy    User[]   @relation(name: "upvotedComments", fields: [upvotedByIds])
+  upvotes         Upvote[]
+  downvotes       Downvote[]
 
-  downvotedByIds String[] @db.Array(ObjectId)
-  downvotedBy    User[]   @relation(name: "downvotedComments", fields: [downvotedByIds])
+  votes           Int       @default(0)
 
-  pageId String? @db.ObjectId
-  page   Page?   @relation(fields: [pageId], references: [id])
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @updatedAt
+}
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+model Upvote {
+  id         String    @id @default(auto()) @map("_id") @db.ObjectId
+  user       User      @relation(fields: [userId], references: [id])
+  userId     String    @db.ObjectId
+  comment    Comment   @relation(fields: [commentId], references: [id])
+  commentId  String    @db.ObjectId
+
+  createdAt  DateTime  @default(now())
+
+  @@unique([userId, commentId])
+}
+
+model Downvote {
+  id         String    @id @default(auto()) @map("_id") @db.ObjectId
+  user       User      @relation(fields: [userId], references: [id])
+  userId     String    @db.ObjectId
+  comment    Comment   @relation(fields: [commentId], references: [id])
+  commentId  String    @db.ObjectId
+
+  createdAt  DateTime  @default(now())
+
+  @@unique([userId, commentId])
 }
 
 enum Provider {

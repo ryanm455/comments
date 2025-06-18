@@ -1,16 +1,19 @@
+"use client"
 import { useState } from "react";
 
-import Icon from "components/Icon";
+import Icon from "components/ui/Icon";
 import { HexColorPicker } from "react-colorful";
 import { Popover } from "react-tiny-popover";
 
 import { FaPaintBrush } from "@react-icons/all-files/fa/FaPaintBrush";
 
-const CustomColor: React.FC<{
+type Props = {
   value: string;
   onChange: (c: string) => void;
   selected: boolean;
-}> = ({ value, onChange, selected }) => {
+}
+
+const CustomColor = ({ value, onChange, selected }: Props) => {
   const [isPopoverOpen, setPopoverOpen] = useState<boolean>(false);
   const [color, setColor] = useState(value);
 

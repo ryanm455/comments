@@ -1,6 +1,9 @@
 import classNames from "classnames";
 
-import { hasValidation, validationStyle } from "./utils";
+import {
+  hasValidation,
+  validationStyle,
+} from "./utils";
 
 const theme = {
   base: "block w-full text-sm dark:text-gray-300 focus:outline-none rounded-md",
@@ -16,14 +19,14 @@ const theme = {
 
 type Props = React.ComponentProps<"select"> & { valid?: boolean };
 
-export const Select: React.FC<Props> = ({
+export const Select = ({
   valid,
   children,
   className,
   multiple,
   disabled,
   ...other
-}) => {
+}: Props) => {
   const baseStyle = theme.base;
   const activeStyle = theme.active;
   const validStyle = theme.valid;

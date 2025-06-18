@@ -1,26 +1,27 @@
-import { FC, memo } from "react";
+import {
+  FC,
+  memo,
+} from "react";
 
 import { Input } from "components/ui/Input";
 import { Label } from "components/ui/Label";
-import { useField } from "hooked-form";
 
 import type { Site } from "@prisma/client";
 
 export type ICheckList = {
   label: string;
   c: keyof Site;
+  defaultValue?: boolean;
 };
 
-const Mapped: FC<ICheckList> = ({ label, c }) => {
-  const [{ onChange }, { value }] = useField<boolean>(c);
-
+const Mapped: FC<ICheckList> = ({ label, c, defaultValue = false }) => {
   return (
     <div>
       <Label check>
         <Input
           type="checkbox"
-          checked={value}
-          onChange={e => onChange(e.target.checked)}
+          name={c}
+          defaultChecked={defaultValue}
         />
         <span className="ml-2">{label}</span>
       </Label>
