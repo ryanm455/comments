@@ -2,7 +2,6 @@
 import { Suspense } from "react";
 
 import {
-  fetchSite,
   PageCommentThread,
 } from "app/(embed)/embed/[pageId]/page";
 import { APP_URL } from "lib/meta";
@@ -10,8 +9,16 @@ import prisma from "lib/prisma";
 import { notFound } from "next/navigation";
 
 import PageForm from "./form";
+import { Site } from "@prisma/client";
 
-export const fetchPage = async (pageId: string) => {
+const fetchSite = async (pageId: string): Promise<Site | null> => {
+  return await prisma.page.findUnique({
+    where: { id: pageId },
+    include: { site: true },
+  }).then(s => s?.site || null);
+}
+
+const fetchPage = async (pageId: string) => {
   return await prisma.page.findUnique({
     where: { id: pageId },
   });
