@@ -21,7 +21,7 @@ const fetchRootCommentsForPage = async (pageId: string) => {
   });;
 }
 
-export const fetchSite = async (pageId: string): Promise<Site | null> => {
+const fetchSite = async (pageId: string): Promise<Site | null> => {
   return await prisma.page.findUnique({
     where: { id: pageId },
     include: { site: true },
