@@ -41,14 +41,14 @@ type Props = React.ComponentProps<"div"> & {
   rounded?: boolean;
 };
 
-export const Alert: React.FC<Props> = ({
+export const Alert = ({
   className,
   children,
   type = "neutral",
   onClose,
   rounded = true,
   ...other
-}) => {
+}: Props) => {
   let Icon;
   switch (type) {
     case "success":

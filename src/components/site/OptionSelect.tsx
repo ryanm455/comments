@@ -1,19 +1,27 @@
-import { memo } from "react";
+import {
+  memo,
+  useState,
+} from "react";
 
 import { Select } from "components/ui/Select";
-import { useField } from "hooked-form";
-import { providerReadable } from "utils";
+import { providerReadable } from "lib/utils";
 
 import { Provider } from "@prisma/client";
 
-const OptionSelect = memo(() => {
-  const [{ onChange }, { value }] = useField<Provider[]>("providers");
+type Props = {
+  name: string;
+  defaultValue?: Provider[];
+}
+
+const OptionSelect = memo(({ name, defaultValue = [] }: Props) => {
+  const [value, onChange] = useState<Provider[]>(defaultValue);
 
   return (
     <label className="block">
       <p className="text-base leading-4 my-3 font-medium">
         Select Auth Providers
       </p>
+      <input hidden name={name} value={value} readOnly />
       <Select
         multiple
         onChange={e =>

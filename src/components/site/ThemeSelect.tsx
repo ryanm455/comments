@@ -1,7 +1,11 @@
-import { FC, Fragment, memo } from "react";
+import {
+  FC,
+  Fragment,
+  memo,
+  useState,
+} from "react";
 
 import classNames from "classnames";
-import { useField } from "hooked-form";
 import dynamic from "next/dynamic";
 
 import type { Site } from "@prisma/client";
@@ -13,12 +17,14 @@ const CustomColor = dynamic(() => import("./CustomColor"), { ssr: false });
 const ThemeSelect: FC<{
   name: string;
   edit: keyof Site;
-}> = memo(({ name, edit }) => {
-  const [{ onChange }, { value }] = useField<string>(edit);
+  defaultValue?: string;
+  title: string;
+}> = memo(({ name, edit, title, defaultValue  = "" }) => {
+  const [value, onChange] = useState<string>(defaultValue);
 
   return (
     <Fragment key={edit}>
-      <h2 className="font-semibold text-2xl my-4">{name}</h2>
+      <h2 className="font-semibold text-2xl my-4">{title}</h2>
       <div className="flex flex-wrap gap-3">
         {colors.map(e => (
           <div
@@ -30,6 +36,7 @@ const ThemeSelect: FC<{
             onClick={() => onChange(e)}
           />
         ))}
+        <input hidden name={name} value={value} readOnly />
         <CustomColor
           value={value}
           onChange={onChange}

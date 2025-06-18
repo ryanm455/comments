@@ -1,4 +1,8 @@
-import { createRef, memo } from "react";
+"use client"
+import {
+  createRef,
+  memo,
+} from "react";
 
 export default memo(function Embed() {
   const iframe = createRef<HTMLIFrameElement>();
@@ -6,11 +10,12 @@ export default memo(function Embed() {
   if (typeof window !== "undefined") {
     window.addEventListener(
       "message",
-      e =>
+      e => {
+        console.log("recieved message", e)
         iframe.current &&
-        e.data.height &&
-        iframe.current.setAttribute("height", e.data.height)
-    );
+          e.data.height &&
+          iframe.current.setAttribute("height", e.data.height)
+      });
   }
 
   return (

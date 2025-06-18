@@ -1,8 +1,12 @@
+"use client"
 import React from "react";
 
 import classNames from "classnames";
 
-import { hasValidation, validationStyle } from "./utils";
+import {
+  hasValidation,
+  validationStyle,
+} from "./utils";
 
 const INPUT_THEME = {
   base: "block w-full text-sm focus:outline-none dark:text-gray-300 leading-5 rounded-md",

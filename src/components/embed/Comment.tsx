@@ -1,101 +1,72 @@
+"use client"
 import {
   memo,
-  useMemo,
+  useReducer,
   useState,
 } from "react";
 
 import classNames from "classnames";
-import Icon from "components/Icon";
-import ProviderIcon from "components/ProviderIcon";
+import Rating from "components/Rating";
 import { Button } from "components/ui/Button";
-import { useUser } from "lib/hooks";
-import type { IAddComment } from "types/embed";
+import Icon from "components/ui/Icon";
+import ProviderIcon from "components/ui/ProviderIcon";
+import { useSession } from "next-auth/react";
 
 import {
   Comment as IComment,
-  Provider,
+  Site,
+  User,
 } from "@prisma/client";
 import { FaArrowDown } from "@react-icons/all-files/fa/FaArrowDown";
 import { FaArrowUp } from "@react-icons/all-files/fa/FaArrowUp";
 import { FaCommentAlt } from "@react-icons/all-files/fa/FaCommentAlt";
-import { FaStar } from "@react-icons/all-files/fa/FaStar";
 
-import ChakraMarkdown from "../ChakraMarkdown";
-import AddComment from "./AddComment";
+import ChakraMarkdown from "../ui/ChakraMarkdown";
+import { voteAction } from "./actions";
+import CommentBox from "./CommentBox";
 
-type Props = Omit<
-  IComment & {
-    author: {
-      name: string;
-      provider: Provider;
-    };
-    votes: number;
-  },
-  "children"
-> & {
-  settings: {
-    timestamps: boolean;
-    ratings: boolean;
-  };
-  add?: IAddComment;
-  vote: (type: Voted, commentId: string) => any;
-};
-
-enum Voted {
-  UP = "UPVOTE",
-  DOWN = "DOWNVOTE",
+export enum VoteType {
+  UPVOTE = "UPVOTE",
+  DOWNVOTE = "DOWNVOTE",
 }
 
-const Comment: React.FC<Props> = memo(
-  ({ id, text, rating, createdAt, settings, add, author, votes, vote }) => {
-    const [user] = useUser();
-    const [reply, setReply] = useState(false);
+type Props = {
+  comment: IComment & { author: User };
+  settings: Partial<Site>;
+};
 
-    const voted: Voted | undefined = useMemo(() => {
-      // work around
-      if (user && user.upvotedIds && user.upvotedIds.includes(id))
-        return Voted.UP;
-      if (user && user.downvotedIds && user.downvotedIds.includes(id))
-        return Voted.DOWN;
-    }, [user, id]);
+const Comment = memo(
+  ({ settings, comment }: Props) => {
+    const [votes, setVotes] = useState<number>(comment.votes);
+    const [reply, toggleReply] = useReducer(r => !r, false);
+    const { status } = useSession();
+    const isAuthenticated = status === "authenticated";
+
+    const vote = async (type: VoteType) => {
+      const voteChange = await voteAction(comment.id, type);
+      setVotes(v => v + voteChange)
+    }
+    const upVote = () => vote(VoteType.UPVOTE);
+    const downVote = () => vote(VoteType.DOWNVOTE);
+
+    const voted = null;
 
     return (
       <div className="w-full p-2">
         <div className="flex items-center">
           <p className="text-md font-medium text-gray-900 dark:text-gray-200">
-            {author.name}
+            {comment.author.name}
           </p>
-          <Icon as={ProviderIcon} i={author.provider} className="ml-1.5" />
+          <Icon as={ProviderIcon} i={(comment.author as any).provider} className="ml-1.5" />
         </div>
         {settings.timestamps && (
           <p className="text-xs mb-4 text-gray-500">
-            {new Date(createdAt).toUTCString()}
+            {new Date(comment.createdAt).toUTCString()}
           </p>
         )}
-        {settings.ratings && rating && (
-          <p className="mb-2 text-xs">
-            {Array(rating)
-              .fill(0)
-              .map((_, idx) => (
-                <FaStar
-                  className="ml-1.5 w-4 h-4 inline-block leading-4 flex-shrink-0 text-yellow-400"
-                  size="13px"
-                  key={`f-${idx}`}
-                />
-              ))}
-            {Array(5 - rating)
-              .fill(0)
-              .map((_, idx) => (
-                <FaStar
-                  className="ml-1.5 w-4 h-4 inline-block leading-4 flex-shrink-0"
-                  size="13px"
-                  key={`u-${idx}`}
-                />
-              ))}
-          </p>
-        )}
+        {settings.ratings && comment.rating && <Rating rating={comment.rating} className="mt-[calc(var(--spacing)*-3)] mb-4" />}
         <div className="text-gray-800 dark:text-gray-300">
-          <ChakraMarkdown>{text}</ChakraMarkdown>
+          <ChakraMarkdown>{comment.text}</ChakraMarkdown>
         </div>
         <div className="flex items-center gap-1 mt-3">
           <span className="font-bold mr-2">{votes.toString()}</span>
@@ -103,34 +74,32 @@ const Comment: React.FC<Props> = memo(
             layout="ghost"
             aria-label="Up Vote"
             className={classNames("hover:!text-red-600", {
-              "!text-red-600": voted === Voted.UP,
+              "!text-red-600": voted === VoteType.UPVOTE,
             })}
             icon={() => <Icon as={FaArrowUp} />}
-            onClick={() => user && vote(Voted.UP, id)}
+            onClick={() => isAuthenticated && upVote()}
           />
 
           <Button
             layout="ghost"
             aria-label="Down Vote"
             className={classNames("hover:!text-blue-600", {
-              "!text-blue-600": voted === Voted.DOWN,
+              "!text-blue-600": voted === VoteType.DOWNVOTE,
             })}
             icon={() => <Icon as={FaArrowDown} />}
-            onClick={() => user && vote(Voted.DOWN, id)}
+            onClick={() => isAuthenticated && downVote()}
           />
-          {add && (
-            <Button
-              iconLeft={() => <Icon as={FaCommentAlt} />}
-              layout="ghost"
-              onClick={() => user && setReply(r => !r)}
-              className="gap-2"
-            >
-              Reply
-            </Button>
-          )}
+          <Button
+            iconLeft={() => <Icon as={FaCommentAlt} />}
+            layout="ghost"
+            onClick={toggleReply}
+            className="gap-2"
+          >
+            Reply
+          </Button>
         </div>
-        {reply && add && (
-          <AddComment add={add} commentId={id} className="mt-3" />
+        {reply && (
+          <CommentBox parentCommentId={comment.id} className="mt-3" pageId={comment.pageId || undefined} settings={settings} />
         )}
       </div>
     );

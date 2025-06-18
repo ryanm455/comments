@@ -17,14 +17,21 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "preserve",
-    "baseUrl": "src"
+    "baseUrl": "src",
+    "incremental": true,
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ]
   },
   "include": [
-    "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
+    "next-env.d.ts",
+    "prisma",
     "src",
-    "prisma"
+    ".next/types/**/*.ts"
   ],
   "exclude": [
     "node_modules"

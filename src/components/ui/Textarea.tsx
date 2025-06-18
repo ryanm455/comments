@@ -1,6 +1,9 @@
 import classNames from "classnames";
 
-import { hasValidation, validationStyle } from "./utils";
+import {
+  hasValidation,
+  validationStyle,
+} from "./utils";
 
 type Props = React.ComponentProps<"textarea"> & { valid?: boolean };
 
@@ -15,13 +18,13 @@ const theme = {
     "border-red-600 dark:bg-gray-700 focus:border-red-400 dark:focus:border-red-400 focus:ring focus:ring-red-200 dark:focus:ring-red-200",
 };
 
-export const Textarea: React.FC<Props> = ({
+export const Textarea = ({
   valid,
   disabled,
   className,
   children,
   ...other
-}) => {
+}: Props) => {
   const baseStyle = theme.base;
   const activeStyle = theme.active;
   const disabledStyle = theme.disabled;

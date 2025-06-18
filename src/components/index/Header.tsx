@@ -1,6 +1,6 @@
-import B from "components/BoldText";
+import B from "components/ui/BoldText";
 import { Button } from "components/ui/Button";
-import { APP_LOGO } from "meta";
+import { APP_LOGO } from "lib/meta";
 
 const Arrow = () => (
   <svg
@@ -17,7 +17,7 @@ const Arrow = () => (
   </svg>
 );
 
-const Header: React.FC = () => (
+const Header = () => (
   <div className="flex flex-col text-center py-20 md:py-36 gap-8 md:gap-14">
     <div className="font-semibold text-2xl sm:text-4xl md:text-6xl">
       Comments {APP_LOGO} <br />

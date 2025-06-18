@@ -1,8 +1,8 @@
 import classNames from "classnames";
 
-export const HelperText: React.FC<
-  React.ComponentProps<"span"> & { invalid: boolean }
-> = ({ invalid, children, className, ...props }) => {
+type Props = React.ComponentProps<"span"> & { invalid: boolean };
+
+export const HelperText = ({ invalid, children, className, ...props }: Props) => {
   if (!invalid) return <></>;
 
   return (
