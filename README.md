@@ -18,8 +18,7 @@ Originally created a while ago and recently updated (2025). The app is currently
 * **React.js**
 * **NextAuth.js** (for authentication)
 * **Prisma** (ORM)
-* **Tailwind CSS** (utility-first styling)
-
+* **Tailwind CSS** (for styling)
 ---
 
 ## 🎨 UI & Design Notes
