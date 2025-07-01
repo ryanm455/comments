@@ -1,32 +1,42 @@
-"use client"
-import {
-  createRef,
-  memo,
-} from "react";
+"use client";
 
-export default memo(function Embed() {
-  const iframe = createRef<HTMLIFrameElement>();
+import { useEffect, useRef } from "react";
 
-  if (typeof window !== "undefined") {
-    window.addEventListener(
-      "message",
-      e => {
-        console.log("recieved message", e)
-        iframe.current &&
-          e.data.height &&
-          iframe.current.setAttribute("height", e.data.height)
-      });
-  }
+export default function Embed() {
+  const iframeRef = useRef<HTMLIFrameElement>(null);
+
+  useEffect(() => {
+    const handleMessage = (e: MessageEvent) => {
+      if (
+        typeof e.data === "object" &&
+        e.data.type === "embed-height" &&
+        iframeRef.current
+      ) {
+        iframeRef.current.style.height = `${e.data.height}px`;
+      }
+    };
+
+    window.addEventListener("message", handleMessage);
+
+    const interval = setInterval(() => {
+      iframeRef.current?.contentWindow?.postMessage("request-embed-height", "*");
+    }, 1000);
+
+    return () => {
+      clearInterval(interval);
+      window.removeEventListener("message", handleMessage);
+    };
+  }, []);
 
   return (
     <iframe
-      ref={iframe}
+      ref={iframeRef}
       title="Example Comments"
-      src="/embed/60fc8db70032935100e7b868"
+      src="/embed/686446b233f85a69261e223b"
       width="100%"
+      style={{ border: "none", height: "0px" }}
       loading="lazy"
-      onLoad={(i: any) => i.target.contentWindow.postMessage("height", "*")}
       className="my-20 md:my-36"
     />
   );
-});
+}

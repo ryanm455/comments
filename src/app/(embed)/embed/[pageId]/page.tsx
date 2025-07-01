@@ -2,13 +2,13 @@ import React, { Suspense } from "react";
 
 import CommentBox from "components/embed/CommentBox";
 import ExternalIcon from "components/embed/ExternalIcon";
+import { PageCommentThread } from "components/embed/PageCommentThread";
 import EmbedThemeStyling from "components/embed/ThemeStyling";
 import { APP_URL } from "lib/meta";
 import prisma from "lib/prisma";
 import { notFound } from "next/navigation";
 
 import { Site } from "@prisma/client";
-import { PageCommentThread } from "components/embed/PageCommentThread";
 
 const fetchSite = async (pageId: string): Promise<Site | null> => {
   return await prisma.page.findUnique({

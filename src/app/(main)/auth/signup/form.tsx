@@ -12,7 +12,7 @@ import PasswordInput from "../../../../components/auth/PasswordInput";
 import { Field } from "../../../../components/ui/Field";
 import { register } from "./actions";
 
-export const RegisterForm = memo(({ useCallback }: { useCallback: boolean }) => {
+export const RegisterForm = memo(() => {
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get('callbackUrl') || '/auth/login';
   const [errorMessage, formAction, isPending] = useActionState(
@@ -45,7 +45,7 @@ export const RegisterForm = memo(({ useCallback }: { useCallback: boolean }) => 
           minLength={6}
           required
         />
-        {useCallback && <input type="hidden" name="redirectTo" value={callbackUrl} />}
+        <input type="hidden" name="redirectTo" value={callbackUrl} />
         <Button
           type="submit"
           disabled={isPending}

@@ -1,18 +1,21 @@
-import EmbedListener from "components/embed/EmbedListener";
+"use client"
+import dynamic from "next/dynamic";
 
-const EmbedLayout = ({ children }: React.PropsWithChildren<{}>) => {
-    return (
-        <>
-            {children}
-            <EmbedListener />
-            <style>
-                {`
+const EmbedListener = dynamic(() => import("components/embed/EmbedListener"), {
+    ssr: false
+})
+
+const EmbedLayout = ({ children }: React.PropsWithChildren<{}>) => (
+    <>
+        {children}
+        <EmbedListener />
+        <style>
+            {`
                 body::-webkit-scrollbar {
                     display: none;
                 }`}
-            </style>
-        </>
-    )
-}
+        </style>
+    </>
+)
 
 export default EmbedLayout;

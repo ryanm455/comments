@@ -1,33 +1,25 @@
 "use server"
 import { Suspense } from "react";
 
+import { PageCommentThread } from "components/embed/PageCommentThread";
 import { APP_URL } from "lib/meta";
 import prisma from "lib/prisma";
 import { notFound } from "next/navigation";
 
 import PageForm from "./form";
-import { Site } from "@prisma/client";
-import { PageCommentThread } from "components/embed/PageCommentThread";
 
-const fetchSite = async (pageId: string): Promise<Site | null> => {
+const fetchPageWithSite = async (pageId: string) => {
   return await prisma.page.findUnique({
     where: { id: pageId },
-    include: { site: true },
-  }).then(s => s?.site || null);
-}
-
-const fetchPage = async (pageId: string) => {
-  return await prisma.page.findUnique({
-    where: { id: pageId },
+    include: { site: true }
   });
 };
 
 const PagePage = async ({ params }: { params: Promise<{ pageId: string }> }) => {
   const { pageId } = await params;
-  const page = await fetchPage(pageId);
-  if (!page) return notFound();
-  const site = await fetchSite(page.siteId);
-  if (!site) return notFound();
+  const res = await fetchPageWithSite(pageId);
+  if (!res) return notFound();
+  const { site, ...page } = res;
 
   return (
     <>
@@ -39,26 +31,41 @@ const PagePage = async ({ params }: { params: Promise<{ pageId: string }> }) => 
       <h1 className="font-semibold text-3xl my-4">How To Add To Site</h1>
 
       <h2 className="font-semibold text-2xl my-4">React</h2>
-      <code className="whitespace-pre">{`import { createRef } from "react";
+      <code className="whitespace-pre">{`import { useEffect, useRef } from "react";
 
 export default function Embed() {
-  const iframe = createRef();
+  const iframeRef = useRef<HTMLIFrameElement>(null);
 
-  window.addEventListener(
-    "message",
-    e =>
-      iframe.current &&
-      e.data.height &&
-      iframe.current.setAttribute("height", e.data.height)
-  );
+  useEffect(() => {
+    const handleMessage = (e: MessageEvent) => {
+      if (
+        typeof e.data === "object" &&
+        e.data.type === "embed-height" &&
+        iframeRef.current
+      ) {
+        iframeRef.current.style.height = \`\${e.data.height}px\`;
+      }
+    };
+
+    window.addEventListener("message", handleMessage);
+
+    const interval = setInterval(() => {
+      iframeRef.current?.contentWindow?.postMessage("request-embed-height", "*");
+    }, 1000);
+
+    return () => {
+      clearInterval(interval);
+      window.removeEventListener("message", handleMessage);
+    };
+  }, []);
 
   return (
     <iframe
-      ref={iframe}
+      ref={iframeRef}
       src="${APP_URL}/embed/${pageId}"
       width="100%"
+      style={{ border: "none", height: "0px" }}
       loading="lazy"
-      onLoad={i => i.target.contentWindow.postMessage("height", "*")}
     />
   );
 }`}</code>
@@ -68,16 +75,26 @@ export default function Embed() {
         {`<iframe
   src="${APP_URL}/embed/${pageId}"
   width="100%"
+  style={{ border: "none", height: "0px" }}
   loading="lazy"
 ></iframe>
 
 const iframe = document.querySelector("iframe");
-iframe.onload = i => i.target.contentWindow.postMessage("height", "*");
 
-window.addEventListener(
-  "message",
-  e => iframe.setAttribute("height", e.data.height)
-);`}
+const handleMessage = (e: MessageEvent) => {
+  if (
+    typeof e.data === "object" &&
+    e.data.type === "embed-height"
+  ) {
+    iframe.style.height = \`\${e.data.height}px\`;
+    }
+  };
+
+window.addEventListener("message", handleMessage);
+
+const interval = setInterval(() => {
+  iframe.contentWindow?.postMessage("request-embed-height", "*");
+}, 1000);`}
       </code>
 
       <h1 className="font-semibold text-3xl my-4">Comments</h1>

@@ -42,7 +42,7 @@ export const OrContinueWith = ({ callbackUrl = "/" }: Props) => {
         />
       </div>
       {popupMethod && (
-        <NewWindow url={`/auth/popup/${popupMethod}`} onUnload={() => {
+        <NewWindow url={`/auth/popup/${popupMethod}?callbackUrl=/auth/popup/success`} onUnload={() => {
           setPopUpMethod(null);
           router.push(callbackUrl);
         }} />

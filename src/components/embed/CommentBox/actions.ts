@@ -1,8 +1,8 @@
 "use server"
 
 import {
-    auth,
-    signIn,
+  auth,
+  signIn,
 } from "lib/auth";
 import prisma from "lib/prisma";
 

@@ -2,7 +2,6 @@
 
 import {
     Suspense,
-    useEffect,
     useReducer,
 } from "react";
 
@@ -13,7 +12,6 @@ import {
     Card,
 } from "components/ui";
 import { APP_LOGO } from "lib/meta";
-import { useSession } from "next-auth/react";
 
 enum AuthMode {
     SIGNUP,
@@ -22,14 +20,6 @@ enum AuthMode {
 
 const Local = () => {
     const [authMode, toggleAuthMode] = useReducer(r => r == AuthMode.LOGIN ? AuthMode.SIGNUP : AuthMode.LOGIN, AuthMode.LOGIN);
-
-    const { data, status } = useSession()
-
-    const isLoading = status === "loading";
-
-    useEffect(() => {
-        if (!isLoading && data) window.close()
-    }, [data, isLoading])
 
     return (
         <div className="bg-gray-50 dark:bg-inherit min-h-screen py-12 px-4 lg:px-8">
@@ -41,7 +31,7 @@ const Local = () => {
                 <Card>
                     <Button onClick={toggleAuthMode} className="w-full mb-6">{authMode == AuthMode.LOGIN ? "Register Instead" : "Login Instead"}</Button>
                     <Suspense>
-                        {authMode === AuthMode.LOGIN ? <LoginForm useCallback={false} /> : <RegisterForm useCallback={false} />}
+                        {authMode === AuthMode.LOGIN ? <LoginForm /> : <RegisterForm />}
                     </Suspense>
                 </Card>
             </div>

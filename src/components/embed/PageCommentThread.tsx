@@ -1,7 +1,7 @@
-import { Site } from "@prisma/client";
 import { CommentThreadRoot } from "lib/commentStore";
 import prisma from "lib/prisma";
 
+import { Site } from "@prisma/client";
 
 const fetchRootCommentsForPage = async (pageId: string) => {
   return await prisma.comment.findMany({

@@ -1,42 +1,29 @@
-"use client"
+"use client";
 
 import { useEffect } from "react";
 
-const embedListener = (e: MessageEvent<any>) => {
-  if (e.data == "height") {
-    const [body, html] = [document.body, document.documentElement];
-
-    const height = Math.max(
-      body.scrollHeight,
-      body.offsetHeight,
-      html.clientHeight,
-      html.scrollHeight,
-      html.offsetHeight
-    );
-
-    // @ts-ignore
-    e.source!.postMessage({ height }, "*");
-
-    new ResizeObserver(entries =>
-      // @ts-ignore
-      e.source!.postMessage({ height: entries[0].target.clientHeight }, "*")
-    ).observe(document.body);
-  }
-};
-
 const EmbedListener = () => {
-    useEffect(() => {
-        if (typeof window !== "undefined") {
-            window.addEventListener("message", embedListener);
-        }
-        return () => {
-            if (typeof window !== "undefined") {
-                window.removeEventListener("message", embedListener);
-            }
-        };
-    }, []);
+  useEffect(() => {
+    const postHeight = () => {
+      const height = document.body.scrollHeight;
+      window.parent?.postMessage({ type: "embed-height", height }, "*");
+    };
 
-    return null;
-}
+    const observer = new ResizeObserver(() => postHeight());
+    observer.observe(document.body);
+
+    const handleMessage = (e: MessageEvent) => e.data === "request-embed-height" && postHeight();
+
+    window.addEventListener("message", handleMessage);
+    postHeight();
+
+    return () => {
+      window.removeEventListener("message", handleMessage);
+      observer.disconnect();
+    };
+  }, []);
+
+  return null;
+};
 
 export default EmbedListener;

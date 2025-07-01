@@ -4,8 +4,10 @@ import { Button } from "components/ui";
 import Icon from "components/ui/Icon";
 import LinkWrap from "components/ui/LinkWrap";
 import { useSession } from "next-auth/react";
+import { signOut } from "next-auth/react"
 
 import { FaUser } from "@react-icons/all-files/fa/FaUser";
+import { FaSignOutAlt } from "@react-icons/all-files/fa/FaSignOutAlt";
 
 import ThemeToggle from "./ThemeToggle";
 
@@ -22,6 +24,12 @@ const NavBtn = () => {
         href="/dashboard"
         icon={() => <Icon as={FaUser} />}
       />,
+      <Button
+        key="signout-btn"
+        onClick={signOut}
+        aria-label="Sign Out Button"
+        icon={() => <Icon as={FaSignOutAlt} />}
+      />
     ]
     : [
       <Button key="signup-btn" tag={LinkWrap} href="/auth/signup">
