@@ -1,15 +1,13 @@
 "use server"
 import { Suspense } from "react";
 
-import {
-  PageCommentThread,
-} from "app/(embed)/embed/[pageId]/page";
 import { APP_URL } from "lib/meta";
 import prisma from "lib/prisma";
 import { notFound } from "next/navigation";
 
 import PageForm from "./form";
 import { Site } from "@prisma/client";
+import { PageCommentThread } from "components/embed/PageCommentThread";
 
 const fetchSite = async (pageId: string): Promise<Site | null> => {
   return await prisma.page.findUnique({

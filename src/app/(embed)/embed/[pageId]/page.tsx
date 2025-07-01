@@ -8,7 +8,7 @@ import prisma from "lib/prisma";
 import { notFound } from "next/navigation";
 
 import { Site } from "@prisma/client";
-import { PageCommentThread } from "../../../../components/embed/PageCommentThread";
+import { PageCommentThread } from "components/embed/PageCommentThread";
 
 const fetchSite = async (pageId: string): Promise<Site | null> => {
   return await prisma.page.findUnique({
