@@ -12,7 +12,7 @@ import PasswordInput from "../../../../components/auth/PasswordInput";
 import { Field } from "../../../../components/ui/Field";
 import { authenticate } from "./actions";
 
-export const LoginForm = memo(({ useCallback }: { useCallback: boolean }) => {
+export const LoginForm = memo(() => {
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get('callbackUrl') || '/dashboard';
   const [errorMessage, formAction, isPending] = useActionState(
@@ -41,7 +41,7 @@ export const LoginForm = memo(({ useCallback }: { useCallback: boolean }) => {
           minLength={6}
           required
         />
-        {useCallback && <input type="hidden" name="redirectTo" value={callbackUrl} />}
+        <input type="hidden" name="redirectTo" value={callbackUrl} />
         <Button
           type="submit"
           className="font-md"

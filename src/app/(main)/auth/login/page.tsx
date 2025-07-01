@@ -1,8 +1,9 @@
+import { Suspense } from "react";
+
 import { LoginForm } from "app/(main)/auth/login/form";
 import { OrContinueWith } from "components/auth/OrContinueWith";
 import { Card } from "components/ui/Card";
 import { APP_LOGO } from "lib/meta";
-import { Suspense } from "react";
 
 const Login = () => (
   <div className="bg-gray-50 dark:bg-inherit min-h-screen py-12 px-4 lg:px-8">
@@ -13,7 +14,7 @@ const Login = () => (
       </h2>
       <Card>
         <Suspense>
-          <LoginForm useCallback />
+          <LoginForm />
         </Suspense>
         <OrContinueWith />
       </Card>

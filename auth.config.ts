@@ -8,14 +8,21 @@ export const authConfig = {
     callbacks: {
         authorized({ auth, request: { nextUrl } }) {
             const isLoggedIn = !!auth?.user;
-            const isAllowedPage = nextUrl.pathname.startsWith('/dashboard') || nextUrl.pathname.startsWith('/embed');
-            if (isAllowedPage) {
-                if (isLoggedIn) return true;
-                return false; // Redirect unauthenticated users to login page
-            } else if (isLoggedIn) {
+            const path = nextUrl.pathname;
+
+            const isDashboard = path.startsWith('/dashboard');
+            const isEmbed = path.startsWith('/embed');
+
+            if (isEmbed) return true; // Allow all users
+
+            if (isDashboard) return isLoggedIn; // Only allow logged in users
+
+            if (isLoggedIn) {
+                // Redirect authenticated users away from public pages
                 return Response.redirect(new URL('/dashboard', nextUrl));
             }
-            return true;
+
+            return true; // Allow unauthenticated users on public pages
         },
         async jwt({ token, user }) {
             if (user) token.id = user.id

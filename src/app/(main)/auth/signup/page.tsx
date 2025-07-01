@@ -1,8 +1,9 @@
+import { Suspense } from "react";
+
 import { RegisterForm } from "app/(main)/auth/signup/form";
 import { OrContinueWith } from "components/auth/OrContinueWith";
 import { Card } from "components/ui/Card";
 import { APP_LOGO } from "lib/meta";
-import { Suspense } from "react";
 
 const Register = () => (
   <div className="bg-gray-50 dark:bg-inherit min-h-screen py-12 px-4 lg:px-8">
@@ -13,7 +14,7 @@ const Register = () => (
       </h2>
       <Card>
         <Suspense>
-          <RegisterForm useCallback />
+          <RegisterForm />
         </Suspense>
         <OrContinueWith />
       </Card>
