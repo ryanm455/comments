@@ -2,7 +2,7 @@
 
 A lightweight and extensible app for embedding comments into web pages — ideal for blogs, articles, or any content site.
 
-Originally created a while ago and recently updated (2025). The app is currently basic, but it provides a strong foundation with simple customization options that can be expanded as needed.
+Originally created a while ago and recently updated (2025). The app is currently basic, but it provides a strong foundation with simple customization options that can be expanded on in the future.
 
 ---
 
